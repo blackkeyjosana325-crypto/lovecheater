@@ -1,0 +1,848 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>回到那一天 · 五月天演唱会歌单</title>
+
+<style>
+
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@300;400;500;700;900&display=swap');
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+body{
+    font-family:'Noto Sans SC',sans-serif;
+    background:#05070d;
+    color:#fff;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+/* 星空背景 */
+
+body::before{
+    content:"";
+    position:fixed;
+    inset:0;
+    pointer-events:none;
+
+    background-image:
+        radial-gradient(circle at 20% 20%,rgba(255,255,255,.9) 1px,transparent 1px),
+        radial-gradient(circle at 70% 30%,rgba(255,255,255,.7) 1px,transparent 1px),
+        radial-gradient(circle at 40% 80%,rgba(255,255,255,.6) 1px,transparent 1px),
+        radial-gradient(circle at 90% 70%,rgba(255,255,255,.7) 1px,transparent 1px);
+
+    background-size:
+        160px 160px,
+        220px 220px,
+        300px 300px,
+        180px 180px;
+
+    opacity:.35;
+    z-index:-1;
+}
+
+/* 顶部导航 */
+
+header{
+    width:100%;
+    height:72px;
+
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+
+    padding:0 7%;
+
+    border-bottom:1px solid rgba(255,255,255,.08);
+
+    background:rgba(5,7,13,.72);
+
+    backdrop-filter:blur(14px);
+
+    position:sticky;
+    top:0;
+    z-index:100;
+}
+
+.logo{
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:3px;
+}
+
+.logo span{
+    color:#e92735;
+}
+
+.header-right{
+    font-size:12px;
+    color:#89909e;
+    letter-spacing:2px;
+}
+
+/* Hero */
+
+.hero{
+    min-height:430px;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+
+    position:relative;
+
+    padding:80px 20px 60px;
+}
+
+.hero::after{
+    content:"";
+
+    position:absolute;
+
+    width:500px;
+    height:500px;
+
+    background:radial-gradient(
+        circle,
+        rgba(210,25,40,.18),
+        transparent 70%
+    );
+
+    top:-100px;
+
+    z-index:-1;
+}
+
+.small-title{
+    font-size:12px;
+    letter-spacing:7px;
+    color:#a7adb8;
+    margin-bottom:25px;
+}
+
+.hero h1{
+    font-size:clamp(55px,10vw,115px);
+
+    font-weight:900;
+
+    letter-spacing:12px;
+
+    line-height:1;
+
+    text-shadow:
+        0 0 30px rgba(255,255,255,.12);
+}
+
+.hero h1 span{
+    color:#e92735;
+}
+
+.hero-subtitle{
+    margin-top:28px;
+
+    color:#9da4b1;
+
+    font-size:14px;
+
+    letter-spacing:5px;
+}
+
+/* 日期区域 */
+
+.date-section{
+    width:90%;
+    max-width:1100px;
+
+    margin:0 auto 60px;
+}
+
+.date-label{
+    text-align:center;
+
+    font-size:12px;
+
+    color:#6f7683;
+
+    letter-spacing:4px;
+
+    margin-bottom:20px;
+}
+
+.date-selector{
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:12px;
+}
+
+.date-btn{
+    border:1px solid rgba(255,255,255,.1);
+
+    background:rgba(255,255,255,.035);
+
+    color:#aeb4bf;
+
+    padding:18px 10px;
+
+    cursor:pointer;
+
+    transition:.3s;
+
+    position:relative;
+}
+
+.date-btn:hover{
+    background:rgba(255,255,255,.08);
+
+    color:white;
+}
+
+.date-btn.active{
+    background:#e92735;
+
+    border-color:#e92735;
+
+    color:white;
+
+    box-shadow:
+        0 0 30px rgba(233,39,53,.25);
+}
+
+.date-btn .month{
+    display:block;
+
+    font-size:12px;
+
+    letter-spacing:2px;
+
+    margin-bottom:5px;
+}
+
+.date-btn .day{
+    font-size:28px;
+
+    font-weight:900;
+}
+
+/* 主体 */
+
+.main{
+    width:90%;
+    max-width:1100px;
+
+    margin:0 auto 100px;
+}
+
+.concert-info{
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:end;
+
+    margin-bottom:35px;
+
+    padding-bottom:20px;
+
+    border-bottom:1px solid rgba(255,255,255,.1);
+}
+
+.concert-info h2{
+    font-size:28px;
+}
+
+.concert-info p{
+    color:#737b89;
+
+    font-size:13px;
+
+    margin-top:8px;
+}
+
+.song-count{
+    font-size:13px;
+
+    color:#858d9b;
+}
+
+/* 歌单 */
+
+.setlist{
+    display:flex;
+
+    flex-direction:column;
+
+    gap:8px;
+}
+
+.song{
+    display:grid;
+
+    grid-template-columns:70px 1fr 100px;
+
+    align-items:center;
+
+    min-height:65px;
+
+    padding:0 20px;
+
+    border:1px solid rgba(255,255,255,.05);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(255,255,255,.025),
+            rgba(255,255,255,.01)
+        );
+
+    transition:.3s;
+}
+
+.song:hover{
+    transform:translateX(8px);
+
+    border-color:rgba(255,255,255,.15);
+
+    background:rgba(255,255,255,.06);
+}
+
+.song-number{
+    font-size:13px;
+
+    color:#5e6673;
+
+    font-family:monospace;
+}
+
+.song-name{
+    font-size:16px;
+
+    font-weight:500;
+}
+
+.song-type{
+    text-align:right;
+
+    font-size:10px;
+
+    color:#59616e;
+
+    letter-spacing:2px;
+}
+
+/* ENCORE */
+
+.encore-title{
+    margin-top:45px;
+
+    margin-bottom:15px;
+
+    display:flex;
+
+    align-items:center;
+
+    gap:15px;
+
+    color:#e92735;
+
+    font-size:14px;
+
+    letter-spacing:4px;
+
+    font-weight:900;
+}
+
+.encore-title::before{
+    content:"";
+
+    width:35px;
+
+    height:2px;
+
+    background:#e92735;
+
+    box-shadow:0 0 10px rgba(233,39,53,.8);
+}
+
+.encore{
+    border-color:rgba(233,39,53,.25);
+
+    background:
+        linear-gradient(
+            90deg,
+            rgba(233,39,53,.09),
+            rgba(233,39,53,.025)
+        );
+}
+
+.encore .song-number,
+.encore .song-name,
+.encore .song-type{
+    color:#e92735;
+}
+
+.encore .song-name{
+    font-weight:700;
+}
+
+/* 底部 */
+
+footer{
+    border-top:1px solid rgba(255,255,255,.08);
+
+    padding:45px 20px;
+
+    text-align:center;
+
+    color:#555d69;
+
+    font-size:12px;
+
+    letter-spacing:2px;
+}
+
+.footer-main{
+    color:#858c98;
+
+    margin-bottom:10px;
+}
+
+/* 小票效果 */
+
+.ticket{
+    position:absolute;
+
+    right:7%;
+
+    top:110px;
+
+    width:130px;
+
+    height:70px;
+
+    border:1px solid rgba(255,255,255,.08);
+
+    transform:rotate(7deg);
+
+    opacity:.35;
+
+    padding:10px;
+
+    font-size:8px;
+
+    letter-spacing:2px;
+
+    color:#777f8c;
+}
+
+.ticket::after{
+    content:"MAYDAY";
+
+    display:block;
+
+    font-size:18px;
+
+    color:#aaa;
+
+    margin-top:8px;
+}
+
+/* 动画 */
+
+@keyframes fadeIn{
+    from{
+        opacity:0;
+        transform:translateY(15px);
+    }
+
+    to{
+        opacity:1;
+        transform:translateY(0);
+    }
+}
+
+.song{
+    animation:fadeIn .45s ease both;
+}
+
+.song:nth-child(1){animation-delay:.03s}
+.song:nth-child(2){animation-delay:.06s}
+.song:nth-child(3){animation-delay:.09s}
+.song:nth-child(4){animation-delay:.12s}
+.song:nth-child(5){animation-delay:.15s}
+.song:nth-child(6){animation-delay:.18s}
+.song:nth-child(7){animation-delay:.21s}
+.song:nth-child(8){animation-delay:.24s}
+.song:nth-child(9){animation-delay:.27s}
+.song:nth-child(10){animation-delay:.30s}
+
+/* 手机 */
+
+@media(max-width:700px){
+
+    header{
+        padding:0 20px;
+    }
+
+    .header-right{
+        display:none;
+    }
+
+    .hero{
+        min-height:360px;
+
+        padding-top:60px;
+    }
+
+    .hero h1{
+        letter-spacing:5px;
+    }
+
+    .hero-subtitle{
+        font-size:11px;
+
+        letter-spacing:3px;
+    }
+
+    .ticket{
+        display:none;
+    }
+
+    .date-selector{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+    .concert-info{
+        align-items:flex-start;
+
+        flex-direction:column;
+
+        gap:10px;
+    }
+
+    .song{
+        grid-template-columns:45px 1fr;
+
+        padding:14px 15px;
+    }
+
+    .song-type{
+        display:none;
+    }
+
+    .song-name{
+        font-size:15px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<header>
+
+    <div class="logo">
+        MAYDAY<span>●</span>
+    </div>
+
+    <div class="header-right">
+        RETURN TO THAT DAY · SETLIST
+    </div>
+
+</header>
+
+
+<section class="hero">
+
+    <div class="ticket">
+        MAYDAY LIVE
+        <br>
+        2026
+    </div>
+
+    <div class="small-title">
+        MAYDAY · LIVE TOUR
+    </div>
+
+    <h1>
+        回到<span>那一天</span>
+    </h1>
+
+    <div class="hero-subtitle">
+        每一天 · 都有一首歌 · 带你回到那一天
+    </div>
+
+</section>
+
+
+<section class="date-section">
+
+    <div class="date-label">
+        SELECT A DATE
+    </div>
+
+    <div class="date-selector">
+
+        <button class="date-btn active" onclick="changeDate(0)">
+            <span class="month">MAY</span>
+            <span class="day">15</span>
+        </button>
+
+        <button class="date-btn" onclick="changeDate(1)">
+            <span class="month">MAY</span>
+            <span class="day">16</span>
+        </button>
+
+        <button class="date-btn" onclick="changeDate(2)">
+            <span class="month">MAY</span>
+            <span class="day">17</span>
+        </button>
+
+        <button class="date-btn" onclick="changeDate(3)">
+            <span class="month">MAY</span>
+            <span class="day">18</span>
+        </button>
+
+    </div>
+
+</section>
+
+
+<main class="main">
+
+    <div class="concert-info">
+
+        <div>
+            <h2 id="dateTitle">
+                5月15日 · 演唱会歌单
+            </h2>
+
+            <p>
+                MAYDAY · 回到那一天
+            </p>
+        </div>
+
+        <div class="song-count">
+            19 SONGS + 2 ENCORE
+        </div>
+
+    </div>
+
+
+    <div id="setlist" class="setlist"></div>
+
+</main>
+
+
+<footer>
+
+    <div class="footer-main">
+        MAYDAY · 回到那一天
+    </div>
+
+    A SONG CAN TAKE YOU BACK TO THAT DAY.
+
+</footer>
+
+
+<script>
+
+const baseSongs = [
+
+    "OAOA",
+    "孙悟空",
+    "入阵曲",
+    "干杯",
+    "终结孤单",
+    "成名在望 + 如果我们不曾相遇",
+    "我不愿让你一个人",
+    "我心中尚未崩坏的地方",
+    "超人",
+    "疯狂世界",
+    "派对动物",
+    "离开地球表面",
+    "恋爱ing",
+    "突然好想你",
+    "转眼",
+    "任意门",
+    "最好的一天",
+    "盛夏光年",
+    "笑忘歌"
+
+];
+
+
+const encoreSongs = [
+
+    [
+        "放肆",
+        "顽固"
+    ],
+
+    [
+        "OK啦",
+        "后来的我们"
+    ],
+
+    [
+        "2012",
+        "倔强"
+    ],
+
+    [
+        "你是唯一",
+        "憨人"
+    ]
+
+];
+
+
+const dates = [
+
+    "5月15日",
+    "5月16日",
+    "5月17日",
+    "5月18日"
+
+];
+
+
+function changeDate(index){
+
+    document
+        .querySelectorAll(".date-btn")
+        .forEach((btn,i)=>{
+
+            btn.classList.toggle(
+                "active",
+                i === index
+            );
+
+        });
+
+
+    document
+        .getElementById("dateTitle")
+        .innerText =
+        dates[index] + " · 演唱会歌单";
+
+
+    renderSongs(index);
+
+}
+
+
+function renderSongs(index){
+
+    const container =
+        document.getElementById("setlist");
+
+    container.innerHTML = "";
+
+
+    /*
+        基础歌单
+    */
+
+    baseSongs.forEach((song,index)=>{
+
+        const item =
+            document.createElement("div");
+
+        item.className = "song";
+
+        item.innerHTML = `
+
+            <div class="song-number">
+                ${String(index + 1).padStart(2,"0")}
+            </div>
+
+            <div class="song-name">
+                ${song}
+            </div>
+
+            <div class="song-type">
+                LIVE
+            </div>
+
+        `;
+
+        container.appendChild(item);
+
+    });
+
+
+    /*
+        ENCORE 标题
+    */
+
+    const encoreTitle =
+        document.createElement("div");
+
+    encoreTitle.className =
+        "encore-title";
+
+    encoreTitle.innerText =
+        "ENCORE · 惊喜曲目";
+
+    container.appendChild(encoreTitle);
+
+
+    /*
+        ENCORE 歌曲
+    */
+
+    encoreSongs[index].forEach((song,i)=>{
+
+        const item =
+            document.createElement("div");
+
+        item.className =
+            "song encore";
+
+        item.innerHTML = `
+
+            <div class="song-number">
+                E${i + 1}
+            </div>
+
+            <div class="song-name">
+                ${song}
+            </div>
+
+            <div class="song-type">
+                ENCORE
+            </div>
+
+        `;
+
+        container.appendChild(item);
+
+    });
+
+}
+
+
+/*
+    默认显示5月15日
+*/
+
+renderSongs(0);
+
+</script>
+
+</body>
+</html>
