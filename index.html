@@ -1318,6 +1318,44 @@ B市医院员工内网
 
 // 下一部分 JavaScript 接入
 // ===============================
+// ===============================
+// 地点切换导航
+// ===============================
+
+function locationNavigation(active){
+
+
+return `
+
+<div class="location-nav">
+
+
+<button 
+class="${active==="preparation" ? "location-active":""}"
+onclick="preparation()">
+
+准备室
+
+</button>
+
+
+
+<button 
+class="${active==="identification" ? "location-active":""}"
+onclick="identification()">
+
+鉴定室
+
+</button>
+
+
+
+</div>
+
+`;
+
+}
+    
 // 员工日志
 // ===============================
 
