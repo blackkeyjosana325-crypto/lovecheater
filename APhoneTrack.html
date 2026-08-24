@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>APhoneTrack // Remote Device Intelligence</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    min-height: 100%;
+    background: #020604;
+    color: #00ff88;
+    font-family: "Courier New", Consolas, monospace;
+}
+
+body {
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* =========================
+   背景
+========================= */
+
+body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 50;
+
+    background:
+        repeating-linear-gradient(
+            to bottom,
+            rgba(0,255,120,0.035) 0px,
+            rgba(0,255,120,0.035) 1px,
+            transparent 1px,
+            transparent 4px
+        );
+}
+
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 1;
+
+    background-image:
+        linear-gradient(
+            rgba(0,255,120,0.035) 1px,
+            transparent 1px
+        ),
+        linear-gradient(
+            90deg,
+            rgba(0,255,120,0.035) 1px,
+            transparent 1px
+        );
+
+    background-size: 45px 45px;
+}
+
+/* =========================
+   主容器
+========================= */
+
+.app {
+    width: 100%;
+    min-height: 100vh;
+    position: relative;
+    z-index: 2;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    padding: 30px;
+}
+
+.terminal {
+    width: 950px;
+    max-width: 100%;
+
+    min-height: 650px;
+
+    background:
+        radial-gradient(
+            circle at 50% 0%,
+            rgba(0,255,120,0.08),
+            transparent 50%
+        ),
+        rgba(0,8,5,0.96);
+
+    border: 1px solid #00ff88;
+
+    box-shadow:
+        0 0 15px rgba(0,255,120,0.2),
+        0 0 50px rgba(0,255,120,0.08),
+        inset 0 0 50px rgba(0,255,120,0.025);
+
+    position: relative;
+}
+
+/* =========================
+   顶部栏
+========================= */
+
+.topbar {
+    height: 50px;
+
+    border-bottom: 1px solid #116f48;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 18px;
+
+    background: rgba(0,255,100,0.035);
+}
+
+.lights {
+    display: flex;
+    gap: 7px;
+    margin-right: 18px;
+}
+
+.light {
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    border: 1px solid #00ff88;
+}
+
+.light.active {
+    background: #00ff88;
+
+    box-shadow:
+        0 0 5px #00ff88,
+        0 0 12px #00ff88;
+}
+
+.top-title {
+    font-size: 13px;
+    letter-spacing: 2px;
+}
+
+.top-right {
+    margin-left: auto;
+
+    font-size: 11px;
+    color: #397c5b;
+}
+
+/* =========================
+   内容
+========================= */
+
+.content {
+    padding: 45px;
+}
+
+/* Logo */
+
+.logo {
+    text-align: center;
+
+    font-size: 44px;
+    font-weight: bold;
+
+    letter-spacing: 9px;
+
+    color: #00ff88;
+
+    text-shadow:
+        0 0 7px #00ff88,
+        0 0 18px rgba(0,255,120,0.65);
+
+    animation: flicker 5s infinite;
+}
+
+.subtitle {
+    text-align: center;
+
+    margin-top: 10px;
+    margin-bottom: 40px;
+
+    color: #4c9971;
+
+    font-size: 11px;
+    letter-spacing: 4px;
+}
+
+/* =========================
+   系统状态
+========================= */
+
+.status-box {
+    border-left: 3px solid #00ff88;
+
+    background: rgba(0,255,100,0.025);
+
+    padding: 13px 16px;
+
+    margin-bottom: 25px;
+
+    font-size: 12px;
+
+    line-height: 1.8;
+}
+
+.status-label {
+    color: #3c8c64;
+}
+
+.status-value {
+    color: #00ff88;
+}
+
+/* =========================
+   搜索区域
+========================= */
+
+.search-title {
+    font-size: 12px;
+
+    color: #55a879;
+
+    margin-bottom: 8px;
+
+    letter-spacing: 1px;
+}
+
+.search-area {
+    display: flex;
+    gap: 10px;
+
+    margin-bottom: 25px;
+}
+
+.search-area input {
+    flex: 1;
+
+    height: 52px;
+
+    background: #010a06;
+
+    border: 1px solid #176d48;
+
+    outline: none;
+
+    color: #00ff88;
+
+    font-family: inherit;
+
+    font-size: 16px;
+
+    padding: 0 18px;
+
+    letter-spacing: 1px;
+
+    transition: 0.2s;
+}
+
+.search-area input::placeholder {
+    color: #28583f;
+}
+
+.search-area input:focus {
+    border-color: #00ff88;
+
+    box-shadow:
+        0 0 10px rgba(0,255,120,0.15),
+        inset 0 0 10px rgba(0,255,120,0.03);
+}
+
+.search-btn {
+    width: 160px;
+
+    border: 1px solid #00ff88;
+
+    background: #00ff88;
+
+    color: #001a0d;
+
+    font-family: inherit;
+
+    font-weight: bold;
+
+    cursor: pointer;
+
+    letter-spacing: 2px;
+
+    transition: 0.2s;
+}
+
+.search-btn:hover {
+    background: #9affc7;
+
+    box-shadow:
+        0 0 15px rgba(0,255,120,0.5);
+}
+
+.search-btn:active {
+    transform: scale(0.98);
+}
+
+/* =========================
+   日志
+========================= */
+
+.log {
+    min-height: 80px;
+
+    border: 1px solid #103f2b;
+
+    background: rgba(0,0,0,0.3);
+
+    padding: 13px 15px;
+
+    margin-bottom: 25px;
+
+    color: #4b9c70;
+
+    font-size: 11px;
+
+    line-height: 1.8;
+
+    overflow: hidden;
+}
+
+.log-line {
+    white-space: nowrap;
+}
+
+/* =========================
+   搜索结果
+========================= */
+
+.result {
+    min-height: 190px;
+
+    border: 1px solid #164d34;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(0,255,120,0.035),
+            rgba(0,0,0,0.25)
+        );
+
+    padding: 25px;
+
+    display: none;
+
+    position: relative;
+}
+
+.result.show {
+    display: block;
+
+    animation: resultIn 0.3s ease;
+}
+
+.result::before {
+    content: "DEVICE RECORD";
+
+    position: absolute;
+
+    right: 15px;
+    top: 12px;
+
+    color: #22583e;
+
+    font-size: 9px;
+
+    letter-spacing: 2px;
+}
+
+.result-header {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+.device-icon {
+    width: 48px;
+    height: 48px;
+
+    border: 1px solid #00ff88;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    font-size: 21px;
+
+    box-shadow:
+        0 0 8px rgba(0,255,120,0.2);
+}
+
+.target-name {
+    font-size: 23px;
+
+    color: #ffffff;
+
+    letter-spacing: 2px;
+}
+
+.found {
+    font-size: 10px;
+
+    color: #00ff88;
+
+    margin-top: 4px;
+
+    letter-spacing: 2px;
+}
+
+.device-data {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 10px;
+
+    margin-bottom: 20px;
+}
+
+.data-box {
+    background: rgba(0,255,100,0.025);
+
+    border: 1px solid #123d2a;
+
+    padding: 10px;
+}
+
+.data-label {
+    color: #397456;
+
+    font-size: 9px;
+
+    margin-bottom: 4px;
+}
+
+.data-value {
+    color: #70e6a4;
+
+    font-size: 11px;
+}
+
+.access-btn {
+    width: 100%;
+
+    height: 43px;
+
+    background: transparent;
+
+    color: #00ff88;
+
+    border: 1px solid #00ff88;
+
+    font-family: inherit;
+
+    font-weight: bold;
+
+    letter-spacing: 3px;
+
+    cursor: pointer;
+
+    transition: 0.2s;
+}
+
+.access-btn:hover {
+    background: #00ff88;
+
+    color: #001a0d;
+
+    box-shadow:
+        0 0 20px rgba(0,255,120,0.4);
+}
+
+/* =========================
+   未找到
+========================= */
+
+.not-found {
+    display: none;
+
+    min-height: 150px;
+
+    border: 1px solid #63322d;
+
+    background: rgba(100,20,10,0.06);
+
+    padding: 25px;
+
+    text-align: center;
+}
+
+.not-found.show {
+    display: block;
+
+    animation: resultIn 0.3s ease;
+}
+
+.warning {
+    font-size: 25px;
+
+    color: #ff624c;
+
+    margin-bottom: 10px;
+}
+
+.not-found-title {
+    color: #ff806d;
+
+    font-size: 16px;
+
+    letter-spacing: 2px;
+
+    margin-bottom: 10px;
+}
+
+.not-found-text {
+    color: #8e5148;
+
+    font-size: 11px;
+
+    line-height: 1.8;
+}
+
+/* =========================
+   底部
+========================= */
+
+.footer {
+    margin-top: 30px;
+
+    display: flex;
+
+    justify-content: space-between;
+
+    border-top: 1px solid #103c29;
+
+    padding-top: 15px;
+
+    color: #285a40;
+
+    font-size: 9px;
+
+    letter-spacing: 1px;
+}
+
+/* =========================
+   动画
+========================= */
+
+@keyframes resultIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes flicker {
+    0%, 18%, 20%, 22%, 60%, 100% {
+        opacity: 1;
+    }
+
+    19%, 21% {
+        opacity: 0.7;
+    }
+}
+
+/* =========================
+   手机端
+========================= */
+
+@media (max-width: 700px) {
+
+    .app {
+        padding: 10px;
+        align-items: flex-start;
+    }
+
+    .terminal {
+        margin-top: 10px;
+    }
+
+    .content {
+        padding: 25px 18px;
+    }
+
+    .logo {
+        font-size: 29px;
+        letter-spacing: 5px;
+    }
+
+    .subtitle {
+        font-size: 8px;
+        letter-spacing: 2px;
+        margin-bottom: 30px;
+    }
+
+    .search-area {
+        flex-direction: column;
+    }
+
+    .search-btn {
+        width: 100%;
+        height: 50px;
+    }
+
+    .device-data {
+        grid-template-columns: 1fr;
+    }
+
+    .top-right {
+        display: none;
+    }
+
+    .target-name {
+        font-size: 20px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="app">
+
+    <div class="terminal">
+
+        <!-- 顶部 -->
+        <div class="topbar">
+
+            <div class="lights">
+                <div class="light active"></div>
+                <div class="light active"></div>
+                <div class="light"></div>
+            </div>
+
+            <div class="top-title">
+                APHONETRACK // REMOTE DEVICE INTELLIGENCE
+            </div>
+
+            <div class="top-right">
+                NODE: ONLINE
+            </div>
+
+        </div>
+
+
+        <div class="content">
+
+            <!-- Logo -->
+
+            <div class="logo">
+                APHONETRACK
+            </div>
+
+            <div class="subtitle">
+                REMOTE MOBILE DEVICE SEARCH SYSTEM
+            </div>
+
+
+            <!-- 系统状态 -->
+
+            <div class="status-box">
+
+                <div>
+                    <span class="status-label">
+                        SYSTEM STATUS :
+                    </span>
+
+                    <span class="status-value">
+                        ONLINE
+                    </span>
+                </div>
+
+                <div>
+                    <span class="status-label">
+                        NETWORK :
+                    </span>
+
+                    <span class="status-value">
+                        ENCRYPTED
+                    </span>
+                </div>
+
+                <div>
+                    <span class="status-label">
+                        DATABASE :
+                    </span>
+
+                    <span class="status-value">
+                        LIMITED // 03 RECORDS
+                    </span>
+                </div>
+
+            </div>
+
+
+            <!-- 搜索 -->
+
+            <div class="search-title">
+                &gt; ENTER TARGET NAME
+            </div>
+
+            <div class="search-area">
+
+                <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="输入目标姓名..."
+                    autocomplete="off"
+                >
+
+                <button
+                    class="search-btn"
+                    onclick="searchTarget()"
+                >
+                    SEARCH
+                </button>
+
+            </div>
+
+
+            <!-- 日志 -->
+
+            <div class="log" id="log">
+
+                <div class="log-line">
+                    [SYSTEM] APhoneTrack terminal initialized...
+                </div>
+
+                <div class="log-line">
+                    [SYSTEM] Establishing encrypted database connection...
+                </div>
+
+                <div class="log-line">
+                    [SYSTEM] Database connection established.
+                </div>
+
+                <div class="log-line">
+                    [READY] Awaiting target identification...
+                </div>
+
+            </div>
+
+
+            <!-- 搜索结果 -->
+
+            <div
+                class="result"
+                id="result"
+            >
+
+                <div class="result-header">
+
+                    <div class="device-icon">
+                        ▣
+                    </div>
+
+                    <div>
+
+                        <div
+                            class="target-name"
+                            id="targetName"
+                        >
+                        </div>
+
+                        <div class="found">
+                            ● DEVICE FOUND
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="device-data">
+
+                    <div class="data-box">
+
+                        <div class="data-label">
+                            DEVICE STATUS
+                        </div>
+
+                        <div class="data-value">
+                            ONLINE
+                        </div>
+
+                    </div>
+
+                    <div class="data-box">
+
+                        <div class="data-label">
+                            CONNECTION
+                        </div>
+
+                        <div class="data-value">
+                            ENCRYPTED
+                        </div>
+
+                    </div>
+
+                    <div class="data-box">
+
+                        <div class="data-label">
+                            TRACE STATUS
+                        </div>
+
+                        <div class="data-value">
+                            AVAILABLE
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <button
+                    class="access-btn"
+                    id="accessBtn"
+                >
+                    ACCESS DEVICE
+                </button>
+
+            </div>
+
+
+            <!-- 未找到 -->
+
+            <div
+                class="not-found"
+                id="notFound"
+            >
+
+                <div class="warning">
+                    ⚠
+                </div>
+
+                <div class="not-found-title">
+                    NO DEVICE RECORD FOUND
+                </div>
+
+                <div class="not-found-text">
+                    TARGET NOT PRESENT IN CURRENT DATABASE.<br>
+                    SEARCH TERMINATED // ACCESS DENIED
+                </div>
+
+            </div>
+
+
+            <!-- 底部 -->
+
+            <div class="footer">
+
+                <div>
+                    APHONETRACK v1.0.7
+                </div>
+
+                <div>
+                    FICTIONAL GAME SYSTEM
+                </div>
+
+                <div>
+                    SESSION: ACTIVE
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+/*
+==========================================
+APhoneTrack 游戏数据库
+==========================================
+*/
+
+const targets = {
+
+    "黄杰": {
+        url: "https://blackkeyjosana325-crypto.github.io/lovecheater/phoneofhj"
+    },
+
+    "金燕": {
+        url: "https://blackkeyjosana325-crypto.github.io/lovecheater/phoneofjy"
+    },
+
+    "余明辉": {
+        url: "https://blackkeyjosana325-crypto.github.io/phoneofymh/"
+    }
+
+};
+
+
+/*
+==========================================
+DOM
+==========================================
+*/
+
+const input = document.getElementById("searchInput");
+
+const result = document.getElementById("result");
+
+const notFound = document.getElementById("notFound");
+
+const targetName = document.getElementById("targetName");
+
+const accessBtn = document.getElementById("accessBtn");
+
+const log = document.getElementById("log");
+
+
+/*
+==========================================
+搜索
+==========================================
+*/
+
+function searchTarget() {
+
+    const name = input.value.trim();
+
+    result.classList.remove("show");
+
+    notFound.classList.remove("show");
+
+    if (name === "") {
+
+        addLog("[ERROR] Target name cannot be empty.");
+
+        return;
+    }
+
+
+    addLog("[QUERY] Searching target: " + name);
+
+    setTimeout(() => {
+
+        if (targets[name]) {
+
+            const target = targets[name];
+
+            targetName.textContent = name;
+
+            accessBtn.onclick = function() {
+
+                addLog(
+                    "[ACCESS] Opening remote device interface..."
+                );
+
+                window.open(
+                    target.url,
+                    "_blank"
+                );
+
+            };
+
+            result.classList.add("show");
+
+            addLog(
+                "[SUCCESS] Device record located: " + name
+            );
+
+            addLog(
+                "[TRACE] Remote interface available."
+            );
+
+        } else {
+
+            notFound.classList.add("show");
+
+            addLog(
+                "[FAILED] No device record found for: " + name
+            );
+
+            addLog(
+                "[SECURITY] Search request terminated."
+            );
+
+        }
+
+    }, 450);
+
+}
+
+
+/*
+==========================================
+日志
+==========================================
+*/
+
+function addLog(text) {
+
+    const line = document.createElement("div");
+
+    line.className = "log-line";
+
+    line.textContent = text;
+
+    log.appendChild(line);
+
+    log.scrollTop = log.scrollHeight;
+
+}
+
+
+/*
+==========================================
+回车搜索
+==========================================
+*/
+
+input.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            searchTarget();
+
+        }
+
+    }
+);
+
+
+/*
+==========================================
+启动效果
+==========================================
+*/
+
+setTimeout(() => {
+
+    addLog(
+        "[NETWORK] Secure tunnel established."
+    );
+
+}, 800);
+
+setTimeout(() => {
+
+    addLog(
+        "[DATABASE] 3 target records available."
+    );
+
+}, 1400);
+
+setTimeout(() => {
+
+    addLog(
+        "[READY] APhoneTrack is ready."
+    );
+
+}, 2000);
+
+</script>
+
+</body>
+</html>
