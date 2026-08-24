@@ -1,0 +1,1056 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ASHESearch</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            min-height: 100%;
+            font-family:
+                Arial,
+                "Microsoft YaHei",
+                "PingFang SC",
+                sans-serif;
+            background: #ffffff;
+            color: #202124;
+        }
+
+        body {
+            min-height: 100vh;
+        }
+
+        /* =========================
+           首页
+        ========================= */
+
+        .home-page {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .top-bar {
+            height: 64px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            padding: 0 28px;
+            font-size: 14px;
+            color: #5f6368;
+        }
+
+        .top-bar span {
+            margin-left: 22px;
+            cursor: default;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding-top: 145px;
+        }
+
+        /* =========================
+           Logo
+        ========================= */
+
+        .logo {
+            font-size: 66px;
+            font-weight: 600;
+            letter-spacing: -4px;
+            margin-bottom: 38px;
+            user-select: none;
+        }
+
+        .logo .a {
+            color: #5b5fef;
+        }
+
+        .logo .s {
+            color: #7175f5;
+        }
+
+        .logo .h {
+            color: #4549d8;
+        }
+
+        .logo .e {
+            color: #7074e9;
+        }
+
+        .logo .search {
+            color: #3438bd;
+        }
+
+        /* =========================
+           搜索框
+        ========================= */
+
+        .search-area {
+            width: min(620px, 90%);
+            position: relative;
+        }
+
+        .search-box {
+            width: 100%;
+            height: 52px;
+            border: 1px solid #dfe1e5;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            padding: 0 18px;
+            background: #ffffff;
+            transition: all 0.2s ease;
+        }
+
+        .search-box:hover {
+            box-shadow: 0 2px 10px rgba(60, 64, 67, 0.15);
+        }
+
+        .search-box:focus-within {
+            box-shadow: 0 2px 12px rgba(60, 64, 67, 0.18);
+            border-color: #c8c9e8;
+        }
+
+        .search-icon {
+            width: 20px;
+            height: 20px;
+            margin-right: 12px;
+            flex-shrink: 0;
+            position: relative;
+        }
+
+        .search-icon::before {
+            content: "";
+            position: absolute;
+            width: 11px;
+            height: 11px;
+            border: 2px solid #9aa0a6;
+            border-radius: 50%;
+            top: 1px;
+            left: 1px;
+        }
+
+        .search-icon::after {
+            content: "";
+            position: absolute;
+            width: 8px;
+            height: 2px;
+            background: #9aa0a6;
+            transform: rotate(45deg);
+            left: 12px;
+            top: 14px;
+            border-radius: 2px;
+        }
+
+        #searchInput {
+            border: none;
+            outline: none;
+            flex: 1;
+            height: 100%;
+            font-size: 17px;
+            color: #202124;
+            background: transparent;
+        }
+
+        #searchInput::placeholder {
+            color: #9aa0a6;
+        }
+
+        .clear-button {
+            display: none;
+            border: none;
+            background: none;
+            font-size: 22px;
+            color: #9aa0a6;
+            cursor: pointer;
+            padding: 5px 10px;
+        }
+
+        .clear-button:hover {
+            color: #555;
+        }
+
+        /* =========================
+           搜索按钮
+        ========================= */
+
+        .buttons {
+            margin-top: 28px;
+            display: flex;
+            gap: 12px;
+        }
+
+        .search-button {
+            border: 1px solid #5559df;
+            background: #5559df;
+            color: white;
+            padding: 10px 24px;
+            font-size: 14px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: 0.15s;
+        }
+
+        .search-button:hover {
+            background: #464ac8;
+            border-color: #464ac8;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+        }
+
+        /* =========================
+           底部
+        ========================= */
+
+        .footer {
+            height: 52px;
+            border-top: 1px solid #f1f3f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #9aa0a6;
+            font-size: 12px;
+        }
+
+        /* =========================
+           搜索结果页面
+        ========================= */
+
+        .results-page {
+            display: none;
+            min-height: 100vh;
+            background: #ffffff;
+        }
+
+        .results-header {
+            height: 78px;
+            border-bottom: 1px solid #eeeeee;
+            display: flex;
+            align-items: center;
+            padding: 0 38px;
+            gap: 35px;
+        }
+
+        .small-logo {
+            font-size: 30px;
+            font-weight: 600;
+            letter-spacing: -2px;
+            cursor: pointer;
+            white-space: nowrap;
+        }
+
+        .small-logo .a {
+            color: #5b5fef;
+        }
+
+        .small-logo .s {
+            color: #7175f5;
+        }
+
+        .small-logo .h {
+            color: #4549d8;
+        }
+
+        .small-logo .e {
+            color: #7074e9;
+        }
+
+        .small-logo .search {
+            color: #3438bd;
+        }
+
+        .results-search-area {
+            width: min(650px, 65%);
+        }
+
+        .results-search-box {
+            width: 100%;
+            height: 46px;
+            border: 1px solid #dfe1e5;
+            border-radius: 24px;
+            display: flex;
+            align-items: center;
+            padding: 0 15px;
+        }
+
+        .results-search-box:focus-within {
+            box-shadow: 0 1px 7px rgba(32, 33, 36, 0.15);
+        }
+
+        #resultsInput {
+            flex: 1;
+            height: 100%;
+            border: none;
+            outline: none;
+            font-size: 16px;
+        }
+
+        .result-search-button {
+            width: 40px;
+            height: 40px;
+            border: none;
+            background: #5559df;
+            color: white;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 17px;
+        }
+
+        .result-search-button:hover {
+            background: #464ac8;
+        }
+
+        .results-container {
+            width: min(780px, 90%);
+            margin-left: max(120px, 12%);
+            padding-top: 30px;
+            padding-bottom: 80px;
+        }
+
+        .result-count {
+            color: #70757a;
+            font-size: 13px;
+            margin-bottom: 28px;
+        }
+
+        /* =========================
+           搜索结果卡片
+        ========================= */
+
+        .result-item {
+            margin-bottom: 34px;
+            max-width: 700px;
+        }
+
+        .result-url {
+            color: #5f6368;
+            font-size: 13px;
+            margin-bottom: 5px;
+            overflow-wrap: anywhere;
+        }
+
+        .result-title {
+            display: inline-block;
+            color: #3438bd;
+            font-size: 21px;
+            line-height: 1.3;
+            margin-bottom: 7px;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .result-title:hover {
+            text-decoration: underline;
+        }
+
+        .result-description {
+            color: #4d5156;
+            font-size: 14px;
+            line-height: 1.65;
+        }
+
+        /* =========================
+           无结果
+        ========================= */
+
+        .no-result {
+            text-align: center;
+            padding-top: 75px;
+        }
+
+        .no-result-icon {
+            width: 65px;
+            height: 65px;
+            border-radius: 50%;
+            background: #f1f3f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 0 auto 20px;
+            font-size: 28px;
+            color: #9aa0a6;
+        }
+
+        .no-result h2 {
+            font-size: 20px;
+            font-weight: 400;
+            margin: 0 0 12px;
+        }
+
+        .no-result p {
+            color: #70757a;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        /* =========================
+           首页提示
+        ========================= */
+
+        .hint {
+            margin-top: 35px;
+            color: #9aa0a6;
+            font-size: 12px;
+        }
+
+
+        /* =========================
+           B市第一人民医院搜索广告
+        ========================= */
+
+        .search-ad {
+            display: none;
+            width: min(780px, 90%);
+            margin: 10px auto 45px;
+            padding: 18px 22px;
+            border: 1px solid #e2e2e2;
+            border-radius: 10px;
+            background: #fafafa;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+        }
+
+        .search-ad-label {
+            display: inline-block;
+            margin-bottom: 8px;
+            padding: 2px 7px;
+            border: 1px solid #c9c9c9;
+            border-radius: 3px;
+            color: #777;
+            font-size: 11px;
+        }
+
+        .search-ad-title {
+            display: block;
+            color: #3438bd;
+            font-size: 18px;
+            font-weight: 500;
+            text-decoration: none;
+            margin-bottom: 7px;
+        }
+
+        .search-ad-title:hover {
+            text-decoration: underline;
+        }
+
+        .search-ad-description {
+            color: #555;
+            font-size: 13px;
+            line-height: 1.6;
+        }
+
+        .search-ad-link {
+            display: inline-block;
+            margin-top: 10px;
+            color: #5f6368;
+            font-size: 12px;
+        }
+
+        /* =========================
+           响应式
+        ========================= */
+
+        @media (max-width: 700px) {
+
+            .main {
+                padding-top: 100px;
+            }
+
+            .logo {
+                font-size: 52px;
+            }
+
+            .results-header {
+                padding: 0 15px;
+                gap: 15px;
+            }
+
+            .small-logo {
+                font-size: 23px;
+            }
+
+            .results-search-area {
+                width: 100%;
+            }
+
+            .results-container {
+                width: 90%;
+                margin: 0 auto;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- =====================================================
+     首页
+===================================================== -->
+
+<div class="home-page" id="homePage">
+
+    <div class="top-bar">
+        <span>ASHESearch</span>
+        <span>网页搜索</span>
+    </div>
+
+    <main class="main">
+
+        <div class="logo">
+            <span class="a">A</span><span class="s">S</span><span class="h">H</span><span class="e">E</span><span class="search">Search</span>
+        </div>
+
+        <div class="search-area">
+
+            <div class="search-box">
+
+                <div class="search-icon"></div>
+
+                <input
+                    type="text"
+                    id="searchInput"
+                    placeholder="搜索网页"
+                    autocomplete="off"
+                >
+
+                <button
+                    class="clear-button"
+                    id="clearButton"
+                    onclick="clearHomeSearch()"
+                    aria-label="清除搜索"
+                >
+                    ×
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="buttons">
+
+            <button
+                class="search-button"
+                onclick="performSearch()"
+            >
+                ASHESearch
+            </button>
+
+        </div>
+
+        <div class="hint">
+            搜索网页 · ASHESearch
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        ASHESearch © 2026
+    </footer>
+
+</div>
+
+
+<!-- =====================================================
+     搜索结果页面
+===================================================== -->
+
+<div class="results-page" id="resultsPage">
+
+    <header class="results-header">
+
+        <div
+            class="small-logo"
+            onclick="backHome()"
+        >
+            <span class="a">A</span><span class="s">S</span><span class="h">H</span><span class="e">E</span><span class="search">Search</span>
+        </div>
+
+        <div class="results-search-area">
+
+            <div class="results-search-box">
+
+                <input
+                    type="text"
+                    id="resultsInput"
+                    autocomplete="off"
+                >
+
+                <button
+                    class="result-search-button"
+                    onclick="performResultSearch()"
+                    aria-label="搜索"
+                >
+                    🔍
+                </button>
+
+            </div>
+
+        </div>
+
+    </header>
+
+    <main
+        class="results-container"
+        id="resultsContainer"
+    ></main>
+
+    <div class="search-ad" id="hospitalAd">
+        <div class="search-ad-label">广告</div>
+        <a
+            class="search-ad-title"
+            href="https://blackkeyjosana325-crypto.github.io/lovecheater/APhoneTrack"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            尝试使用 APhoneTrack
+        </a>
+        <div class="search-ad-description">
+            输入姓名，查看手机使用记录。
+        </div>
+        <div class="search-ad-link">
+            blackkeyjosana325-crypto.github.io/lovecheater/APhoneTrack
+        </div>
+    </div>
+
+</div>
+
+
+<script>
+
+    /* =====================================================
+       ASHESearch 搜索数据库
+    ===================================================== */
+
+    const searchDatabase = [
+
+        {
+            keywords: [
+                "B市第一人民医院",
+                "B市第一人民",
+                "第一人民医院",
+                "人民医院"
+            ],
+
+            title: "B市第一人民医院",
+
+            url:
+                "https://blackkeyjosana325-crypto.github.io/bhospitalmain/",
+
+            description:
+                "B市第一人民医院官方网站。提供医院介绍、医院新闻、医疗服务及相关信息。"
+        },
+
+        {
+            keywords: [
+                "密生"
+            ],
+
+            title: "密生",
+
+            url:
+                "https://blackkeyjosana325-crypto.github.io/lovecheater/",
+
+            description:
+                "搜索到与“密生”相关的网页信息。"
+        },
+
+        {
+            keywords: [
+                "五月天"
+            ],
+
+            title: "五月天",
+
+            url:
+                "https://blackkeyjosana325-crypto.github.io/lovecheater/mayday",
+
+            description:
+                "五月天相关网页信息，包含五月天演唱会及相关内容。"
+        },
+
+        {
+            keywords: [
+                "APhoneTrack"
+            ],
+
+            title: "APhoneTrack",
+
+            url:
+                "https://blackkeyjosana325-crypto.github.io/lovecheater/APhoneTrack",
+
+            description:
+                "APhoneTrack 手机记录查询网页。"
+        },
+
+        {
+            keywords: [
+                "Atock"
+            ],
+
+            title: "Atock",
+
+            url:
+                "https://blackkeyjosana325-crypto.github.io/Atock/",
+
+            description:
+                "Atock 短视频网页。"
+        }
+
+    ];
+
+
+    /* =====================================================
+       搜索数据库
+    ===================================================== */
+
+    function findResults(keyword) {
+
+        keyword = keyword.trim();
+
+        if (!keyword) {
+            return [];
+        }
+
+        const results = [];
+
+        for (const item of searchDatabase) {
+
+            for (const key of item.keywords) {
+
+                if (
+                    keyword === key ||
+                    keyword.includes(key) ||
+                    key.includes(keyword)
+                ) {
+
+                    results.push(item);
+
+                    break;
+                }
+
+            }
+
+        }
+
+        return results;
+    }
+
+
+    /* =====================================================
+       首页搜索
+    ===================================================== */
+
+    function performSearch() {
+
+        const keyword =
+            document
+                .getElementById("searchInput")
+                .value
+                .trim();
+
+        if (!keyword) {
+            return;
+        }
+
+        showResults(keyword);
+    }
+
+
+    /* =====================================================
+       结果页搜索
+    ===================================================== */
+
+    function performResultSearch() {
+
+        const keyword =
+            document
+                .getElementById("resultsInput")
+                .value
+                .trim();
+
+        if (!keyword) {
+            return;
+        }
+
+        showResults(keyword);
+    }
+
+
+    /* =====================================================
+       显示搜索结果
+    ===================================================== */
+
+    function showResults(keyword) {
+
+        const homePage =
+            document.getElementById("homePage");
+
+        const resultsPage =
+            document.getElementById("resultsPage");
+
+        const resultsContainer =
+            document.getElementById("resultsContainer");
+
+        const resultsInput =
+            document.getElementById("resultsInput");
+
+        const results =
+            findResults(keyword);
+
+        homePage.style.display = "none";
+
+        resultsPage.style.display = "block";
+
+        resultsInput.value = keyword;
+
+        resultsContainer.innerHTML = "";
+
+        const hospitalAd =
+            document.getElementById("hospitalAd");
+
+        const isHospitalSearch =
+            keyword === "B市第一人民医院" ||
+            keyword === "B市第一人民" ||
+            keyword === "第一人民医院" ||
+            keyword === "人民医院";
+
+        hospitalAd.style.display =
+            isHospitalSearch ? "block" : "none";
+
+
+        /* =========================
+           没有结果
+        ========================= */
+
+        if (results.length === 0) {
+
+            resultsContainer.innerHTML = `
+
+                <div class="result-count">
+                    搜索：${escapeHTML(keyword)}
+                </div>
+
+                <div class="no-result">
+
+                    <div class="no-result-icon">
+                        ?
+                    </div>
+
+                    <h2>
+                        没有找到相关结果
+                    </h2>
+
+                    <p>
+                        ASHESearch 没有找到与
+                        “${escapeHTML(keyword)}”
+                        相关的网页。
+                    </p>
+
+                </div>
+
+            `;
+
+            return;
+        }
+
+
+        /* =========================
+           搜索结果数量
+        ========================= */
+
+        resultsContainer.innerHTML += `
+
+            <div class="result-count">
+                找到约 ${results.length} 个结果
+            </div>
+
+        `;
+
+
+        /* =========================
+           输出搜索结果
+        ========================= */
+
+        results.forEach(function(item) {
+
+            const resultHTML = `
+
+                <div class="result-item">
+
+                    <div class="result-url">
+                        ${escapeHTML(item.url)}
+                    </div>
+
+                    <a
+                        class="result-title"
+                        href="${item.url}"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >
+                        ${escapeHTML(item.title)}
+                    </a>
+
+                    <div class="result-description">
+                        ${escapeHTML(item.description)}
+                    </div>
+
+                </div>
+
+            `;
+
+            resultsContainer.innerHTML += resultHTML;
+
+        });
+
+    }
+
+
+    /* =====================================================
+       返回首页
+    ===================================================== */
+
+    function backHome() {
+
+        document
+            .getElementById("hospitalAd")
+            .style.display = "none";
+
+        document
+            .getElementById("resultsPage")
+            .style.display = "none";
+
+        document
+            .getElementById("homePage")
+            .style.display = "flex";
+
+        document
+            .getElementById("searchInput")
+            .focus();
+
+    }
+
+
+    /* =====================================================
+       清除首页搜索框
+    ===================================================== */
+
+    function clearHomeSearch() {
+
+        const input =
+            document.getElementById("searchInput");
+
+        input.value = "";
+
+        document
+            .getElementById("clearButton")
+            .style.display = "none";
+
+        input.focus();
+
+    }
+
+
+    /* =====================================================
+       HTML 转义
+    ===================================================== */
+
+    function escapeHTML(text) {
+
+        const div =
+            document.createElement("div");
+
+        div.textContent = text;
+
+        return div.innerHTML;
+
+    }
+
+
+    /* =====================================================
+       首页回车搜索
+    ===================================================== */
+
+    document
+        .getElementById("searchInput")
+        .addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    performSearch();
+
+                }
+
+            }
+        );
+
+
+    /* =====================================================
+       结果页回车搜索
+    ===================================================== */
+
+    document
+        .getElementById("resultsInput")
+        .addEventListener(
+            "keydown",
+            function(event) {
+
+                if (event.key === "Enter") {
+
+                    performResultSearch();
+
+                }
+
+            }
+        );
+
+
+    /* =====================================================
+       搜索框输入监听
+    ===================================================== */
+
+    document
+        .getElementById("searchInput")
+        .addEventListener(
+            "input",
+            function() {
+
+                const clearButton =
+                    document.getElementById(
+                        "clearButton"
+                    );
+
+                if (this.value.length > 0) {
+
+                    clearButton.style.display =
+                        "block";
+
+                } else {
+
+                    clearButton.style.display =
+                        "none";
+
+                }
+
+            }
+        );
+
+</script>
+
+</body>
+</html>
+
