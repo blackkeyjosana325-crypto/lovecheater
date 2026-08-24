@@ -1,0 +1,3405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>金燕的手机</title>
+
+<style>
+
+/* =====================================================
+   全局
+===================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+
+    background: #202124;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Microsoft YaHei",
+        sans-serif;
+
+    display: flex;
+
+    justify-content: center;
+
+    align-items: center;
+
+    overflow: hidden;
+}
+
+
+/* =====================================================
+   手机外壳
+===================================================== */
+
+.phone {
+
+    width: 390px;
+
+    height: 800px;
+
+    background: #050505;
+
+    border-radius: 43px;
+
+    padding: 10px;
+
+    position: relative;
+
+    box-shadow:
+        0 0 0 2px #555,
+        0 30px 80px rgba(0,0,0,0.7);
+}
+
+
+.screen {
+
+    width: 100%;
+
+    height: 100%;
+
+    border-radius: 34px;
+
+    overflow: hidden;
+
+    position: relative;
+
+    background: #111;
+}
+
+
+/* =====================================================
+   刘海
+===================================================== */
+
+.notch {
+
+    position: absolute;
+
+    width: 125px;
+
+    height: 28px;
+
+    background: #000;
+
+    top: 0;
+
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    border-radius:
+        0 0 18px 18px;
+
+    z-index: 2000;
+}
+
+
+/* =====================================================
+   手机桌面
+===================================================== */
+
+.home-screen {
+
+    position: absolute;
+
+    inset: 0;
+
+    color: white;
+
+    background:
+        linear-gradient(
+            135deg,
+            #7d858a,
+            #4c565c 48%,
+            #252c30
+        );
+
+    display: flex;
+
+    flex-direction: column;
+
+    z-index: 100;
+}
+
+
+/* =====================================================
+   状态栏
+===================================================== */
+
+.status-bar {
+
+    height: 42px;
+
+    padding:
+        0 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    font-size: 13px;
+}
+
+
+.status-right {
+
+    display: flex;
+
+    gap: 8px;
+
+    align-items: center;
+}
+
+
+.battery {
+
+    width: 23px;
+
+    height: 11px;
+
+    border:
+        1px solid white;
+
+    border-radius: 3px;
+
+    position: relative;
+}
+
+
+.battery::after {
+
+    content: "";
+
+    position: absolute;
+
+    right: -4px;
+
+    top: 2px;
+
+    width: 2px;
+
+    height: 5px;
+
+    background: white;
+}
+
+
+.battery-level {
+
+    position: absolute;
+
+    left: 1px;
+
+    top: 1px;
+
+    width: 17px;
+
+    height: 7px;
+
+    background: white;
+
+    border-radius: 1px;
+}
+
+
+/* =====================================================
+   桌面 App
+===================================================== */
+
+.apps {
+
+    padding:
+        35px 25px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 65px);
+
+    column-gap: 20px;
+
+    row-gap: 28px;
+}
+
+
+.app {
+
+    width: 65px;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    user-select: none;
+}
+
+
+.app-icon {
+
+    width: 58px;
+
+    height: 58px;
+
+    margin: auto;
+
+    margin-bottom: 7px;
+
+    border-radius: 15px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 27px;
+
+    box-shadow:
+        0 5px 12px rgba(0,0,0,0.35);
+
+    transition:
+        transform 0.12s ease;
+}
+
+
+.app:active .app-icon {
+
+    transform:
+        scale(0.9);
+}
+
+
+/* ASearch */
+
+.search-icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            #ffffff,
+            #d9e5ed
+        );
+
+    color: #3d5d72;
+}
+
+
+/* AChat */
+
+.chat-icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            #8fe05d,
+            #4eac42
+        );
+
+    color: white;
+}
+
+
+/* Atock */
+
+.atock-icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            #171717,
+            #4a4a4a
+        );
+
+    color: white;
+}
+
+
+/* 高铁查询 */
+
+.rail-icon {
+
+    background:
+        linear-gradient(
+            135deg,
+            #e8f0f5,
+            #b8cbd6
+        );
+
+    color: #38586a;
+}
+
+
+.app-name {
+
+    font-size: 12px;
+
+    color: white;
+
+    text-shadow:
+        0 1px 3px #000;
+}
+
+
+/* =====================================================
+   通用 App
+===================================================== */
+
+.app-window {
+
+    position: absolute;
+
+    inset: 0;
+
+    background: #f5f5f5;
+
+    color: #111;
+
+    z-index: 500;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transform:
+        scale(0.96);
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease;
+}
+
+
+.app-window.open {
+
+    opacity: 1;
+
+    pointer-events: auto;
+
+    transform:
+        scale(1);
+}
+
+
+/* =====================================================
+   App 顶部
+===================================================== */
+
+.app-header {
+
+    height: 58px;
+
+    background:
+        rgba(255,255,255,0.98);
+
+    border-bottom:
+        1px solid #ddd;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+
+    z-index: 20;
+}
+
+
+.app-header-title {
+
+    font-size: 18px;
+
+    font-weight: 600;
+}
+
+
+.app-back {
+
+    position: absolute;
+
+    left: 10px;
+
+    width: 45px;
+
+    height: 45px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 30px;
+
+    color: #333;
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   ASearch
+===================================================== */
+
+.search-content {
+
+    position: absolute;
+
+    top: 58px;
+
+    bottom: 65px;
+
+    left: 0;
+
+    right: 0;
+
+    overflow-y: auto;
+
+    background: #f5f5f5;
+}
+
+
+.search-box-area {
+
+    padding:
+        15px 15px 10px;
+
+    background: white;
+
+    border-bottom:
+        1px solid #ddd;
+}
+
+
+.search-box {
+
+    height: 40px;
+
+    background: #f0f1f2;
+
+    border-radius: 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding:
+        0 15px;
+
+    color: #999;
+
+    font-size: 14px;
+}
+
+
+.search-icon-small {
+
+    margin-right: 8px;
+
+    font-size: 16px;
+}
+
+
+.history-title {
+
+    padding:
+        18px 16px 10px;
+
+    font-size: 15px;
+
+    font-weight: 600;
+
+    color: #555;
+}
+
+
+.history-list {
+
+    background: white;
+}
+
+
+.history-item {
+
+    min-height: 68px;
+
+    padding:
+        10px 16px;
+
+    border-bottom:
+        1px solid #eeeeee;
+
+    display: flex;
+
+    align-items: center;
+
+    cursor: pointer;
+}
+
+
+.history-item:active {
+
+    background: #eeeeee;
+}
+
+
+.history-main {
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.history-text {
+
+    font-size: 14px;
+
+    line-height: 1.5;
+
+    color: #222;
+
+    word-break: break-all;
+}
+
+
+.history-date {
+
+    margin-top: 4px;
+
+    color: #999;
+
+    font-size: 11px;
+}
+
+
+.history-arrow {
+
+    color: #bbb;
+
+    font-size: 20px;
+
+    margin-left: 8px;
+}
+
+
+.search-bottom {
+
+    position: absolute;
+
+    left: 0;
+
+    right: 0;
+
+    bottom: 0;
+
+    height: 65px;
+
+    background:
+        rgba(255,255,255,0.98);
+
+    border-top:
+        1px solid #ddd;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    color: #777;
+
+    font-size: 12px;
+}
+
+
+/* =====================================================
+   密码界面
+===================================================== */
+
+.password-page {
+
+    position: absolute;
+
+    inset: 0;
+
+    z-index: 900;
+
+    background:
+        rgba(245,245,245,0.98);
+
+    display: none;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    padding-top: 105px;
+}
+
+
+.password-page.show {
+
+    display: flex;
+}
+
+
+.password-lock {
+
+    width: 64px;
+
+    height: 64px;
+
+    border-radius: 50%;
+
+    background: #333;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 28px;
+
+    margin-bottom: 18px;
+}
+
+
+.password-title {
+
+    font-size: 21px;
+
+    font-weight: 600;
+
+    margin-bottom: 8px;
+}
+
+
+.password-hint {
+
+    color: #777;
+
+    font-size: 13px;
+
+    margin-bottom: 22px;
+}
+
+
+.password-input {
+
+    width: 255px;
+
+    height: 48px;
+
+    border:
+        1px solid #ccc;
+
+    border-radius: 8px;
+
+    background: white;
+
+    font-size: 20px;
+
+    letter-spacing: 7px;
+
+    text-align: center;
+
+    outline: none;
+
+    margin-bottom: 10px;
+}
+
+
+.password-error {
+
+    height: 22px;
+
+    color: #d33;
+
+    font-size: 13px;
+
+    margin-bottom: 12px;
+}
+
+
+.password-buttons {
+
+    display: flex;
+
+    gap: 12px;
+}
+
+
+.password-button {
+
+    border: none;
+
+    border-radius: 8px;
+
+    padding:
+        10px 25px;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    background: #ddd;
+}
+
+
+.password-button.confirm {
+
+    background: #333;
+
+    color: white;
+}
+
+
+/* =====================================================
+   AChat
+===================================================== */
+
+.chat-content {
+
+    position: absolute;
+
+    top: 58px;
+
+    bottom: 65px;
+
+    left: 0;
+
+    right: 0;
+
+    overflow-y: auto;
+
+    background: #f5f5f5;
+}
+
+
+.contact-list {
+
+    background: white;
+}
+
+
+.contact {
+
+    min-height: 80px;
+
+    padding:
+        11px 16px;
+
+    display: flex;
+
+    align-items: center;
+
+    border-bottom:
+        1px solid #ededed;
+
+    cursor: pointer;
+}
+
+
+.contact:active {
+
+    background: #eeeeee;
+}
+
+
+.contact-icon {
+
+    width: 52px;
+
+    height: 52px;
+
+    border-radius: 9px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #d5d5d5,
+            #aaa
+        );
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 22px;
+
+    margin-right: 12px;
+}
+
+
+.contact-info {
+
+    flex: 1;
+
+    min-width: 0;
+}
+
+
+.contact-name {
+
+    font-size: 16px;
+
+    margin-bottom: 5px;
+}
+
+
+.contact-preview {
+
+    color: #999;
+
+    font-size: 12px;
+
+    white-space: nowrap;
+
+    overflow: hidden;
+
+    text-overflow: ellipsis;
+}
+
+
+.contact-time {
+
+    font-size: 11px;
+
+    color: #aaa;
+
+    align-self: flex-start;
+
+    margin-top: 5px;
+}
+
+
+/* =====================================================
+   聊天页面
+===================================================== */
+
+.conversation {
+
+    position: absolute;
+
+    inset: 0;
+
+    background: #ededed;
+
+    z-index: 600;
+
+    display: none;
+}
+
+
+.conversation.show {
+
+    display: block;
+}
+
+
+.conversation-header {
+
+    height: 58px;
+
+    background:
+        #f8f8f8;
+
+    border-bottom:
+        1px solid #d8d8d8;
+
+    display: flex;
+
+    align-items: center;
+}
+
+
+.conversation-name {
+
+    font-size: 17px;
+
+    font-weight: 600;
+}
+
+
+.messages {
+
+    position: absolute;
+
+    top: 58px;
+
+    bottom: 54px;
+
+    left: 0;
+
+    right: 0;
+
+    overflow-y: auto;
+
+    padding:
+        18px 13px 25px;
+}
+
+
+.chat-date {
+
+    text-align: center;
+
+    color: #999;
+
+    font-size: 11px;
+
+    margin:
+        3px 0 18px;
+}
+
+
+.message-row {
+
+    display: flex;
+
+    width: 100%;
+
+    margin-bottom: 18px;
+}
+
+
+.message-row.self {
+
+    justify-content: flex-end;
+}
+
+
+.message-row.other {
+
+    justify-content: flex-start;
+}
+
+
+.message-avatar {
+
+    width: 38px;
+
+    height: 38px;
+
+    border-radius: 8px;
+
+    background: #bdbdbd;
+
+    color: white;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-right: 8px;
+
+    flex-shrink: 0;
+}
+
+
+.message-content {
+
+    max-width: 270px;
+}
+
+
+.message-time {
+
+    font-size: 10px;
+
+    color: #999;
+
+    margin-bottom: 4px;
+}
+
+
+.message-row.self .message-time {
+
+    text-align: right;
+}
+
+
+.message-bubble {
+
+    padding:
+        10px 12px;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+
+    line-height: 1.6;
+
+    word-break: break-word;
+}
+
+
+.message-row.other .message-bubble {
+
+    background: white;
+
+    border:
+        1px solid #e2e2e2;
+}
+
+
+.message-row.self .message-bubble {
+
+    background: #9fe65a;
+}
+
+
+/* =====================================================
+   转账
+===================================================== */
+
+.transfer {
+
+    width: 235px;
+
+    border-radius: 7px;
+
+    background:
+        #ff9f35;
+
+    color: white;
+
+    padding:
+        14px 14px 12px;
+
+    margin-top: 6px;
+}
+
+
+.transfer-top {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    padding-bottom: 10px;
+
+    border-bottom:
+        1px solid rgba(255,255,255,0.3);
+}
+
+
+.transfer-icon {
+
+    width: 36px;
+
+    height: 36px;
+
+    border-radius: 50%;
+
+    background:
+        rgba(255,255,255,0.25);
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 18px;
+}
+
+
+.transfer-money {
+
+    font-size: 21px;
+
+    font-weight: 600;
+}
+
+
+.transfer-bottom {
+
+    margin-top: 8px;
+
+    font-size: 11px;
+
+    opacity: 0.85;
+}
+
+
+/* =====================================================
+   输入栏
+===================================================== */
+
+.chat-input {
+
+    position: absolute;
+
+    bottom: 0;
+
+    left: 0;
+
+    right: 0;
+
+    height: 54px;
+
+    background:
+        #f7f7f7;
+
+    border-top:
+        1px solid #d8d8d8;
+
+    display: flex;
+
+    align-items: center;
+
+    padding:
+        7px 10px;
+}
+
+
+.fake-input {
+
+    flex: 1;
+
+    height: 37px;
+
+    border:
+        1px solid #d0d0d0;
+
+    border-radius: 5px;
+
+    background: white;
+
+    display: flex;
+
+    align-items: center;
+
+    padding-left: 10px;
+
+    color: #aaa;
+
+    font-size: 13px;
+}
+
+
+.plus {
+
+    margin-left: 9px;
+
+    font-size: 23px;
+
+    color: #555;
+}
+
+
+/* =====================================================
+   Atock
+===================================================== */
+
+.atock-page {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        #111;
+
+    color: white;
+
+    z-index: 600;
+
+    display: flex;
+
+    flex-direction: column;
+
+    align-items: center;
+
+    justify-content: center;
+
+    text-align: center;
+
+    padding: 35px;
+}
+
+
+.atock-logo {
+
+    width: 78px;
+
+    height: 78px;
+
+    border-radius: 21px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #171717,
+            #555
+        );
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 34px;
+
+    margin-bottom: 25px;
+
+    box-shadow:
+        0 8px 25px rgba(0,0,0,0.4);
+}
+
+
+.atock-title {
+
+    font-size: 21px;
+
+    font-weight: 600;
+
+    margin-bottom: 13px;
+}
+
+
+.atock-message {
+
+    color: #aaa;
+
+    font-size: 14px;
+
+    line-height: 1.8;
+
+    max-width: 285px;
+}
+
+
+.atock-close {
+
+    margin-top: 25px;
+
+    border: 1px solid #555;
+
+    border-radius: 20px;
+
+    padding:
+        9px 25px;
+
+    font-size: 13px;
+
+    color: #ddd;
+
+    cursor: pointer;
+}
+
+
+/* =====================================================
+   高铁查询
+===================================================== */
+
+.rail-content {
+
+    position: absolute;
+
+    top: 58px;
+
+    bottom: 0;
+
+    left: 0;
+
+    right: 0;
+
+    overflow-y: auto;
+
+    background: #f3f5f7;
+
+    padding: 14px;
+}
+
+
+.rail-disclaimer {
+
+    background: #fff4d6;
+
+    border: 1px solid #ead9a4;
+
+    color: #806b32;
+
+    border-radius: 8px;
+
+    padding: 9px 11px;
+
+    font-size: 11px;
+
+    margin-bottom: 12px;
+
+    text-align: center;
+}
+
+
+.rail-search-card {
+
+    background: white;
+
+    border-radius: 12px;
+
+    padding: 16px;
+
+    box-shadow:
+        0 2px 8px rgba(0,0,0,0.06);
+}
+
+
+.station-row {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    margin-bottom: 18px;
+}
+
+
+.station {
+
+    width: 115px;
+}
+
+
+.station-label {
+
+    font-size: 11px;
+
+    color: #999;
+
+    margin-bottom: 4px;
+}
+
+
+.station-name {
+
+    font-size: 23px;
+
+    font-weight: 600;
+
+    color: #222;
+}
+
+
+.train-arrow {
+
+    color: #777;
+
+    font-size: 21px;
+}
+
+
+.date-label {
+
+    font-size: 12px;
+
+    color: #777;
+
+    margin-bottom: 7px;
+}
+
+
+.rail-select {
+
+    width: 100%;
+
+    height: 43px;
+
+    border:
+        1px solid #ddd;
+
+    border-radius: 7px;
+
+    background: white;
+
+    padding: 0 10px;
+
+    font-size: 13px;
+
+    outline: none;
+
+    margin-bottom: 12px;
+}
+
+
+.rail-search-button {
+
+    width: 100%;
+
+    height: 43px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #465e6b;
+
+    color: white;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+
+.rail-search-button:active {
+
+    transform: scale(0.98);
+}
+
+
+.rail-results {
+
+    margin-top: 14px;
+}
+
+
+.rail-empty {
+
+    text-align: center;
+
+    color: #999;
+
+    font-size: 13px;
+
+    padding: 35px 10px;
+}
+
+
+.rail-result-date {
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    color: #555;
+
+    margin:
+        5px 2px 10px;
+}
+
+
+.train-card {
+
+    background: white;
+
+    border-radius: 11px;
+
+    margin-bottom: 9px;
+
+    padding: 13px;
+
+    box-shadow:
+        0 2px 7px rgba(0,0,0,0.05);
+}
+
+
+.train-number {
+
+    color: #4c6573;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    margin-bottom: 9px;
+}
+
+
+.train-times {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+
+.train-time {
+
+    font-size: 20px;
+
+    font-weight: 600;
+}
+
+
+.train-station {
+
+    font-size: 11px;
+
+    color: #777;
+
+    margin-top: 3px;
+}
+
+
+.train-duration {
+
+    font-size: 11px;
+
+    color: #999;
+
+    text-align: center;
+}
+
+
+.train-line {
+
+    width: 45px;
+
+    height: 1px;
+
+    background: #bbb;
+
+    margin:
+        5px auto;
+}
+
+
+.train-status {
+
+    margin-top: 10px;
+
+    padding-top: 9px;
+
+    border-top:
+        1px solid #eee;
+
+    color: #777;
+
+    font-size: 11px;
+}
+
+
+/* =====================================================
+   Home 键
+===================================================== */
+
+.home-button {
+
+    position: absolute;
+
+    width: 140px;
+
+    height: 25px;
+
+    left: 50%;
+
+    bottom: 0;
+
+    transform:
+        translateX(-50%);
+
+    z-index: 1900;
+
+    cursor: pointer;
+}
+
+
+.home-button::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 120px;
+
+    height: 4px;
+
+    left: 10px;
+
+    bottom: 7px;
+
+    background: #111;
+
+    border-radius: 5px;
+
+    opacity: 0.8;
+}
+
+
+.home-button:active::after {
+
+    width: 100px;
+
+    left: 20px;
+
+    opacity: 0.55;
+}
+
+
+/* =====================================================
+   小屏适配
+===================================================== */
+
+@media (max-height: 850px) {
+
+    .phone {
+
+        transform: scale(0.9);
+
+    }
+
+}
+
+
+@media (max-height: 720px) {
+
+    .phone {
+
+        transform: scale(0.78);
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="phone">
+
+<div class="screen">
+
+
+<!-- =====================================================
+     刘海
+===================================================== -->
+
+<div class="notch"></div>
+
+
+<!-- =====================================================
+     手机桌面
+===================================================== -->
+
+<div
+    class="home-screen"
+    id="homeScreen"
+>
+
+
+    <div class="status-bar">
+
+
+        <div id="phoneTime">
+            17:33
+        </div>
+
+
+        <div class="status-right">
+
+            <span>▮▮▮</span>
+
+            <span>⌁</span>
+
+            <div class="battery">
+
+                <div class="battery-level"></div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="apps">
+
+
+        <!-- =================================================
+             ASearch
+        ================================================== -->
+
+        <div
+            class="app"
+            onclick="openSearch()"
+        >
+
+            <div class="app-icon search-icon">
+                🔍
+            </div>
+
+            <div class="app-name">
+                ASearch
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             AChat
+        ================================================== -->
+
+        <div
+            class="app"
+            onclick="openChatPassword()"
+        >
+
+            <div class="app-icon chat-icon">
+                💬
+            </div>
+
+            <div class="app-name">
+                AChat
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             Atock
+        ================================================== -->
+
+        <div
+            class="app"
+            onclick="openAtock()"
+        >
+
+            <div class="app-icon atock-icon">
+                ▶
+            </div>
+
+            <div class="app-name">
+                Atock
+            </div>
+
+        </div>
+
+
+        <!-- =================================================
+             高铁查询
+        ================================================== -->
+
+        <div
+            class="app"
+            onclick="openRail()"
+        >
+
+            <div class="app-icon rail-icon">
+                🚄
+            </div>
+
+            <div class="app-name">
+                高铁查询
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     ASearch
+===================================================== -->
+
+<div
+    class="app-window"
+    id="searchApp"
+>
+
+
+    <div class="app-header">
+
+
+        <div
+            class="app-back"
+            onclick="closeSearch()"
+        >
+            ‹
+        </div>
+
+
+        <div class="app-header-title">
+            ASearch
+        </div>
+
+
+    </div>
+
+
+    <div class="search-content">
+
+
+        <div class="search-box-area">
+
+
+            <div class="search-box">
+
+
+                <span class="search-icon-small">
+                    🔍
+                </span>
+
+
+                <span>
+                    搜索
+                </span>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="history-title">
+            搜索历史
+        </div>
+
+
+        <div class="history-list">
+
+
+            <div class="history-item">
+
+
+                <div class="history-main">
+
+
+                    <div class="history-text">
+                        “如何缓解怀疑孩子报错之后的焦虑？”
+                    </div>
+
+
+                    <div class="history-date">
+                        2026/08/23
+                    </div>
+
+
+                </div>
+
+
+                <div class="history-arrow">
+                    ›
+                </div>
+
+
+            </div>
+
+
+            <div class="history-item">
+
+
+                <div class="history-main">
+
+
+                    <div class="history-text">
+                        “亲子鉴定流程”
+                    </div>
+
+
+                    <div class="history-date">
+                        2026/08/22
+                    </div>
+
+
+                </div>
+
+
+                <div class="history-arrow">
+                    ›
+                </div>
+
+
+            </div>
+
+
+            <div class="history-item">
+
+
+                <div class="history-main">
+
+
+                    <div class="history-text">
+                        “出生那天孩子抱错了该怎么办？”
+                    </div>
+
+
+                    <div class="history-date">
+                        2026/08/21
+                    </div>
+
+
+                </div>
+
+
+                <div class="history-arrow">
+                    ›
+                </div>
+
+
+            </div>
+
+
+            <div class="history-item">
+
+
+                <div class="history-main">
+
+
+                    <div class="history-text">
+                        “如果孩子不是我的该怎么办？”
+                    </div>
+
+
+                    <div class="history-date">
+                        2026/08/19
+                    </div>
+
+
+                </div>
+
+
+                <div class="history-arrow">
+                    ›
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="search-bottom">
+        搜索历史
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     AChat 密码
+===================================================== -->
+
+<div
+    class="password-page"
+    id="chatPassword"
+>
+
+
+    <div class="password-lock">
+        🔒
+    </div>
+
+
+    <div class="password-title">
+        AChat
+    </div>
+
+
+    <div class="password-hint">
+        密码提示：鉴定之日
+    </div>
+
+
+    <input
+        class="password-input"
+        id="chatPasswordInput"
+        type="password"
+        inputmode="numeric"
+        maxlength="8"
+        placeholder="输入密码"
+    >
+
+
+    <div
+        class="password-error"
+        id="chatPasswordError"
+    ></div>
+
+
+    <div class="password-buttons">
+
+
+        <button
+            class="password-button"
+            onclick="closeChatPassword()"
+        >
+            取消
+        </button>
+
+
+        <button
+            class="password-button confirm"
+            onclick="checkChatPassword()"
+        >
+            确定
+        </button>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     AChat
+===================================================== -->
+
+<div
+    class="app-window"
+    id="chatApp"
+>
+
+
+    <div class="app-header">
+
+
+        <div
+            class="app-back"
+            onclick="closeChat()"
+        >
+            ‹
+        </div>
+
+
+        <div class="app-header-title">
+            AChat
+        </div>
+
+
+    </div>
+
+
+    <div class="chat-content">
+
+
+        <div class="contact-list">
+
+
+            <!-- 张姨 -->
+
+            <div
+                class="contact"
+                onclick="openAuntChat()"
+            >
+
+
+                <div class="contact-icon">
+                    张
+                </div>
+
+
+                <div class="contact-info">
+
+
+                    <div class="contact-name">
+                        张姨
+                    </div>
+
+
+                    <div class="contact-preview">
+                        阿姨：ok
+                    </div>
+
+
+                </div>
+
+
+                <div class="contact-time">
+                    13:00
+                </div>
+
+
+            </div>
+
+
+            <!-- 余明辉 -->
+
+            <div
+                class="contact"
+                onclick="openYuminghuiChat()"
+            >
+
+
+                <div class="contact-icon">
+                    余
+                </div>
+
+
+                <div class="contact-info">
+
+
+                    <div class="contact-name">
+                        余明辉
+                    </div>
+
+
+                    <div class="contact-preview">
+                        要不，做个鉴定？只要能让你不焦虑就好。
+                    </div>
+
+
+                </div>
+
+
+                <div class="contact-time">
+                    16:07
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     张姨聊天
+===================================================== -->
+
+<div
+    class="conversation"
+    id="auntConversation"
+>
+
+
+    <div class="conversation-header">
+
+
+        <div
+            class="app-back"
+            onclick="closeConversation('auntConversation')"
+        >
+            ‹
+        </div>
+
+
+        <div class="conversation-name">
+            张姨
+        </div>
+
+
+    </div>
+
+
+    <div class="messages">
+
+
+        <div class="chat-date">
+            2026年8月24日
+        </div>
+
+
+        <div class="message-row self">
+
+
+            <div class="message-content">
+
+
+                <div class="message-time">
+                    13:00
+                </div>
+
+
+                <div class="message-bubble">
+
+                    阿姨，拜托你个事情。你给我老公透露一下我最近很焦虑，看到了我在搜索一些很奇怪的东西。我要考验一下我老公。这是给你的辛苦费。
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="message-row self">
+
+
+            <div class="message-content">
+
+
+                <div class="message-time">
+                    13:00
+                </div>
+
+
+                <div class="transfer">
+
+
+                    <div class="transfer-top">
+
+
+                        <div class="transfer-icon">
+                            ¥
+                        </div>
+
+
+                        <div class="transfer-money">
+                            ¥200.00
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="transfer-bottom">
+                        转账
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="message-row other">
+
+
+            <div class="message-avatar">
+                张
+            </div>
+
+
+            <div class="message-content">
+
+
+                <div class="message-time">
+                    13:00
+                </div>
+
+
+                <div class="message-bubble">
+                    ok
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="chat-input">
+
+
+        <div class="fake-input">
+            输入消息
+        </div>
+
+
+        <div class="plus">
+            ＋
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     余明辉聊天
+===================================================== -->
+
+<div
+    class="conversation"
+    id="yuminghuiConversation"
+>
+
+
+    <div class="conversation-header">
+
+
+        <div
+            class="app-back"
+            onclick="closeConversation('yuminghuiConversation')"
+        >
+            ‹
+        </div>
+
+
+        <div class="conversation-name">
+            余明辉
+        </div>
+
+
+    </div>
+
+
+    <div class="messages">
+
+
+        <div class="chat-date">
+            2026年8月24日
+        </div>
+
+
+        <div class="message-row other">
+
+
+            <div class="message-avatar">
+                余
+            </div>
+
+
+            <div class="message-content">
+
+
+                <div class="message-time">
+                    16:07
+                </div>
+
+
+                <div class="message-bubble">
+
+                    我看到你的记录了，我理解你的担忧，但这么焦虑下去不是办法。
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="message-row self">
+
+
+            <div class="message-content">
+
+
+                <div class="message-time">
+                    16:07
+                </div>
+
+
+                <div class="message-bubble">
+
+                    但是，我真的每天都在怀疑，这导致我睡不好。
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <div class="message-row other">
+
+
+            <div class="message-avatar">
+                余
+            </div>
+
+
+            <div class="message-content">
+
+
+                <div class="message-time">
+                    16:07
+                </div>
+
+
+                <div class="message-bubble">
+
+                    要是你真的担心的话，要不，做个鉴定？只要能让你不焦虑就好。
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="chat-input">
+
+
+        <div class="fake-input">
+            输入消息
+        </div>
+
+
+        <div class="plus">
+            ＋
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     Atock
+===================================================== -->
+
+<div
+    class="app-window"
+    id="atockApp"
+>
+
+
+    <div class="atock-page">
+
+
+        <div class="atock-logo">
+            ▶
+        </div>
+
+
+        <div class="atock-title">
+            Atock
+        </div>
+
+
+        <div class="atock-message">
+
+            当前版本过低，无法打开。<br>
+
+            你可以尝试网页版，只需要搜索我们软件即可。
+
+        </div>
+
+
+        <div
+            class="atock-close"
+            onclick="closeAtock()"
+        >
+            返回
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     高铁查询
+===================================================== -->
+
+<div
+    class="app-window"
+    id="railApp"
+>
+
+
+    <div class="app-header">
+
+
+        <div
+            class="app-back"
+            onclick="closeRail()"
+        >
+            ‹
+        </div>
+
+
+        <div class="app-header-title">
+            高铁查询
+        </div>
+
+
+    </div>
+
+
+    <div class="rail-content">
+
+
+        <div class="rail-disclaimer">
+            模拟查询界面 · 虚构数据
+        </div>
+
+
+        <div class="rail-search-card">
+
+
+            <div class="station-row">
+
+
+                <div class="station">
+
+
+                    <div class="station-label">
+                        出发地
+                    </div>
+
+
+                    <div class="station-name">
+                        C市
+                    </div>
+
+
+                </div>
+
+
+                <div class="train-arrow">
+                    ⇄
+                </div>
+
+
+                <div class="station">
+
+
+                    <div class="station-label">
+                        到达地
+                    </div>
+
+
+                    <div class="station-name">
+                        B市
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+            <div class="date-label">
+                选择日期
+            </div>
+
+
+            <select
+                id="railDate"
+                class="rail-select"
+            >
+
+                <option value="">
+                    请选择 2026年5月10日—5月20日
+                </option>
+
+            </select>
+
+
+            <button
+                class="rail-search-button"
+                onclick="searchRail()"
+            >
+                查询
+            </button>
+
+
+        </div>
+
+
+        <div
+            id="railResults"
+            class="rail-results"
+        >
+
+            <div class="rail-empty">
+
+                请选择日期后查询
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     Home 键
+===================================================== -->
+
+<div
+    class="home-button"
+    onclick="goHome()"
+    title="返回桌面"
+></div>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   手机时间
+===================================================== */
+
+function updateTime() {
+
+    const now =
+        new Date();
+
+
+    const hours =
+        String(
+            now.getHours()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const minutes =
+        String(
+            now.getMinutes()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    document
+        .getElementById(
+            "phoneTime"
+        )
+        .textContent =
+        hours + ":" + minutes;
+
+}
+
+
+updateTime();
+
+setInterval(
+    updateTime,
+    1000
+);
+
+
+/* =====================================================
+   ASearch
+===================================================== */
+
+function openSearch() {
+
+    closeAllWindows();
+
+
+    document
+        .getElementById(
+            "searchApp"
+        )
+        .classList
+        .add(
+            "open"
+        );
+
+}
+
+
+function closeSearch() {
+
+    document
+        .getElementById(
+            "searchApp"
+        )
+        .classList
+        .remove(
+            "open"
+        );
+
+}
+
+
+/* =====================================================
+   AChat 密码
+===================================================== */
+
+function openChatPassword() {
+
+    document
+        .getElementById(
+            "chatPassword"
+        )
+        .classList
+        .add(
+            "show"
+        );
+
+
+    document
+        .getElementById(
+            "chatPasswordInput"
+        )
+        .value =
+        "";
+
+
+    document
+        .getElementById(
+            "chatPasswordError"
+        )
+        .textContent =
+        "";
+
+
+    setTimeout(
+        function() {
+
+            document
+                .getElementById(
+                    "chatPasswordInput"
+                )
+                .focus();
+
+        },
+        100
+    );
+
+}
+
+
+function closeChatPassword() {
+
+    document
+        .getElementById(
+            "chatPassword"
+        )
+        .classList
+        .remove(
+            "show"
+        );
+
+}
+
+
+function checkChatPassword() {
+
+    const input =
+        document
+            .getElementById(
+                "chatPasswordInput"
+            );
+
+
+    const error =
+        document
+            .getElementById(
+                "chatPasswordError"
+            );
+
+
+    if (
+        input.value ===
+        "20260825"
+    ) {
+
+        error.textContent =
+            "";
+
+
+        document
+            .getElementById(
+                "chatPassword"
+            )
+            .classList
+            .remove(
+                "show"
+            );
+
+
+        document
+            .getElementById(
+                "chatApp"
+            )
+            .classList
+            .add(
+                "open"
+            );
+
+
+    } else {
+
+        error.textContent =
+            "密码错误";
+
+
+        input.value = "";
+
+
+        input.animate(
+            [
+                {
+                    transform:
+                        "translateX(0)"
+                },
+
+                {
+                    transform:
+                        "translateX(-7px)"
+                },
+
+                {
+                    transform:
+                        "translateX(7px)"
+                },
+
+                {
+                    transform:
+                        "translateX(0)"
+                }
+
+            ],
+            {
+                duration: 250
+            }
+        );
+
+    }
+
+}
+
+
+document
+    .getElementById(
+        "chatPasswordInput"
+    )
+    .addEventListener(
+        "keydown",
+        function(event) {
+
+            if (
+                event.key ===
+                "Enter"
+            ) {
+
+                checkChatPassword();
+
+            }
+
+        }
+    );
+
+
+/* =====================================================
+   AChat
+===================================================== */
+
+function closeChat() {
+
+    document
+        .getElementById(
+            "chatApp"
+        )
+        .classList
+        .remove(
+            "open"
+        );
+
+}
+
+
+function openAuntChat() {
+
+    document
+        .getElementById(
+            "auntConversation"
+        )
+        .classList
+        .add(
+            "show"
+        );
+
+}
+
+
+function openYuminghuiChat() {
+
+    document
+        .getElementById(
+            "yuminghuiConversation"
+        )
+        .classList
+        .add(
+            "show"
+        );
+
+}
+
+
+function closeConversation(id) {
+
+    document
+        .getElementById(
+            id
+        )
+        .classList
+        .remove(
+            "show"
+        );
+
+}
+
+
+/* =====================================================
+   Atock
+===================================================== */
+
+function openAtock() {
+
+    closeAllWindows();
+
+
+    document
+        .getElementById(
+            "atockApp"
+        )
+        .classList
+        .add(
+            "open"
+        );
+
+}
+
+
+function closeAtock() {
+
+    document
+        .getElementById(
+            "atockApp"
+        )
+        .classList
+        .remove(
+            "open"
+        );
+
+}
+
+
+/* =====================================================
+   高铁查询
+===================================================== */
+
+
+/*
+   虚构车次。
+
+   这些编号仅用于本网页剧情模拟，
+   不代表现实铁路车次。
+*/
+
+const railTrains = [
+
+    {
+        number: "C8211",
+        start: "08:00",
+        end: "09:20",
+        duration: "1小时20分"
+    },
+
+    {
+        number: "C8217",
+        start: "10:15",
+        end: "12:00",
+        duration: "1小时45分"
+    },
+
+    {
+        number: "C8223",
+        start: "11:30",
+        end: "13:56",
+        duration: "2小时26分"
+    },
+
+    {
+        number: "C8231",
+        start: "14:00",
+        end: "15:30",
+        duration: "1小时30分"
+    },
+
+    {
+        number: "C8238",
+        start: "16:10",
+        end: "17:08",
+        duration: "58分"
+    },
+
+    {
+        number: "C8242",
+        start: "17:20",
+        end: "18:40",
+        duration: "1小时20分"
+    },
+
+    {
+        number: "C8249",
+        start: "19:00",
+        end: "20:20",
+        duration: "1小时20分"
+    }
+
+];
+
+
+/* =====================================================
+   初始化 5月10日—5月20日
+===================================================== */
+
+function initRailDates() {
+
+    const select =
+        document.getElementById(
+            "railDate"
+        );
+
+
+    for (
+        let day = 10;
+        day <= 20;
+        day++
+    ) {
+
+        const option =
+            document.createElement(
+                "option"
+            );
+
+
+        option.value =
+            `2026-05-${String(day).padStart(2,"0")}`;
+
+
+        option.textContent =
+            `2026年5月${day}日`;
+
+
+        select.appendChild(
+            option
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   查询高铁
+===================================================== */
+
+function searchRail() {
+
+    const date =
+        document
+            .getElementById(
+                "railDate"
+            )
+            .value;
+
+
+    const results =
+        document
+            .getElementById(
+                "railResults"
+            );
+
+
+    if (!date) {
+
+        results.innerHTML = `
+
+            <div class="rail-empty">
+                请选择查询日期
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    const dateObject =
+        new Date(
+            date + "T00:00:00"
+        );
+
+
+    const day =
+        dateObject.getDate();
+
+
+    let html = `
+
+        <div class="rail-result-date">
+
+            2026年5月${day}日
+            ·
+            C市 → B市
+
+        </div>
+
+    `;
+
+
+    railTrains.forEach(
+        function(train) {
+
+            html += `
+
+                <div class="train-card">
+
+
+                    <div class="train-number">
+                        ${train.number}
+                    </div>
+
+
+                    <div class="train-times">
+
+
+                        <div>
+
+                            <div class="train-time">
+                                ${train.start}
+                            </div>
+
+                            <div class="train-station">
+                                C市
+                            </div>
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="train-duration">
+                                ${train.duration}
+                            </div>
+
+                            <div class="train-line"></div>
+
+                        </div>
+
+
+                        <div>
+
+                            <div class="train-time">
+                                ${train.end}
+                            </div>
+
+                            <div class="train-station">
+                                B市
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="train-status">
+
+                        模拟查询结果 ·
+                        仅用于剧情演示
+
+                    </div>
+
+
+                </div>
+
+            `;
+
+        }
+    );
+
+
+    results.innerHTML =
+        html;
+
+}
+
+
+/* =====================================================
+   打开高铁查询
+===================================================== */
+
+function openRail() {
+
+    closeAllWindows();
+
+
+    document
+        .getElementById(
+            "railApp"
+        )
+        .classList
+        .add(
+            "open"
+        );
+
+}
+
+
+/* =====================================================
+   关闭高铁查询
+===================================================== */
+
+function closeRail() {
+
+    document
+        .getElementById(
+            "railApp"
+        )
+        .classList
+        .remove(
+            "open"
+        );
+
+}
+
+
+/* =====================================================
+   关闭所有窗口
+===================================================== */
+
+function closeAllWindows() {
+
+    document
+        .querySelectorAll(
+            ".app-window"
+        )
+        .forEach(
+            function(window) {
+
+                window
+                    .classList
+                    .remove(
+                        "open"
+                    );
+
+            }
+        );
+
+
+    document
+        .querySelectorAll(
+            ".conversation"
+        )
+        .forEach(
+            function(conversation) {
+
+                conversation
+                    .classList
+                    .remove(
+                        "show"
+                    );
+
+            }
+        );
+
+
+    document
+        .getElementById(
+            "chatPassword"
+        )
+        .classList
+        .remove(
+            "show"
+        );
+
+}
+
+
+/* =====================================================
+   Home 键
+===================================================== */
+
+function goHome() {
+
+    closeAllWindows();
+
+}
+
+
+/* =====================================================
+   初始化
+===================================================== */
+
+initRailDates();
+
+</script>
+
+
+</body>
+
+</html>
