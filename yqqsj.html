@@ -1,0 +1,1849 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>车辆授权查询</title>
+
+<style>
+
+/* =====================================================
+   全局
+===================================================== */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+}
+
+body {
+    background: #202124;
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Microsoft YaHei",
+        sans-serif;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    overflow: hidden;
+}
+
+
+/* =====================================================
+   手机
+===================================================== */
+
+.phone {
+
+    width: 390px;
+    height: 800px;
+
+    background: #050505;
+
+    border-radius: 43px;
+
+    padding: 10px;
+
+    position: relative;
+
+    box-shadow:
+        0 0 0 2px #555,
+        0 30px 80px rgba(0,0,0,.7);
+}
+
+
+.screen {
+
+    width: 100%;
+    height: 100%;
+
+    border-radius: 34px;
+
+    overflow: hidden;
+
+    position: relative;
+
+    background: #111;
+}
+
+
+/* =====================================================
+   刘海
+===================================================== */
+
+.notch {
+
+    position: absolute;
+
+    width: 125px;
+    height: 28px;
+
+    background: #000;
+
+    top: 0;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    border-radius:
+        0 0 18px 18px;
+
+    z-index: 3000;
+}
+
+
+/* =====================================================
+   桌面
+===================================================== */
+
+.home-screen {
+
+    position: absolute;
+
+    inset: 0;
+
+    color: white;
+
+    background:
+        radial-gradient(
+            circle at 75% 18%,
+            rgba(255,255,255,.13),
+            transparent 26%
+        ),
+        linear-gradient(
+            145deg,
+            #59646d,
+            #313940 50%,
+            #171b1f
+        );
+
+    z-index: 100;
+}
+
+
+/* =====================================================
+   状态栏
+===================================================== */
+
+.status-bar {
+
+    height: 42px;
+
+    padding:
+        0 20px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    font-size: 13px;
+}
+
+
+.status-right {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+.battery {
+
+    width: 23px;
+    height: 11px;
+
+    border:
+        1px solid white;
+
+    border-radius: 3px;
+
+    position: relative;
+}
+
+
+.battery::after {
+
+    content: "";
+
+    position: absolute;
+
+    right: -4px;
+    top: 2px;
+
+    width: 2px;
+    height: 5px;
+
+    background: white;
+}
+
+
+.battery-level {
+
+    position: absolute;
+
+    left: 1px;
+    top: 1px;
+
+    width: 17px;
+    height: 7px;
+
+    background: white;
+
+    border-radius: 1px;
+}
+
+
+/* =====================================================
+   桌面 APP
+===================================================== */
+
+.apps {
+
+    padding:
+        40px 27px;
+}
+
+
+.app {
+
+    width: 76px;
+
+    text-align: center;
+
+    cursor: pointer;
+
+    user-select: none;
+}
+
+
+.app-icon {
+
+    width: 60px;
+    height: 60px;
+
+    margin:
+        0 auto 7px;
+
+    border-radius: 16px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #e9f2f5,
+            #a8c4cf
+        );
+
+    color: #31515e;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 28px;
+
+    box-shadow:
+        0 5px 15px rgba(0,0,0,.35);
+
+    transition:
+        transform .12s;
+}
+
+
+.app:active .app-icon {
+
+    transform:
+        scale(.9);
+}
+
+
+.app-name {
+
+    font-size: 11px;
+
+    line-height: 1.3;
+
+    color: white;
+
+    text-shadow:
+        0 1px 3px #000;
+}
+
+
+/* =====================================================
+   APP 页面
+===================================================== */
+
+.app-window {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        #f3f5f6;
+
+    color: #111;
+
+    z-index: 500;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+    transform:
+        scale(.96);
+
+    transition:
+        opacity .22s,
+        transform .22s;
+}
+
+
+.app-window.open {
+
+    opacity: 1;
+
+    pointer-events: auto;
+
+    transform:
+        scale(1);
+}
+
+
+/* =====================================================
+   APP 顶栏
+===================================================== */
+
+.app-header {
+
+    height: 58px;
+
+    background:
+        rgba(255,255,255,.98);
+
+    border-bottom:
+        1px solid #ddd;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    position: relative;
+}
+
+
+.app-title {
+
+    font-size: 17px;
+
+    font-weight: 600;
+}
+
+
+.back {
+
+    position: absolute;
+
+    left: 9px;
+
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 30px;
+
+    cursor: pointer;
+
+    color: #333;
+}
+
+
+/* =====================================================
+   内容
+===================================================== */
+
+.query-content {
+
+    position: absolute;
+
+    top: 58px;
+    bottom: 25px;
+
+    left: 0;
+    right: 0;
+
+    overflow-y: auto;
+
+    padding:
+        16px;
+
+    background:
+        #f3f5f6;
+}
+
+
+/* =====================================================
+   系统提示
+===================================================== */
+
+.system-note {
+
+    font-size: 11px;
+
+    color: #999;
+
+    text-align: center;
+
+    margin-bottom: 14px;
+}
+
+
+/* =====================================================
+   查询卡片
+===================================================== */
+
+.query-card {
+
+    background: white;
+
+    border-radius: 14px;
+
+    padding:
+        18px;
+
+    box-shadow:
+        0 2px 10px rgba(0,0,0,.06);
+}
+
+
+.section-label {
+
+    font-size: 11px;
+
+    color: #888;
+
+    margin-bottom: 8px;
+}
+
+
+/* =====================================================
+   车牌选择
+===================================================== */
+
+.plate-selector {
+
+    height: 58px;
+
+    border:
+        1px solid #d9dfe2;
+
+    border-radius: 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    padding:
+        0 13px;
+
+    cursor: pointer;
+
+    transition:
+        background .15s;
+
+    margin-bottom:
+        20px;
+}
+
+
+.plate-selector:active {
+
+    background:
+        #f4f4f4;
+}
+
+
+.car-symbol {
+
+    width: 40px;
+    height: 40px;
+
+    border-radius: 9px;
+
+    background:
+        #e7eff2;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    margin-right: 11px;
+
+    font-size: 20px;
+}
+
+
+.plate-info {
+
+    flex: 1;
+}
+
+
+.plate-small {
+
+    font-size: 10px;
+
+    color: #999;
+
+    margin-bottom: 3px;
+}
+
+
+.plate-number {
+
+    font-size: 18px;
+
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+
+.arrow {
+
+    color: #aaa;
+
+    font-size: 22px;
+}
+
+
+/* =====================================================
+   地址
+===================================================== */
+
+.address-area {
+
+    opacity: .35;
+
+    pointer-events: none;
+
+    transition:
+        opacity .3s;
+}
+
+
+.address-area.active {
+
+    opacity: 1;
+
+    pointer-events: auto;
+}
+
+
+.address-select {
+
+    width: 100%;
+
+    height: 46px;
+
+    border:
+        1px solid #d9dfe2;
+
+    border-radius: 9px;
+
+    background: white;
+
+    padding:
+        0 11px;
+
+    font-size: 14px;
+
+    outline: none;
+
+    margin-bottom:
+        13px;
+}
+
+
+.query-button {
+
+    width: 100%;
+
+    height: 45px;
+
+    border: none;
+
+    border-radius: 9px;
+
+    background:
+        #425f6b;
+
+    color: white;
+
+    font-size: 14px;
+
+    cursor: pointer;
+}
+
+
+.query-button:active {
+
+    transform:
+        scale(.98);
+}
+
+
+/* =====================================================
+   车辆选择页面
+===================================================== */
+
+.vehicle-page {
+
+    position: absolute;
+
+    inset: 0;
+
+    background:
+        #f3f5f6;
+
+    z-index: 900;
+
+    display: none;
+}
+
+
+.vehicle-page.show {
+
+    display: block;
+}
+
+
+.vehicle-list {
+
+    padding:
+        16px;
+}
+
+
+.vehicle-card {
+
+    background: white;
+
+    border-radius: 13px;
+
+    padding:
+        16px;
+
+    display: flex;
+
+    align-items: center;
+
+    cursor: pointer;
+
+    box-shadow:
+        0 2px 9px rgba(0,0,0,.06);
+}
+
+
+.vehicle-card:active {
+
+    background:
+        #f5f5f5;
+}
+
+
+.vehicle-icon {
+
+    width: 52px;
+    height: 52px;
+
+    border-radius: 11px;
+
+    background:
+        #e3ecef;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 25px;
+
+    margin-right:
+        13px;
+}
+
+
+.vehicle-info {
+
+    flex: 1;
+}
+
+
+.vehicle-label {
+
+    font-size: 11px;
+
+    color: #999;
+
+    margin-bottom:
+        4px;
+}
+
+
+.vehicle-number {
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+    letter-spacing:
+        1.5px;
+}
+
+
+.vehicle-status {
+
+    margin-top:
+        4px;
+
+    font-size: 11px;
+
+    color: #65816e;
+}
+
+
+/* =====================================================
+   查询结果
+===================================================== */
+
+.results {
+
+    margin-top:
+        15px;
+
+    display: none;
+}
+
+
+.results.show {
+
+    display: block;
+}
+
+
+.result-header {
+
+    margin:
+        2px 2px 10px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+
+.result-title {
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: #444;
+}
+
+
+.result-count {
+
+    font-size: 11px;
+
+    color: #999;
+}
+
+
+/* =====================================================
+   路线信息
+===================================================== */
+
+.result-route {
+
+    background:
+        #e8eef0;
+
+    border-radius:
+        10px;
+
+    padding:
+        11px 13px;
+
+    margin-bottom:
+        10px;
+
+    font-size:
+        12px;
+
+    color:
+        #52656c;
+
+    display:
+        flex;
+
+    justify-content:
+        space-between;
+}
+
+
+/* =====================================================
+   时间轴
+===================================================== */
+
+.timeline {
+
+    background: white;
+
+    border-radius: 14px;
+
+    padding:
+        8px 15px 10px;
+
+    box-shadow:
+        0 2px 10px rgba(0,0,0,.05);
+}
+
+
+.record {
+
+    display: flex;
+
+    position: relative;
+
+    padding:
+        16px 0;
+}
+
+
+.record:not(:last-child) {
+
+    border-bottom:
+        1px solid #eeeeee;
+}
+
+
+.record-left {
+
+    width: 65px;
+
+    flex-shrink: 0;
+}
+
+
+.record-date {
+
+    font-size: 12px;
+
+    color: #555;
+
+    font-weight: 600;
+}
+
+
+.record-year {
+
+    font-size: 9px;
+
+    color: #aaa;
+
+    margin-top:
+        3px;
+}
+
+
+.timeline-marker {
+
+    width: 26px;
+
+    position: relative;
+
+    flex-shrink: 0;
+}
+
+
+.marker {
+
+    width: 10px;
+    height: 10px;
+
+    border-radius: 50%;
+
+    background:
+        #52717d;
+
+    position: absolute;
+
+    top: 4px;
+    left: 4px;
+
+    box-shadow:
+        0 0 0 4px #e2eaed;
+}
+
+
+.record-right {
+
+    flex: 1;
+}
+
+
+.record-location {
+
+    font-size: 11px;
+
+    color: #888;
+
+    margin-bottom:
+        6px;
+}
+
+
+.record-text {
+
+    font-size: 14px;
+
+    line-height:
+        1.65;
+
+    color:
+        #222;
+}
+
+
+.person {
+
+    font-weight: 600;
+
+    color:
+        #315b6b;
+}
+
+
+/* =====================================================
+   空结果
+===================================================== */
+
+.empty {
+
+    text-align: center;
+
+    color: #aaa;
+
+    font-size: 13px;
+
+    padding:
+        40px 10px;
+}
+
+
+/* =====================================================
+   Home
+===================================================== */
+
+.home-button {
+
+    position: absolute;
+
+    width: 140px;
+    height: 25px;
+
+    left: 50%;
+    bottom: 0;
+
+    transform:
+        translateX(-50%);
+
+    z-index:
+        2900;
+
+    cursor:
+        pointer;
+}
+
+
+.home-button::after {
+
+    content: "";
+
+    position: absolute;
+
+    width: 120px;
+    height: 4px;
+
+    left: 10px;
+    bottom: 7px;
+
+    background:
+        #111;
+
+    border-radius:
+        5px;
+
+    opacity:
+        .8;
+}
+
+
+/* =====================================================
+   小屏
+===================================================== */
+
+@media(max-height:850px) {
+
+    .phone {
+        transform:
+            scale(.9);
+    }
+
+}
+
+
+@media(max-height:720px) {
+
+    .phone {
+        transform:
+            scale(.78);
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="phone">
+
+<div class="screen">
+
+
+<!-- =====================================================
+     刘海
+===================================================== -->
+
+<div class="notch"></div>
+
+
+<!-- =====================================================
+     桌面
+===================================================== -->
+
+<div
+    class="home-screen"
+    id="homeScreen"
+>
+
+
+    <div class="status-bar">
+
+
+        <div id="phoneTime">
+            16:58
+        </div>
+
+
+        <div class="status-right">
+
+            <span>▮▮▮</span>
+
+            <span>⌁</span>
+
+
+            <div class="battery">
+
+                <div class="battery-level"></div>
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="apps">
+
+
+        <div
+            class="app"
+            onclick="openVehicleApp()"
+        >
+
+
+            <div class="app-icon">
+                🚘
+            </div>
+
+
+            <div class="app-name">
+                车辆授权查询
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     车辆授权查询 APP
+===================================================== -->
+
+<div
+    class="app-window"
+    id="vehicleApp"
+>
+
+
+    <div class="app-header">
+
+
+        <div
+            class="back"
+            onclick="closeVehicleApp()"
+        >
+            ‹
+        </div>
+
+
+        <div class="app-title">
+            车辆授权查询
+        </div>
+
+
+    </div>
+
+
+    <div class="query-content">
+
+
+        <div class="system-note">
+            车辆使用授权记录查询
+        </div>
+
+
+        <div class="query-card">
+
+
+            <!-- 车辆 -->
+
+            <div class="section-label">
+                查询车辆
+            </div>
+
+
+            <div
+                class="plate-selector"
+                onclick="openVehicleSelect()"
+            >
+
+
+                <div class="car-symbol">
+                    🚘
+                </div>
+
+
+                <div class="plate-info">
+
+
+                    <div class="plate-small">
+                        点击选择车辆
+                    </div>
+
+
+                    <div
+                        class="plate-number"
+                        id="selectedPlate"
+                    >
+                        未选择
+                    </div>
+
+
+                </div>
+
+
+                <div class="arrow">
+                    ›
+                </div>
+
+
+            </div>
+
+
+            <!-- 地址 -->
+
+            <div
+                class="address-area"
+                id="addressArea"
+            >
+
+
+                <div class="section-label">
+                    查询地址
+                </div>
+
+
+                <select
+                    class="address-select"
+                    id="addressSelect"
+                >
+
+                    <option value="">
+                        请选择地址
+                    </option>
+
+                    <option value="红呈酒馆">
+                        红呈酒馆
+                    </option>
+
+                </select>
+
+
+                <button
+                    class="query-button"
+                    onclick="searchRecords()"
+                >
+                    查询地点到访记录
+                </button>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             查询结果
+        ================================================== -->
+
+        <div
+            class="results"
+            id="results"
+        >
+
+
+            <div class="result-header">
+
+
+                <div class="result-title">
+                    查询结果
+                </div>
+
+
+                <div class="result-count">
+                    共 3 条记录
+                </div>
+
+
+            </div>
+
+
+            <div class="result-route">
+
+                <span>
+                    LT713
+                </span>
+
+                <span>
+                    红呈酒馆
+                </span>
+
+            </div>
+
+
+            <div class="timeline">
+
+
+                <!-- =========================================
+                     8月12日
+                ========================================== -->
+
+                <div class="record">
+
+
+                    <div class="record-left">
+
+
+                        <div class="record-date">
+                            08月12日
+                        </div>
+
+
+                        <div class="record-year">
+                            2026
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="timeline-marker">
+
+                        <div class="marker"></div>
+
+                    </div>
+
+
+                    <div class="record-right">
+
+
+                        <div class="record-location">
+                            红呈酒馆
+                        </div>
+
+
+                        <div class="record-text">
+
+                            <span class="person">
+                                叶倩倩
+                            </span>
+
+                            将车辆使用授权于
+
+                            <span class="person">
+                                黄驰雨
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =========================================
+                     8月14日
+                ========================================== -->
+
+                <div class="record">
+
+
+                    <div class="record-left">
+
+
+                        <div class="record-date">
+                            08月14日
+                        </div>
+
+
+                        <div class="record-year">
+                            2026
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="timeline-marker">
+
+                        <div class="marker"></div>
+
+                    </div>
+
+
+                    <div class="record-right">
+
+
+                        <div class="record-location">
+                            红呈酒馆
+                        </div>
+
+
+                        <div class="record-text">
+
+                            <span class="person">
+                                叶倩倩
+                            </span>
+
+                            将车辆使用授权于
+
+                            <span class="person">
+                                宇文若
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+                <!-- =========================================
+                     8月15日
+                ========================================== -->
+
+                <div class="record">
+
+
+                    <div class="record-left">
+
+
+                        <div class="record-date">
+                            08月15日
+                        </div>
+
+
+                        <div class="record-year">
+                            2026
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="timeline-marker">
+
+                        <div class="marker"></div>
+
+                    </div>
+
+
+                    <div class="record-right">
+
+
+                        <div class="record-location">
+                            红呈酒馆
+                        </div>
+
+
+                        <div class="record-text">
+
+                            <span class="person">
+                                叶倩倩
+                            </span>
+
+                            将车辆使用授权于
+
+                            <span class="person">
+                                颜悦洋
+                            </span>
+
+                        </div>
+
+
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     车辆选择页面
+===================================================== -->
+
+<div
+    class="vehicle-page"
+    id="vehicleSelectPage"
+>
+
+
+    <div class="app-header">
+
+
+        <div
+            class="back"
+            onclick="closeVehicleSelect()"
+        >
+            ‹
+        </div>
+
+
+        <div class="app-title">
+            选择车辆
+        </div>
+
+
+    </div>
+
+
+    <div class="vehicle-list">
+
+
+        <div
+            class="vehicle-card"
+            onclick="selectVehicle()"
+        >
+
+
+            <div class="vehicle-icon">
+                🚘
+            </div>
+
+
+            <div class="vehicle-info">
+
+
+                <div class="vehicle-label">
+                    可查询车辆
+                </div>
+
+
+                <div class="vehicle-number">
+                    LT713
+                </div>
+
+
+                <div class="vehicle-status">
+                    可查询授权记录
+                </div>
+
+
+            </div>
+
+
+            <div class="arrow">
+                ›
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     Home
+===================================================== -->
+
+<div
+    class="home-button"
+    onclick="goHome()"
+></div>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   手机时间
+===================================================== */
+
+function updateTime() {
+
+    const now =
+        new Date();
+
+
+    const hour =
+        String(
+            now.getHours()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    const minute =
+        String(
+            now.getMinutes()
+        ).padStart(
+            2,
+            "0"
+        );
+
+
+    document
+        .getElementById(
+            "phoneTime"
+        )
+        .textContent =
+        hour + ":" + minute;
+
+}
+
+
+updateTime();
+
+
+setInterval(
+    updateTime,
+    1000
+);
+
+
+/* =====================================================
+   打开 APP
+===================================================== */
+
+function openVehicleApp() {
+
+    document
+        .getElementById(
+            "vehicleApp"
+        )
+        .classList
+        .add(
+            "open"
+        );
+
+}
+
+
+/* =====================================================
+   关闭 APP
+===================================================== */
+
+function closeVehicleApp() {
+
+    document
+        .getElementById(
+            "vehicleApp"
+        )
+        .classList
+        .remove(
+            "open"
+        );
+
+}
+
+
+/* =====================================================
+   打开车辆选择
+===================================================== */
+
+function openVehicleSelect() {
+
+    document
+        .getElementById(
+            "vehicleSelectPage"
+        )
+        .classList
+        .add(
+            "show"
+        );
+
+}
+
+
+/* =====================================================
+   关闭车辆选择
+===================================================== */
+
+function closeVehicleSelect() {
+
+    document
+        .getElementById(
+            "vehicleSelectPage"
+        )
+        .classList
+        .remove(
+            "show"
+        );
+
+}
+
+
+/* =====================================================
+   选择 LT713
+===================================================== */
+
+function selectVehicle() {
+
+    document
+        .getElementById(
+            "selectedPlate"
+        )
+        .textContent =
+        "LT713";
+
+
+    document
+        .getElementById(
+            "addressArea"
+        )
+        .classList
+        .add(
+            "active"
+        );
+
+
+    closeVehicleSelect();
+
+}
+
+
+/* =====================================================
+   查询
+===================================================== */
+
+function searchRecords() {
+
+    const plate =
+        document
+        .getElementById(
+            "selectedPlate"
+        )
+        .textContent;
+
+
+    const address =
+        document
+        .getElementById(
+            "addressSelect"
+        )
+        .value;
+
+
+    if (
+        plate !== "LT713"
+    ) {
+
+        alert(
+            "请先选择车辆"
+        );
+
+        return;
+
+    }
+
+
+    if (
+        address !== "红呈酒馆"
+    ) {
+
+        alert(
+            "请选择查询地址"
+        );
+
+        return;
+
+    }
+
+
+    document
+        .getElementById(
+            "results"
+        )
+        .classList
+        .add(
+            "show"
+        );
+
+
+    /*
+        自动滚动到查询结果
+    */
+
+    setTimeout(
+        function() {
+
+            document
+                .getElementById(
+                    "results"
+                )
+                .scrollIntoView({
+                    behavior:
+                        "smooth",
+
+                    block:
+                        "start"
+                });
+
+        },
+        100
+    );
+
+}
+
+
+/* =====================================================
+   Home
+===================================================== */
+
+function goHome() {
+
+    document
+        .getElementById(
+            "vehicleSelectPage"
+        )
+        .classList
+        .remove(
+            "show"
+        );
+
+
+    document
+        .getElementById(
+            "vehicleApp"
+        )
+        .classList
+        .remove(
+            "open"
+        );
+
+}
+
+</script>
+
+</body>
+</html>

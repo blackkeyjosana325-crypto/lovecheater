@@ -1,0 +1,1514 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>手机模拟</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,body{
+    width:100%;
+    height:100%;
+}
+
+body{
+    background:#202124;
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Microsoft YaHei",sans-serif;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    overflow:hidden;
+}
+
+/* =========================
+   手机
+========================= */
+
+.phone{
+    width:390px;
+    height:800px;
+    background:#050505;
+    border-radius:43px;
+    padding:10px;
+    position:relative;
+    box-shadow:
+        0 0 0 2px #555,
+        0 30px 80px rgba(0,0,0,.7);
+}
+
+.screen{
+    width:100%;
+    height:100%;
+    border-radius:34px;
+    overflow:hidden;
+    position:relative;
+    background:#111;
+}
+
+/* 刘海 */
+
+.notch{
+    position:absolute;
+    width:125px;
+    height:28px;
+    background:#000;
+    top:0;
+    left:50%;
+    transform:translateX(-50%);
+    border-radius:0 0 18px 18px;
+    z-index:3000;
+}
+
+/* =========================
+   桌面
+========================= */
+
+.home-screen{
+    position:absolute;
+    inset:0;
+    color:white;
+    background:
+        radial-gradient(circle at 75% 20%,rgba(255,255,255,.15),transparent 25%),
+        linear-gradient(145deg,#4d5964,#242b31 55%,#121619);
+    z-index:100;
+}
+
+.status-bar{
+    height:42px;
+    padding:0 20px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    font-size:13px;
+}
+
+.status-right{
+    display:flex;
+    align-items:center;
+    gap:8px;
+}
+
+.battery{
+    width:23px;
+    height:11px;
+    border:1px solid white;
+    border-radius:3px;
+    position:relative;
+}
+
+.battery:after{
+    content:"";
+    position:absolute;
+    width:2px;
+    height:5px;
+    right:-4px;
+    top:2px;
+    background:white;
+}
+
+.battery-level{
+    position:absolute;
+    left:1px;
+    top:1px;
+    width:17px;
+    height:7px;
+    background:white;
+}
+
+/* 桌面应用 */
+
+.apps{
+    padding:40px 27px;
+    display:grid;
+    grid-template-columns:repeat(4,65px);
+    gap:25px 20px;
+}
+
+.app{
+    width:65px;
+    text-align:center;
+    cursor:pointer;
+    user-select:none;
+}
+
+.app-icon{
+    width:58px;
+    height:58px;
+    margin:auto;
+    margin-bottom:7px;
+    border-radius:15px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:0 5px 15px rgba(0,0,0,.35);
+    transition:.12s;
+}
+
+.app:active .app-icon{
+    transform:scale(.9);
+}
+
+.app-name{
+    font-size:12px;
+    color:white;
+    text-shadow:0 1px 3px black;
+}
+
+/* Ans 图标 */
+
+.ans-icon{
+    background:
+        linear-gradient(145deg,#fff,#e8e8e8);
+    color:#111;
+    font-family:Georgia,serif;
+    font-size:28px;
+    font-weight:bold;
+}
+
+/* 高铁图标 */
+
+.rail-icon{
+    background:
+        linear-gradient(145deg,#eaf5fb,#a8cedf);
+    color:#32637a;
+    font-size:28px;
+}
+
+/* =========================
+   通用 APP 页面
+========================= */
+
+.app-window{
+    position:absolute;
+    inset:0;
+    z-index:500;
+    background:#f5f5f5;
+
+    opacity:0;
+    pointer-events:none;
+    transform:scale(.96);
+
+    transition:
+        opacity .22s,
+        transform .22s;
+}
+
+.app-window.open{
+    opacity:1;
+    pointer-events:auto;
+    transform:scale(1);
+}
+
+.app-header{
+    height:58px;
+    background:rgba(255,255,255,.98);
+    border-bottom:1px solid #ddd;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    position:relative;
+}
+
+.app-title{
+    font-size:18px;
+    font-weight:600;
+}
+
+.back{
+    position:absolute;
+    left:10px;
+
+    width:45px;
+    height:45px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:30px;
+    cursor:pointer;
+}
+
+/* =========================
+   Ans
+========================= */
+
+.ans-page{
+    background:#fafafa;
+}
+
+.ans-header-title{
+    font-family:Georgia,serif;
+    font-size:23px;
+    font-style:italic;
+    font-weight:bold;
+}
+
+.feed{
+    position:absolute;
+    top:58px;
+    bottom:25px;
+    left:0;
+    right:0;
+    overflow-y:auto;
+}
+
+/* Ans 顶部介绍 */
+
+.ans-info{
+    background:#fff;
+    padding:12px 15px;
+    border-bottom:1px solid #e7e7e7;
+
+    display:flex;
+    align-items:center;
+    gap:10px;
+}
+
+.ans-info-icon{
+    width:33px;
+    height:33px;
+    border-radius:50%;
+    background:#111;
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:15px;
+}
+
+.ans-info-text{
+    flex:1;
+}
+
+.ans-info-title{
+    font-size:13px;
+    font-weight:600;
+}
+
+.ans-info-subtitle{
+    margin-top:2px;
+    font-size:10px;
+    color:#999;
+}
+
+/* 动态 */
+
+.post{
+    background:#fff;
+    border-bottom:8px solid #f0f0f0;
+}
+
+.post-user{
+    display:flex;
+    align-items:center;
+    padding:13px 14px;
+}
+
+.avatar{
+    width:38px;
+    height:38px;
+    border-radius:50%;
+
+    background:
+        linear-gradient(145deg,#444,#111);
+
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:16px;
+    font-weight:600;
+
+    margin-right:10px;
+}
+
+.user-main{
+    flex:1;
+}
+
+.username{
+    font-size:14px;
+    font-weight:600;
+}
+
+.location{
+    font-size:11px;
+    color:#777;
+    margin-top:2px;
+}
+
+.location:before{
+    content:"●";
+    font-size:7px;
+    margin-right:4px;
+}
+
+.more{
+    font-size:20px;
+    color:#555;
+}
+
+.post-photo{
+    width:100%;
+    display:block;
+    background:#eee;
+}
+
+/* 第一条动态没有图片 */
+
+.no-photo-location{
+    height:215px;
+
+    background:
+        linear-gradient(145deg,#31363b,#16191c);
+
+    color:white;
+
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+
+    text-align:center;
+}
+
+.pin{
+    font-size:32px;
+    margin-bottom:10px;
+}
+
+.place-big{
+    font-size:19px;
+    font-weight:600;
+}
+
+.place-en{
+    font-size:11px;
+    margin-top:6px;
+    color:#aaa;
+}
+
+/* 动态文字 */
+
+.post-body{
+    padding:13px 14px 16px;
+}
+
+.post-actions{
+    font-size:20px;
+    margin-bottom:10px;
+    letter-spacing:6px;
+}
+
+.caption{
+    font-size:14px;
+    line-height:1.6;
+}
+
+.caption-name{
+    font-weight:600;
+    margin-right:5px;
+}
+
+.post-date{
+    font-size:10px;
+    color:#999;
+    margin-top:8px;
+}
+
+/* =========================
+   地点真实性弹窗
+========================= */
+
+.location-modal{
+    position:absolute;
+    inset:0;
+    z-index:2000;
+
+    background:rgba(0,0,0,.58);
+
+    display:none;
+    align-items:center;
+    justify-content:center;
+
+    padding:30px;
+}
+
+.location-modal.show{
+    display:flex;
+}
+
+.location-card{
+    width:100%;
+    background:white;
+    border-radius:17px;
+    overflow:hidden;
+    text-align:center;
+}
+
+.location-card-main{
+    padding:27px 22px 22px;
+}
+
+.location-symbol{
+    width:55px;
+    height:55px;
+
+    margin:0 auto 15px;
+
+    border-radius:50%;
+    background:#111;
+    color:white;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:25px;
+}
+
+.location-title{
+    font-size:18px;
+    font-weight:600;
+    margin-bottom:10px;
+}
+
+.location-description{
+    font-size:13px;
+    line-height:1.7;
+    color:#666;
+}
+
+.location-emphasis{
+    color:#111;
+    font-weight:600;
+}
+
+.location-confirm{
+    border-top:1px solid #ddd;
+    padding:14px;
+
+    font-size:15px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* =========================
+   高铁查询
+========================= */
+
+.rail-content{
+    position:absolute;
+    top:58px;
+    bottom:25px;
+    left:0;
+    right:0;
+
+    overflow-y:auto;
+    background:#f3f6f8;
+    padding:14px;
+}
+
+.simulation-note{
+    font-size:10px;
+    color:#999;
+    text-align:center;
+    margin-bottom:10px;
+}
+
+.rail-search-card{
+    background:white;
+    border-radius:14px;
+    padding:17px;
+    box-shadow:0 2px 10px rgba(0,0,0,.06);
+}
+
+.route{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:20px;
+}
+
+.city{
+    width:110px;
+}
+
+.city-label{
+    font-size:10px;
+    color:#999;
+    margin-bottom:4px;
+}
+
+.city-name{
+    font-size:24px;
+    font-weight:600;
+}
+
+.route-arrow{
+    font-size:20px;
+    color:#7b8b93;
+}
+
+.date-title{
+    font-size:11px;
+    color:#777;
+    margin-bottom:7px;
+}
+
+.date-select{
+    width:100%;
+    height:43px;
+
+    border:1px solid #ddd;
+    border-radius:8px;
+
+    background:white;
+
+    padding:0 10px;
+
+    font-size:13px;
+    outline:none;
+
+    margin-bottom:12px;
+}
+
+.search-button{
+    width:100%;
+    height:43px;
+
+    border:0;
+    border-radius:8px;
+
+    background:#406d82;
+    color:white;
+
+    font-size:14px;
+    cursor:pointer;
+}
+
+.results{
+    margin-top:14px;
+}
+
+.empty{
+    text-align:center;
+    padding:40px 10px;
+    color:#999;
+    font-size:13px;
+}
+
+.result-date{
+    font-size:13px;
+    font-weight:600;
+    color:#555;
+    margin:5px 2px 10px;
+}
+
+.train{
+    background:white;
+    border-radius:11px;
+    margin-bottom:9px;
+    padding:14px;
+    box-shadow:0 2px 8px rgba(0,0,0,.05);
+}
+
+.train-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.train-number{
+    font-size:13px;
+    font-weight:700;
+    color:#38647a;
+}
+
+.train-type{
+    font-size:10px;
+    color:#999;
+}
+
+.train-times{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.time-block{
+    min-width:70px;
+}
+
+.time{
+    font-size:20px;
+    font-weight:600;
+}
+
+.station-name-small{
+    font-size:11px;
+    color:#777;
+    margin-top:3px;
+}
+
+.duration{
+    text-align:center;
+    font-size:10px;
+    color:#999;
+}
+
+.duration-line{
+    width:52px;
+    height:1px;
+    background:#aaa;
+    margin:6px auto;
+    position:relative;
+}
+
+.duration-line:after{
+    content:"›";
+    position:absolute;
+    right:-2px;
+    top:-10px;
+    font-size:14px;
+}
+
+.train-bottom{
+    margin-top:11px;
+    padding-top:9px;
+    border-top:1px solid #eee;
+
+    display:flex;
+    justify-content:space-between;
+
+    font-size:10px;
+    color:#999;
+}
+
+/* =========================
+   Home 条
+========================= */
+
+.home-button{
+    position:absolute;
+    width:140px;
+    height:25px;
+
+    left:50%;
+    bottom:0;
+
+    transform:translateX(-50%);
+
+    z-index:2900;
+    cursor:pointer;
+}
+
+.home-button:after{
+    content:"";
+
+    position:absolute;
+
+    width:120px;
+    height:4px;
+
+    left:10px;
+    bottom:7px;
+
+    border-radius:5px;
+
+    background:#111;
+    opacity:.8;
+}
+
+/* 小屏幕 */
+
+@media(max-height:850px){
+    .phone{
+        transform:scale(.9);
+    }
+}
+
+@media(max-height:720px){
+    .phone{
+        transform:scale(.78);
+    }
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="phone">
+
+<div class="screen">
+
+<div class="notch"></div>
+
+
+<!-- =========================
+     桌面
+========================= -->
+
+<div class="home-screen">
+
+    <div class="status-bar">
+
+        <div id="phoneTime">
+            16:30
+        </div>
+
+        <div class="status-right">
+
+            <span>▮▮▮</span>
+            <span>⌁</span>
+
+            <div class="battery">
+                <div class="battery-level"></div>
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="apps">
+
+        <!-- Ans -->
+
+        <div class="app" onclick="openAns()">
+
+            <div class="app-icon ans-icon">
+                A
+            </div>
+
+            <div class="app-name">
+                Ans
+            </div>
+
+        </div>
+
+
+        <!-- 高铁查询 -->
+
+        <div class="app" onclick="openRail()">
+
+            <div class="app-icon rail-icon">
+                🚄
+            </div>
+
+            <div class="app-name">
+                高铁查询
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     Ans
+========================= -->
+
+<div class="app-window ans-page" id="ansApp">
+
+    <div class="app-header">
+
+        <div class="back" onclick="closeAns()">
+            ‹
+        </div>
+
+        <div class="ans-header-title">
+            Ans
+        </div>
+
+    </div>
+
+
+    <div class="feed">
+
+        <!-- Ans 地点机制提示 -->
+
+        <div class="ans-info">
+
+            <div class="ans-info-icon">
+                ◎
+            </div>
+
+            <div class="ans-info-text">
+
+                <div class="ans-info-title">
+                    真实地点
+                </div>
+
+                <div class="ans-info-subtitle">
+                    Ans 动态地点由设备定位产生
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================
+             第一条动态
+        ====================== -->
+
+        <div class="post">
+
+            <div class="post-user">
+
+                <div class="avatar">
+                    A
+                </div>
+
+                <div class="user-main">
+
+                    <div class="username">
+                        用户
+                    </div>
+
+                    <div class="location">
+                        洛杉矶机场
+                    </div>
+
+                </div>
+
+                <div class="more">
+                    ···
+                </div>
+
+            </div>
+
+
+            <!--
+                第一条没有指定配图，
+                因此这里使用纯 UI 地点卡片
+            -->
+
+            <div class="no-photo-location">
+
+                <div class="pin">
+                    ◎
+                </div>
+
+                <div class="place-big">
+                    洛杉矶机场
+                </div>
+
+                <div class="place-en">
+                    Los Angeles
+                </div>
+
+            </div>
+
+
+            <div class="post-body">
+
+                <div class="post-actions">
+                    ♡　○
+                </div>
+
+                <div class="caption">
+
+                    <span class="caption-name">
+                        用户
+                    </span>
+
+                    从美国飞回来还要10个小时，真的很累。
+
+                </div>
+
+                <div class="post-date">
+                    2026年8月12日 · 下午
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- =====================
+             第二条动态
+        ====================== -->
+
+        <div class="post">
+
+            <div class="post-user">
+
+                <div class="avatar">
+                    A
+                </div>
+
+                <div class="user-main">
+
+                    <div class="username">
+                        用户
+                    </div>
+
+                    <div class="location">
+                        C市
+                    </div>
+
+                </div>
+
+                <div class="more">
+                    ···
+                </div>
+
+            </div>
+
+
+            <!--
+                图片文件：
+                time.png
+
+                请把 time.png 和 index.html
+                放在同一个文件夹。
+            -->
+
+            <img
+                src="time.png"
+                class="post-photo"
+                alt="C市咖啡店动态图片"
+            >
+
+
+            <div class="post-body">
+
+                <div class="post-actions">
+                    ♡　○
+                </div>
+
+                <div class="caption">
+
+                    <span class="caption-name">
+                        用户
+                    </span>
+
+                    这家咖啡店很chill。
+
+                </div>
+
+                <div class="post-date">
+                    2026年8月14日 · 下午
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     Ans 地点真实性提示
+========================= -->
+
+<div class="location-modal" id="locationModal">
+
+    <div class="location-card">
+
+        <div class="location-card-main">
+
+            <div class="location-symbol">
+                ◎
+            </div>
+
+            <div class="location-title">
+                关于动态地点
+            </div>
+
+            <div class="location-description">
+
+                Ans 不支持用户手动填写动态地点。
+
+                <br><br>
+
+                动态中显示的地点由发布时的设备定位产生，
+
+                <span class="location-emphasis">
+                    所显示的地点一定为发布动态时的真实定位。
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div
+            class="location-confirm"
+            onclick="confirmLocationNotice()"
+        >
+            我知道了
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     高铁查询
+========================= -->
+
+<div class="app-window" id="railApp">
+
+    <div class="app-header">
+
+        <div class="back" onclick="closeRail()">
+            ‹
+        </div>
+
+        <div class="app-title">
+            高铁查询
+        </div>
+
+    </div>
+
+
+    <div class="rail-content">
+
+        <div class="simulation-note">
+            剧情模拟查询 · 车次数据为虚构内容
+        </div>
+
+
+        <div class="rail-search-card">
+
+            <div class="route">
+
+                <div class="city">
+
+                    <div class="city-label">
+                        出发
+                    </div>
+
+                    <div class="city-name">
+                        C市
+                    </div>
+
+                </div>
+
+
+                <div class="route-arrow">
+                    ⟶
+                </div>
+
+
+                <div class="city">
+
+                    <div class="city-label">
+                        到达
+                    </div>
+
+                    <div class="city-name">
+                        B市
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="date-title">
+                出发日期
+            </div>
+
+
+            <select
+                class="date-select"
+                id="railDate"
+            >
+
+                <option value="">
+                    请选择日期
+                </option>
+
+                <option value="13">
+                    2026年8月13日
+                </option>
+
+                <option value="14">
+                    2026年8月14日
+                </option>
+
+                <option value="15">
+                    2026年8月15日
+                </option>
+
+            </select>
+
+
+            <button
+                class="search-button"
+                onclick="searchTrain()"
+            >
+                查询车次
+            </button>
+
+        </div>
+
+
+        <div class="results" id="trainResults">
+
+            <div class="empty">
+                请选择 8月13日—8月15日查询
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =========================
+     Home
+========================= -->
+
+<div
+    class="home-button"
+    onclick="goHome()"
+    title="返回桌面"
+></div>
+
+
+</div>
+</div>
+
+
+<script>
+
+/* =========================
+   手机时间
+========================= */
+
+function updateTime(){
+
+    const now = new Date();
+
+    const h =
+        String(now.getHours())
+        .padStart(2,"0");
+
+    const m =
+        String(now.getMinutes())
+        .padStart(2,"0");
+
+    document.getElementById(
+        "phoneTime"
+    ).textContent =
+        h + ":" + m;
+}
+
+updateTime();
+
+setInterval(
+    updateTime,
+    1000
+);
+
+
+/* =========================
+   关闭全部 App
+========================= */
+
+function closeAllApps(){
+
+    document
+        .querySelectorAll(".app-window")
+        .forEach(function(app){
+
+            app.classList.remove("open");
+
+        });
+
+    document
+        .getElementById("locationModal")
+        .classList.remove("show");
+}
+
+
+/* =========================
+   Ans
+========================= */
+
+function openAns(){
+
+    closeAllApps();
+
+    document
+        .getElementById("ansApp")
+        .classList.add("open");
+
+
+    /*
+        每次重新进入 Ans，
+        都会显示地点真实性提醒。
+    */
+
+    setTimeout(function(){
+
+        document
+            .getElementById("locationModal")
+            .classList.add("show");
+
+    },250);
+
+}
+
+
+function confirmLocationNotice(){
+
+    document
+        .getElementById("locationModal")
+        .classList.remove("show");
+
+}
+
+
+function closeAns(){
+
+    document
+        .getElementById("ansApp")
+        .classList.remove("open");
+
+    document
+        .getElementById("locationModal")
+        .classList.remove("show");
+
+}
+
+
+/* =========================
+   高铁查询
+========================= */
+
+/*
+   以下车次编号全部为虚构编号，
+   用于剧情网页模拟。
+*/
+
+const trains = [
+
+    {
+        number:"C8612",
+        start:"08:00",
+        end:"09:20",
+        duration:"1小时20分"
+    },
+
+    {
+        number:"C8626",
+        start:"10:15",
+        end:"12:00",
+        duration:"1小时45分"
+    },
+
+    {
+        number:"C8638",
+        start:"11:30",
+        end:"13:56",
+        duration:"2小时26分"
+    },
+
+    {
+        number:"C8652",
+        start:"14:00",
+        end:"15:30",
+        duration:"1小时30分"
+    },
+
+    {
+        number:"C8674",
+        start:"16:10",
+        end:"17:08",
+        duration:"58分"
+    },
+
+    {
+        number:"C8688",
+        start:"17:20",
+        end:"18:40",
+        duration:"1小时20分"
+    }
+
+];
+
+
+function openRail(){
+
+    closeAllApps();
+
+    document
+        .getElementById("railApp")
+        .classList.add("open");
+
+}
+
+
+function closeRail(){
+
+    document
+        .getElementById("railApp")
+        .classList.remove("open");
+
+}
+
+
+function searchTrain(){
+
+    const day =
+        document
+        .getElementById("railDate")
+        .value;
+
+
+    const result =
+        document
+        .getElementById("trainResults");
+
+
+    if(!day){
+
+        result.innerHTML = `
+
+            <div class="empty">
+                请先选择查询日期
+            </div>
+
+        `;
+
+        return;
+    }
+
+
+    let html = `
+
+        <div class="result-date">
+
+            2026年8月${day}日
+            ·
+            C市 → B市
+
+        </div>
+
+    `;
+
+
+    trains.forEach(function(train){
+
+        html += `
+
+            <div class="train">
+
+                <div class="train-top">
+
+                    <div class="train-number">
+                        ${train.number}
+                    </div>
+
+                    <div class="train-type">
+                        模拟车次
+                    </div>
+
+                </div>
+
+
+                <div class="train-times">
+
+                    <div class="time-block">
+
+                        <div class="time">
+                            ${train.start}
+                        </div>
+
+                        <div class="station-name-small">
+                            C市
+                        </div>
+
+                    </div>
+
+
+                    <div class="duration">
+
+                        ${train.duration}
+
+                        <div class="duration-line"></div>
+
+                    </div>
+
+
+                    <div class="time-block">
+
+                        <div class="time">
+                            ${train.end}
+                        </div>
+
+                        <div class="station-name-small">
+                            B市
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <div class="train-bottom">
+
+                    <span>
+                        C市站
+                    </span>
+
+                    <span>
+                        B市站
+                    </span>
+
+                </div>
+
+            </div>
+
+        `;
+
+    });
+
+
+    result.innerHTML = html;
+
+}
+
+
+/* =========================
+   Home
+========================= */
+
+function goHome(){
+
+    closeAllApps();
+
+}
+
+</script>
+
+</body>
+</html>

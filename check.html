@@ -4,2031 +4,681 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>BtB检测系统 - Blood to Blood Analysis System</title>
+<title>匹配出轨对象</title>
 
 <style>
-
-/* ==============================
-   基础
-============================== */
-
-* {
-    box-sizing: border-box;
-}
-
-body {
-    margin: 0;
-    font-family:
-        "Microsoft YaHei",
-        "Segoe UI",
-        Arial,
-        sans-serif;
-
-    background: #eef3f7;
-    color: #24323d;
-}
-
-
-/* ==============================
-   顶部系统栏
-============================== */
-
-.topbar {
-    height: 68px;
-
-    background: #ffffff;
-
-    border-bottom: 1px solid #d6e0e7;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 0 36px;
-
-    box-shadow:
-        0 2px 8px rgba(20, 50, 70, 0.05);
-}
-
-
-.brand {
-    display: flex;
-    align-items: center;
-    gap: 14px;
-}
-
-
-.hospital-logo {
-    width: 40px;
-    height: 40px;
-
-    border-radius: 7px;
-
-    background: #167c91;
-
-    color: white;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 22px;
-    font-weight: bold;
-}
-
-
-.brand-title {
-    font-size: 19px;
-    font-weight: 600;
-
-    color: #20333f;
-}
-
-
-.brand-subtitle {
-    font-size: 11px;
-
-    color: #81919c;
-
-    margin-top: 3px;
-
-    letter-spacing: 0.5px;
-}
-
-
-.system-status {
-    display: flex;
-    align-items: center;
-
-    gap: 8px;
-
-    color: #647580;
-
-    font-size: 13px;
-}
-
-
-.status-dot {
-    width: 8px;
-    height: 8px;
-
-    border-radius: 50%;
-
-    background: #36ad78;
-
-    box-shadow:
-        0 0 0 3px rgba(54,173,120,0.12);
-}
-
-
-/* ==============================
-   页面布局
-============================== */
-
-.layout {
-    display: flex;
-
-    min-height:
-        calc(100vh - 68px);
-}
-
-
-/* ==============================
-   左侧导航
-============================== */
-
-.sidebar {
-    width: 220px;
-
-    background: #173640;
-
-    color: #d9e7eb;
-
-    padding-top: 24px;
-}
-
-
-.nav-section {
-    padding: 0 18px;
-
-    margin-bottom: 25px;
-}
-
-
-.nav-title {
-    font-size: 11px;
-
-    color: #7f9ca6;
-
-    letter-spacing: 1px;
-
-    margin:
-        0 0 10px 8px;
-}
-
-
-.nav-item {
-    padding: 12px;
-
-    border-radius: 5px;
-
-    margin-bottom: 4px;
-
-    font-size: 14px;
-
-    cursor: default;
-}
-
-
-.nav-item.active {
-    background: #205462;
-
-    color: white;
-}
-
-
-.nav-item span {
-    margin-right: 9px;
-}
-
-
-/* ==============================
-   主内容
-============================== */
-
-.main {
-    flex: 1;
-
-    padding: 35px 45px;
-
-    max-width: 1400px;
-}
-
-
-.breadcrumb {
-    font-size: 12px;
-
-    color: #8998a1;
-
-    margin-bottom: 12px;
-}
-
-
-.page-title {
-    font-size: 26px;
-
-    margin: 0;
-
-    color: #233843;
-
-    font-weight: 600;
-}
-
-
-.page-description {
-    margin-top: 7px;
-
-    color: #82919a;
-
-    font-size: 13px;
-}
-
-
-/* ==============================
-   查询卡片
-============================== */
-
-.search-card {
-    margin-top: 28px;
-
-    background: #ffffff;
-
-    border: 1px solid #dce5ea;
-
-    border-radius: 8px;
-
-    padding:
-        27px 30px 30px;
-
-    box-shadow:
-        0 3px 12px
-        rgba(30, 60, 80, 0.045);
-}
-
-
-.card-title {
-    font-size: 16px;
-
-    font-weight: 600;
-
-    color: #344954;
-
-    margin-bottom: 20px;
-}
-
-
-.form-row {
-    display: flex;
-
-    gap: 18px;
-
-    align-items: flex-end;
-}
-
-
-.input-group {
-    flex: 1;
-}
-
-
-.input-label {
-    display: block;
-
-    font-size: 12px;
-
-    color: #687b85;
-
-    margin-bottom: 8px;
-}
-
-
-.input-box {
-    width: 100%;
-
-    height: 44px;
-
-    border:
-        1px solid #ccd9df;
-
-    border-radius: 5px;
-
-    padding: 0 13px;
-
-    font-size: 14px;
-
-    outline: none;
-
-    color: #273c47;
-
-    background: #fbfdfe;
-
-    transition: 0.2s;
-}
-
-
-.input-box:focus {
-    border-color: #368ca0;
-
-    box-shadow:
-        0 0 0 3px
-        rgba(54,140,160,0.08);
-
-    background: white;
-}
-
-
-.query-btn {
-    height: 44px;
-
-    width: 125px;
-
-    border: none;
-
-    border-radius: 5px;
-
-    background: #167c91;
-
-    color: white;
-
-    font-size: 14px;
-
-    cursor: pointer;
-
-    transition: 0.2s;
-}
-
-
-.query-btn:hover {
-    background: #126b7c;
-}
-
-
-.query-btn:active {
-    transform: translateY(1px);
-}
-
-
-.hint {
-    margin-top: 13px;
-
-    color: #9aa8af;
-
-    font-size: 11px;
-}
-
-
-/* ==============================
-   查询结果
-============================== */
-
-#resultArea {
-    margin-top: 25px;
-
-    display: none;
-}
-
-
-.result-card {
-    background: white;
-
-    border:
-        1px solid #dce5ea;
-
-    border-radius: 8px;
-
-    overflow: hidden;
-
-    box-shadow:
-        0 3px 12px
-        rgba(30,60,80,0.045);
-
-    margin-bottom: 20px;
-}
-
-
-.result-header {
-    min-height: 58px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    padding: 0 24px;
-
-    border-bottom:
-        1px solid #e3eaee;
-
-    background: #fafcfd;
-}
-
-
-.result-header-title {
-    font-size: 15px;
-
-    font-weight: 600;
-
-    color: #344954;
-}
-
-
-.record-status {
-    font-size: 11px;
-
-    border-radius: 12px;
-
-    padding:
-        5px 11px;
-
-    background: #eaf7f0;
-
-    color: #27845b;
-}
-
-
-.record-status.deleted {
-    background: #f5f1ed;
-
-    color: #8c725e;
-}
-
-
-.result-body {
-    padding: 26px;
-}
-
-
-/* ==============================
-   信息项目
-============================== */
-
-.record-info {
-    display: grid;
-
-    grid-template-columns:
-        1fr 1fr;
-
-    gap: 17px;
-
-    margin-bottom: 25px;
-}
-
-
-.info-item {
-    background: #f7fafb;
-
-    border:
-        1px solid #e5ecef;
-
-    padding:
-        15px 17px;
-
-    border-radius: 5px;
-}
-
-
-.info-label {
-    font-size: 11px;
-
-    color: #8a9aa2;
-
-    margin-bottom: 7px;
-}
-
-
-.info-value {
-    font-size: 14px;
-
-    color: #354b56;
-}
-
-
-/* ==============================
-   检测结果
-============================== */
-
-.test-result {
-    border-left:
-        4px solid #d49a42;
-
-    background: #fffaf2;
-
-    padding:
-        18px 20px;
-
-    margin-bottom: 20px;
-}
-
-
-.test-result.success {
-    border-left-color: #329b70;
-
-    background: #f2faf6;
-}
-
-
-.test-result-title {
-    font-size: 11px;
-
-    color: #8b806f;
-
-    margin-bottom: 8px;
-}
-
-
-.test-result.success
-.test-result-title {
-    color: #61836f;
-}
-
-
-.test-result-main {
-    font-size: 18px;
-
-    font-weight: 600;
-
-    color: #735a32;
-}
-
-
-.test-result.success
-.test-result-main {
-    color: #277651;
-}
-
-
-/* ==============================
-   删除 / 恢复区域
-============================== */
-
-.deleted-area {
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    border-top:
-        1px dashed #d8e0e4;
-
-    padding-top: 19px;
-}
-
-
-.deleted-text {
-    color: #9a9691;
-
-    font-size: 13px;
-}
-
-
-.restore-btn {
-    height: 38px;
-
-    padding:
-        0 17px;
-
-    border-radius: 4px;
-
-    border:
-        1px solid #b9cbd2;
-
-    background: white;
-
-    color: #42636f;
-
-    cursor: pointer;
-
-    font-size: 12px;
-
-    transition: 0.2s;
-}
-
-
-.restore-btn:hover {
-    background: #f2f7f9;
-
-    border-color: #8eabb5;
-}
-
-
-/* ==============================
-   两条记录之间的分割线
-============================== */
-
-.record-divider {
-    height: 1px;
-
-    border-top:
-        1px solid #e3eaee;
-
-    margin:
-        30px 0;
-}
-
-
-/* ==============================
-   空白结果
-============================== */
-
-.empty {
-    margin-top: 25px;
-
-    background: white;
-
-    border:
-        1px solid #dce5ea;
-
-    border-radius: 8px;
-
-    padding:
-        55px 20px;
-
-    text-align: center;
-
-    color: #93a1a8;
-}
-
-
-.empty-icon {
-    font-size: 35px;
-
-    margin-bottom: 13px;
-
-    opacity: 0.55;
-}
-
-
-.empty-title {
-    font-size: 14px;
-
-    color: #687b84;
-}
-
-
-.empty-subtitle {
-    font-size: 11px;
-
-    margin-top: 7px;
-}
-
-
-/* ==============================
-   加载动画
-============================== */
-
-.loading-screen {
-    display: none;
-
-    position: fixed;
-
-    inset: 0;
-
-    background:
-        rgba(18, 39, 47, 0.45);
-
-    z-index: 100;
-
-    align-items: center;
-
-    justify-content: center;
-}
-
-
-.loading-box {
-    width: 390px;
-
-    background: white;
-
-    border-radius: 8px;
-
-    padding: 34px;
-
-    box-shadow:
-        0 15px 45px
-        rgba(0,0,0,0.2);
-
-    text-align: center;
-}
-
-
-.spinner {
-    width: 45px;
-    height: 45px;
-
-    border:
-        4px solid #dbe9ed;
-
-    border-top-color:
-        #197d92;
-
-    border-radius: 50%;
-
-    animation:
-        spin 0.9s linear infinite;
-
-    margin:
-        0 auto 20px;
-}
-
-
-@keyframes spin {
-
-    to {
-        transform:
-            rotate(360deg);
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
     }
 
-}
-
-
-.loading-title {
-    font-size: 16px;
-
-    font-weight: 600;
-
-    color: #334953;
-}
-
-
-.loading-text {
-    margin-top: 9px;
-
-    color: #8a989f;
-
-    font-size: 12px;
-}
-
-
-.progress {
-    height: 5px;
-
-    background: #e9eff2;
-
-    border-radius: 5px;
-
-    margin-top: 20px;
-
-    overflow: hidden;
-}
-
-
-.progress-inner {
-    width: 0%;
-
-    height: 100%;
-
-    background: #26859a;
-
-    transition:
-        width 0.4s linear;
-}
-
-
-/* ==============================
-   底部
-============================== */
-
-.footer {
-    margin-top: 25px;
-
-    font-size: 10px;
-
-    color: #9ba8ae;
-
-    text-align: right;
-}
-
-
-/* ==============================
-   移动端
-============================== */
-
-@media(max-width: 800px) {
-
-    .sidebar {
-        display: none;
+    :root {
+        --bg: #08090c;
+        --panel: rgba(18, 19, 24, 0.92);
+        --panel-light: #17191f;
+        --border: rgba(255,255,255,.09);
+        --text: #f0f0f2;
+        --muted: #747780;
+        --accent: #a42d43;
+        --accent-light: #d34a63;
+        --success: #55c68b;
+        --warning: #d8ae5a;
+        --error: #d95c68;
     }
 
-    .main {
-        padding:
-            25px 18px;
+    body {
+        min-height: 100vh;
+        background:
+            radial-gradient(circle at 50% 20%, rgba(133,32,53,.13), transparent 35%),
+            radial-gradient(circle at 15% 80%, rgba(60,45,80,.09), transparent 30%),
+            #08090c;
+        color: var(--text);
+        font-family:
+            "PingFang SC",
+            "Microsoft YaHei",
+            system-ui,
+            -apple-system,
+            sans-serif;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
     }
 
-    .topbar {
-        padding:
-            0 18px;
+    /* 背景网格 */
+    body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background-image:
+            linear-gradient(rgba(255,255,255,.015) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255,255,255,.015) 1px, transparent 1px);
+        background-size: 50px 50px;
+        pointer-events: none;
     }
 
-    .form-row {
-        flex-direction: column;
-
-        align-items: stretch;
+    .wrapper {
+        width: min(92%, 720px);
+        position: relative;
+        z-index: 2;
     }
 
-    .query-btn {
+    .top-label {
+        text-align: center;
+        color: #666a73;
+        letter-spacing: 5px;
+        font-size: 11px;
+        margin-bottom: 16px;
+    }
+
+    .container {
+        background: var(--panel);
+        border: 1px solid var(--border);
+        border-radius: 22px;
+        padding: 46px 48px 42px;
+        box-shadow:
+            0 30px 80px rgba(0,0,0,.55),
+            inset 0 1px 0 rgba(255,255,255,.025);
+        backdrop-filter: blur(20px);
+        position: relative;
+        overflow: hidden;
+    }
+
+    .container::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 12%;
+        right: 12%;
+        height: 1px;
+        background: linear-gradient(
+            90deg,
+            transparent,
+            rgba(211,74,99,.7),
+            transparent
+        );
+    }
+
+    .number {
+        font-family: monospace;
+        color: #4b4d55;
+        font-size: 11px;
+        letter-spacing: 2px;
+        margin-bottom: 24px;
+    }
+
+    h1 {
+        font-size: 35px;
+        font-weight: 500;
+        letter-spacing: 4px;
+        margin-bottom: 10px;
+    }
+
+    .english-title {
+        font-family: Arial, sans-serif;
+        font-size: 11px;
+        letter-spacing: 4px;
+        color: #5c5f68;
+        margin-bottom: 38px;
+    }
+
+    .divider {
         width: 100%;
+        height: 1px;
+        background: var(--border);
+        margin-bottom: 32px;
     }
 
-    .record-info {
-        grid-template-columns:
-            1fr;
+    .label {
+        display: block;
+        color: #888b93;
+        font-size: 12px;
+        letter-spacing: 2px;
+        margin-bottom: 12px;
     }
 
-    .system-status {
-        display: none;
+    select,
+    input {
+        width: 100%;
+        height: 54px;
+        background: #101116;
+        border: 1px solid #292b32;
+        color: #e8e8eb;
+        border-radius: 10px;
+        padding: 0 17px;
+        outline: none;
+        font-size: 15px;
+        transition: .25s;
     }
 
-}
+    select {
+        cursor: pointer;
+    }
 
+    select:focus,
+    input:focus {
+        border-color: rgba(211,74,99,.7);
+        box-shadow: 0 0 0 3px rgba(164,45,67,.08);
+    }
+
+    select option {
+        background: #121318;
+    }
+
+    .input-section {
+        margin-top: 27px;
+        opacity: 0;
+        transform: translateY(8px);
+        pointer-events: none;
+        max-height: 0;
+        overflow: hidden;
+        transition:
+            opacity .35s,
+            transform .35s,
+            max-height .45s;
+    }
+
+    .input-section.show {
+        opacity: 1;
+        transform: translateY(0);
+        pointer-events: auto;
+        max-height: 400px;
+    }
+
+    .selected-person {
+        font-size: 11px;
+        color: #696c75;
+        margin-bottom: 11px;
+        letter-spacing: 1px;
+    }
+
+    .selected-person span {
+        color: #c44b61;
+    }
+
+    input::placeholder {
+        color: #4d5058;
+    }
+
+    .check-button {
+        margin-top: 16px;
+        width: 100%;
+        height: 52px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+
+        background:
+            linear-gradient(
+                135deg,
+                #87283b,
+                #a73349
+            );
+
+        color: white;
+        font-family: Arial, sans-serif;
+        font-size: 12px;
+        letter-spacing: 4px;
+
+        transition: .25s;
+        position: relative;
+        overflow: hidden;
+    }
+
+    .check-button:hover {
+        transform: translateY(-1px);
+        background:
+            linear-gradient(
+                135deg,
+                #9d3046,
+                #bd3e57
+            );
+        box-shadow: 0 8px 25px rgba(164,45,67,.2);
+    }
+
+    .check-button:active {
+        transform: translateY(1px);
+    }
+
+    /* 结果区域 */
+    .result {
+        margin-top: 22px;
+        border-radius: 10px;
+        padding: 0 18px;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        transition: .35s;
+        border: 1px solid transparent;
+    }
+
+    .result.show {
+        padding: 18px;
+        max-height: 180px;
+        opacity: 1;
+    }
+
+    .result-title {
+        font-size: 16px;
+        letter-spacing: 2px;
+        margin-bottom: 7px;
+    }
+
+    .result-desc {
+        font-size: 12px;
+        line-height: 1.8;
+        color: #8e9199;
+    }
+
+    .result.success {
+        background: rgba(52,145,98,.07);
+        border-color: rgba(85,198,139,.22);
+    }
+
+    .result.success .result-title {
+        color: var(--success);
+    }
+
+    .result.error {
+        background: rgba(180,55,70,.07);
+        border-color: rgba(217,92,104,.2);
+    }
+
+    .result.error .result-title {
+        color: var(--error);
+    }
+
+    .result.close {
+        background: rgba(185,137,52,.07);
+        border-color: rgba(216,174,90,.22);
+    }
+
+    .result.close .result-title {
+        color: var(--warning);
+    }
+
+    .answer {
+        margin-top: 8px;
+        color: #d6b26a;
+        font-size: 13px;
+    }
+
+    .footer {
+        margin-top: 30px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        color: #41434a;
+        font-family: monospace;
+        font-size: 9px;
+        letter-spacing: 1px;
+    }
+
+    .status {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+    }
+
+    .dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: #7d2637;
+        box-shadow: 0 0 8px rgba(164,45,67,.7);
+    }
+
+    /* 失败时轻微震动 */
+    @keyframes shake {
+        0%,100% { transform: translateX(0); }
+        20% { transform: translateX(-5px); }
+        40% { transform: translateX(5px); }
+        60% { transform: translateX(-3px); }
+        80% { transform: translateX(3px); }
+    }
+
+    .shake {
+        animation: shake .35s ease;
+    }
+
+    @media (max-width: 600px) {
+        .container {
+            padding: 35px 25px 32px;
+        }
+
+        h1 {
+            font-size: 28px;
+        }
+    }
 </style>
 </head>
 
-
 <body>
 
+<div class="wrapper">
 
-<!-- ==================================================
-     顶部
-================================================== -->
+    <div class="top-label">
+        RELATIONSHIP DATABASE
+    </div>
 
-<header class="topbar">
+    <main class="container" id="mainPanel">
 
-    <div class="brand">
-
-        <div class="hospital-logo">
-            ✚
+        <div class="number">
+            CASE FILE / 06
         </div>
 
-        <div>
+        <h1>匹配出轨对象</h1>
 
-            <div class="brand-title">
-                BtB检测系统
+        <div class="english-title">
+            MATCH THE SECRET LOVER
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- 角色选择 -->
+        <label class="label">
+            SELECT CHARACTER / 选择角色
+        </label>
+
+        <select id="characterSelect">
+            <option value="">— 请选择角色 —</option>
+            <option value="宇文若">宇文若</option>
+            <option value="艾仙儿">艾仙儿</option>
+            <option value="颜悦洋">颜悦洋</option>
+            <option value="吕牧原">吕牧原</option>
+            <option value="谢孟迪">谢孟迪</option>
+            <option value="叶倩倩">叶倩倩</option>
+        </select>
+
+        <!-- 输入区域 -->
+        <div class="input-section" id="inputSection">
+
+            <div class="selected-person">
+                CURRENT TARGET /
+                <span id="currentCharacter"></span>
             </div>
 
-            <div class="brand-subtitle">
-                BLOOD TO BLOOD ANALYSIS SYSTEM · V3.7.2
-            </div>
-
-        </div>
-
-    </div>
-
-
-    <div class="system-status">
-
-        <div class="status-dot"></div>
-
-        检测中心连接正常
-
-    </div>
-
-</header>
-
-
-
-<div class="layout">
-
-
-<!-- ==================================================
-     左侧导航
-================================================== -->
-
-<aside class="sidebar">
-
-
-    <div class="nav-section">
-
-        <div class="nav-title">
-            检测中心
-        </div>
-
-
-        <div class="nav-item active">
-
-            <span>▣</span>
-
-            BtB血液鉴定
-
-        </div>
-
-
-        <div class="nav-item">
-
-            <span>◫</span>
-
-            检测记录
-
-        </div>
-
-
-        <div class="nav-item">
-
-            <span>⌁</span>
-
-            样本管理
-
-        </div>
-
-    </div>
-
-
-
-    <div class="nav-section">
-
-        <div class="nav-title">
-            系统管理
-        </div>
-
-
-        <div class="nav-item">
-
-            <span>⚙</span>
-
-            系统设置
-
-        </div>
-
-
-        <div class="nav-item">
-
-            <span>▤</span>
-
-            操作日志
-
-        </div>
-
-    </div>
-
-
-</aside>
-
-
-
-<!-- ==================================================
-     主区域
-================================================== -->
-
-<main class="main">
-
-
-    <div class="breadcrumb">
-
-        检测中心 / BtB血液鉴定
-
-    </div>
-
-
-    <h1 class="page-title">
-
-        Blood to Blood Analysis
-
-    </h1>
-
-
-    <div class="page-description">
-
-        血液样本关系分析与历史检测记录查询
-
-    </div>
-
-
-
-    <!-- ==================================================
-         搜索区域
-    ================================================== -->
-
-    <section class="search-card">
-
-
-        <div class="card-title">
-
-            样本关系查询
-
-        </div>
-
-
-        <div class="form-row">
-
-
-            <div class="input-group">
-
-                <label class="input-label">
-
-                    样本对象 A
-
-                </label>
-
-
-                <input
-                    id="personA"
-                    class="input-box"
-                    type="text"
-                    placeholder="请输入姓名"
-                    autocomplete="off"
-                >
-
-            </div>
-
-
-
-            <div class="input-group">
-
-                <label class="input-label">
-
-                    样本对象 B
-
-                </label>
-
-
-                <input
-                    id="personB"
-                    class="input-box"
-                    type="text"
-                    placeholder="请输入姓名"
-                    autocomplete="off"
-                >
-
-            </div>
-
-
-
-            <button
-                class="query-btn"
-                onclick="searchBlood()"
+            <input
+                type="text"
+                id="answerInput"
+                placeholder="输入该角色的出轨对象"
+                autocomplete="off"
             >
 
-                查询检测结果
-
+            <button
+                class="check-button"
+                id="checkButton"
+            >
+                CHECK
             </button>
 
+            <!-- 判断结果 -->
+            <div class="result" id="resultBox">
+                <div
+                    class="result-title"
+                    id="resultTitle"
+                ></div>
+
+                <div
+                    class="result-desc"
+                    id="resultDesc"
+                ></div>
+            </div>
 
         </div>
 
+        <div class="footer">
+            <div class="status">
+                <span class="dot"></span>
+                DATABASE ONLINE
+            </div>
 
-        <div class="hint">
-
-            ※ 请输入两名检测对象姓名。系统将查询历史BtB检测数据库。
-
+            <div>
+                CONFIDENTIAL
+            </div>
         </div>
 
-
-    </section>
-
-
-
-    <!-- ==================================================
-         查询结果
-    ================================================== -->
-
-    <div id="resultArea"></div>
-
-
-    <div class="footer">
-
-        BtB Analysis System · Internal Medical Information System · Fictional Game Interface
-
-    </div>
-
-
-</main>
-
+    </main>
 
 </div>
-
-
-
-<!-- ==================================================
-     恢复记录加载窗口
-================================================== -->
-
-<div
-    class="loading-screen"
-    id="loadingScreen"
->
-
-
-    <div class="loading-box">
-
-
-        <div class="spinner"></div>
-
-
-        <div class="loading-title">
-
-            正在恢复检测记录
-
-        </div>
-
-
-        <div
-            class="loading-text"
-            id="loadingText"
-        >
-
-            正在连接历史检测数据库……
-
-        </div>
-
-
-        <div class="progress">
-
-            <div
-                class="progress-inner"
-                id="progressInner"
-            ></div>
-
-        </div>
-
-
-    </div>
-
-
-</div>
-
-
 
 <script>
 
-/* ==================================================
-   当前查询状态
-================================================== */
+const characterSelect = document.getElementById("characterSelect");
+const inputSection = document.getElementById("inputSection");
+const currentCharacter = document.getElementById("currentCharacter");
+const answerInput = document.getElementById("answerInput");
+const checkButton = document.getElementById("checkButton");
 
-let currentCase = null;
+const resultBox = document.getElementById("resultBox");
+const resultTitle = document.getElementById("resultTitle");
+const resultDesc = document.getElementById("resultDesc");
 
-
-
-/* ==================================================
-   查询
-================================================== */
-
-function searchBlood() {
+const mainPanel = document.getElementById("mainPanel");
 
 
-    const personA =
-        document
-            .getElementById("personA")
-            .value
-            .trim();
+/* ================================
+   正确答案数据库
+================================ */
+
+const answers = {
+
+    "宇文若": [
+        "错别字"
+    ],
+
+    "艾仙儿": [
+        "秦始皇",
+        "嬴政"
+    ],
+
+    "颜悦洋": [
+        "作者",
+        "TOBE，卧珑",
+        "TOBE和卧珑"
+    ],
+
+    "吕牧原": [
+        "小女孩"
+    ],
+
+    "谢孟迪": [
+        "DM",
+        "主持人"
+    ],
+
+    "叶倩倩": [
+        "月亮"
+    ]
+
+};
 
 
-    const personB =
-        document
-            .getElementById("personB")
-            .value
-            .trim();
+/* ================================
+   选择角色
+================================ */
 
+characterSelect.addEventListener("change", function() {
 
-    const resultArea =
-        document
-            .getElementById("resultArea");
+    const character = this.value;
 
+    // 清空之前的状态
+    answerInput.value = "";
+    hideResult();
 
-    /* ---------- 输入检查 ---------- */
+    if (character) {
 
-    if (!personA || !personB) {
+        currentCharacter.textContent = character;
 
+        inputSection.classList.add("show");
 
-        resultArea.style.display =
-            "block";
+        setTimeout(() => {
+            answerInput.focus();
+        }, 300);
 
+    } else {
 
-        resultArea.innerHTML = `
-
-            <div class="empty">
-
-                <div class="empty-icon">
-                    ⚠
-                </div>
-
-
-                <div class="empty-title">
-
-                    请完整输入两个检测对象
-
-                </div>
-
-
-                <div class="empty-subtitle">
-
-                    两个姓名均为必填项目
-
-                </div>
-
-            </div>
-
-        `;
-
-
-        return;
+        inputSection.classList.remove("show");
 
     }
 
+});
 
 
-    /* ==================================================
-       判断人物组合
-    ================================================== */
+/* ================================
+   CHECK
+================================ */
+
+checkButton.addEventListener("click", checkAnswer);
 
 
-    const pair1 =
+/* 按 Enter 也可以检查 */
+answerInput.addEventListener("keydown", function(event) {
 
-        (
-            personA === "黄杰" &&
-            personB === "余沐"
-        )
+    if (event.key === "Enter") {
+        checkAnswer();
+    }
 
-        ||
+});
 
-        (
-            personA === "余沐" &&
-            personB === "黄杰"
+
+function checkAnswer() {
+
+    const character = characterSelect.value;
+
+    // trim 只去除输入前后的空格，
+    // 不会改变中间文字，因此仍然要求答案完全匹配。
+    const input = answerInput.value.trim();
+
+    if (!character) {
+        return;
+    }
+
+    if (!input) {
+
+        showError(
+            "MATCH FAILED",
+            "请输入该角色的出轨对象。"
         );
 
-
-
-    const pair2 =
-
-        (
-            personA === "黄驰雨" &&
-            personB === "金燕"
-        )
-
-        ||
-
-        (
-            personA === "金燕" &&
-            personB === "黄驰雨"
-        );
-
-
-
-    resultArea.style.display =
-        "block";
-
-
-
-    /* ==================================================
-       黄杰 + 余沐
-       
-       注意：
-       这里一次显示两条独立记录。
-    ================================================== */
-
-    if (pair1) {
-
-
-        currentCase =
-            "huang-yu";
-
-
-        resultArea.innerHTML = `
-
-
-            <div class="result-card">
-
-
-                <!-- ==============================
-                     总标题
-                =============================== -->
-
-                <div class="result-header">
-
-
-                    <div class="result-header-title">
-
-                        BtB检测记录 · 共 2 条
-
-                    </div>
-
-
-                    <div
-                        class="record-status"
-                        id="mainRecordStatus"
-                    >
-
-                        RECORD FOUND
-
-                    </div>
-
-
-                </div>
-
-
-
-                <div class="result-body">
-
-
-
-                    <!-- ==================================================
-                         第一条记录
-                         
-                         永远保持：
-                         *月*日 17:00
-                         样本不存在亲缘关系
-                    ================================================== -->
-
-
-                    <div class="record-info">
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-
-                                样本对象 A
-
-                            </div>
-
-                            <div class="info-value">
-
-                                黄杰
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-
-                                样本对象 B
-
-                            </div>
-
-                            <div class="info-value">
-
-                                余沐
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-
-                                检测时间
-
-                            </div>
-
-                            <div class="info-value">
-
-                                *月*日 17:00
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-
-                                检测编号
-
-                            </div>
-
-                            <div class="info-value">
-
-                                BTB-1700-4821
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-
-
-                    <div class="test-result">
-
-
-                        <div class="test-result-title">
-
-                            检测结果
-
-                        </div>
-
-
-                        <div class="test-result-main">
-
-                            样本不存在亲缘关系
-
-                        </div>
-
-
-                    </div>
-
-
-
-                    <!-- 第一条记录结束 -->
-
-
-                    <div class="record-divider"></div>
-
-
-
-                    <!-- ==================================================
-                         第二条记录
-                         
-                         初始：
-                         记录已删除
-                         
-                         恢复后：
-                         样本存在亲缘关系
-                    ================================================== -->
-
-
-                    <div class="record-info">
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-
-                                样本对象 A
-
-                            </div>
-
-                            <div class="info-value">
-
-                                黄杰
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-
-                                样本对象 B
-
-                            </div>
-
-                            <div class="info-value">
-
-                                余沐
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-
-                                检测时间
-
-                            </div>
-
-                            <div class="info-value">
-
-                                *月*日 23:05
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-
-                                检测编号
-
-                            </div>
-
-                            <div class="info-value">
-
-                                BTB-2305-7316
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-
-
-                    <div
-                        id="secondRecordResult"
-                        class="test-result"
-                    >
-
-
-                        <div class="test-result-title">
-
-                            检测结果
-
-                        </div>
-
-
-                        <div
-                            id="secondResultText"
-                            class="test-result-main"
-                        >
-
-                            记录当前不可读取
-
-                        </div>
-
-
-                    </div>
-
-
-
-                    <div
-                        id="secondRecordAction"
-                        class="deleted-area"
-                    >
-
-
-                        <div class="deleted-text">
-
-                            记录已删除
-
-                        </div>
-
-
-                        <button
-                            class="restore-btn"
-                            onclick="restoreRecord()"
-                        >
-
-                            恢复记录
-
-                        </button>
-
-
-                    </div>
-
-
-
-                </div>
-
-
-            </div>
-
-        `;
-
-
-    }
-
-
-
-    /* ==================================================
-       黄驰雨 + 金燕
-    ================================================== */
-
-    else if (pair2) {
-
-
-        currentCase =
-            "huang-jin";
-
-
-        resultArea.innerHTML = `
-
-
-            <div class="result-card">
-
-
-                <div class="result-header">
-
-
-                    <div class="result-header-title">
-
-                        BtB检测记录
-
-                    </div>
-
-
-                    <div class="record-status">
-
-                        RECORD FOUND
-
-                    </div>
-
-
-                </div>
-
-
-
-                <div class="result-body">
-
-
-                    <div class="record-info">
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-
-                                样本对象 A
-
-                            </div>
-
-
-                            <div class="info-value">
-
-                                ${personA}
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-
-                                样本对象 B
-
-                            </div>
-
-
-                            <div class="info-value">
-
-                                ${personB}
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-
-                                检测时间
-
-                            </div>
-
-
-                            <div class="info-value">
-
-                                *月*日 17:30
-
-                            </div>
-
-                        </div>
-
-
-
-                        <div class="info-item">
-
-                            <div class="info-label">
-
-                                检测编号
-
-                            </div>
-
-
-                            <div class="info-value">
-
-                                BTB-1730-5294
-
-                            </div>
-
-                        </div>
-
-
-                    </div>
-
-
-
-                    <div class="test-result success">
-
-
-                        <div class="test-result-title">
-
-                            检测结果
-
-                        </div>
-
-
-                        <div class="test-result-main">
-
-                            样本存在亲缘关系
-
-                        </div>
-
-
-                    </div>
-
-
-                </div>
-
-
-            </div>
-
-        `;
-
-    }
-
-
-
-    /* ==================================================
-       其他组合
-    ================================================== */
-
-    else {
-
-
-        currentCase =
-            null;
-
-
-        resultArea.innerHTML = `
-
-
-            <div class="empty">
-
-
-                <div class="empty-icon">
-
-                    ⌕
-
-                </div>
-
-
-                <div class="empty-title">
-
-                    未找到匹配检测记录
-
-                </div>
-
-
-                <div class="empty-subtitle">
-
-                    当前BtB数据库中不存在符合条件的历史检测记录
-
-                </div>
-
-
-            </div>
-
-        `;
-
-    }
-
-}
-
-
-
-/* ==================================================
-   恢复第二条记录
-================================================== */
-
-function restoreRecord() {
-
-
-    /*
-     * 防止其他情况下错误调用
-     */
-
-    if (currentCase !== "huang-yu") {
-
         return;
-
     }
 
 
+    /* ================================
+       颜悦洋特殊判断
+    ================================ */
 
-    const loadingScreen =
-        document
-            .getElementById("loadingScreen");
+    if (character === "颜悦洋") {
 
+        if (input === "TOBE" || input === "卧珑") {
 
-    const progress =
-        document
-            .getElementById("progressInner");
+            showClose();
 
-
-    const loadingText =
-        document
-            .getElementById("loadingText");
-
-
-
-    loadingScreen.style.display =
-        "flex";
-
-
-    progress.style.width =
-        "0%";
-
-
-    loadingText.innerText =
-        "正在连接历史检测数据库……";
-
-
-
-    setTimeout(() => {
-
-
-        progress.style.width =
-            "25%";
-
-
-        loadingText.innerText =
-            "正在定位 BTB-2305-7316 ……";
-
-
-    }, 450);
-
-
-
-    setTimeout(() => {
-
-
-        progress.style.width =
-            "52%";
-
-
-        loadingText.innerText =
-            "正在读取已删除记录……";
-
-
-    }, 1100);
-
-
-
-    setTimeout(() => {
-
-
-        progress.style.width =
-            "76%";
-
-
-        loadingText.innerText =
-            "正在恢复检测数据……";
-
-
-    }, 1800);
-
-
-
-    setTimeout(() => {
-
-
-        progress.style.width =
-            "92%";
-
-
-        loadingText.innerText =
-            "正在验证记录完整性……";
-
-
-    }, 2500);
-
-
-
-    setTimeout(() => {
-
-
-        progress.style.width =
-            "100%";
-
-
-        loadingText.innerText =
-            "恢复完成";
-
-
-    }, 2900);
-
-
-
-    setTimeout(() => {
-
-
-        loadingScreen.style.display =
-            "none";
-
-
-        restoreSecondRecord();
-
-
-    }, 3400);
-
-}
-
-
-
-/* ==================================================
-   恢复第二条记录
-================================================== */
-
-function restoreSecondRecord() {
-
-
-    /*
-     * 获取第二条记录的 DOM
-     */
-
-    const resultBox =
-        document
-            .getElementById(
-                "secondRecordResult"
-            );
-
-
-    const resultText =
-        document
-            .getElementById(
-                "secondResultText"
-            );
-
-
-    const actionBox =
-        document
-            .getElementById(
-                "secondRecordAction"
-            );
-
-
-    const mainStatus =
-        document
-            .getElementById(
-                "mainRecordStatus"
-            );
-
-
-
-    /*
-     * 只修改第二条记录
-     *
-     * 第一条记录完全不修改
-     */
-
-
-    resultBox.classList.add(
-        "success"
-    );
-
-
-    resultText.innerText =
-        "样本存在亲缘关系";
-
-
-
-    actionBox.innerHTML = `
-
-
-        <div class="deleted-text">
-
-            记录已恢复 · Recovery completed
-
-        </div>
-
-
-    `;
-
-
-
-    /*
-     * 修改整个查询结果的状态
-     */
-
-    if (mainStatus) {
-
-        mainStatus.innerText =
-            "RECORD RESTORED";
-
-    }
-
-}
-
-
-
-/* ==================================================
-   回车查询
-================================================== */
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (
-            event.key === "Enter"
-        ) {
-
-            searchBlood();
-
+            return;
         }
 
     }
-);
+
+
+    /* ================================
+       普通正确答案判断
+    ================================ */
+
+    if (answers[character].includes(input)) {
+
+        showSuccess(character);
+
+    } else {
+
+        showError(
+            "MATCH FAILED",
+            "匹配失败。该答案与数据库记录不符。"
+        );
+
+    }
+
+}
+
+
+/* ================================
+   成功
+================================ */
+
+function showSuccess(character) {
+
+    resultBox.className = "result success show";
+
+    resultTitle.textContent = "✓ 匹配成功";
+
+    resultDesc.innerHTML =
+        "身份关系已确认。<br>" +
+        "<span style='color:#555861'>DATABASE MATCH CONFIRMED</span>";
+
+}
+
+
+/* ================================
+   失败
+================================ */
+
+function showError(title, description) {
+
+    resultBox.className = "result error show";
+
+    resultTitle.textContent = "× " + title;
+
+    resultDesc.textContent = description;
+
+
+    /* 面板震动 */
+    mainPanel.classList.remove("shake");
+
+    void mainPanel.offsetWidth;
+
+    mainPanel.classList.add("shake");
+
+}
+
+
+/* ================================
+   颜悦洋 —— 十分接近
+================================ */
+
+function showClose() {
+
+    resultBox.className = "result close show";
+
+    resultTitle.textContent = "△ 十分接近";
+
+    resultDesc.innerHTML = `
+        你已经找到了其中一位，但答案并不完整。
+        
+        <div class="answer">
+            正确答案：TOBE，卧珑
+        </div>
+    `;
+
+}
+
+
+/* ================================
+   隐藏结果
+================================ */
+
+function hideResult() {
+
+    resultBox.className = "result";
+
+    resultTitle.textContent = "";
+
+    resultDesc.innerHTML = "";
+
+}
 
 </script>
-
 
 </body>
 </html>
