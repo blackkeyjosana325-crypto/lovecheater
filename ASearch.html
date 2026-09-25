@@ -1,0 +1,1002 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>ASHESearch</title>
+
+<style>
+* {
+    box-sizing: border-box;
+}
+
+:root {
+    --bg: #090a0c;
+    --panel: #101216;
+    --panel2: #15171c;
+    --line: #252831;
+    --text: #f0f1f3;
+    --muted: #777d89;
+    --accent: #c5c8ff;
+    --accent2: #7c83ff;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    background:
+        radial-gradient(circle at 50% 20%, #171922 0, #0d0e12 35%, #090a0c 70%);
+    color: var(--text);
+    font-family: Arial, "Microsoft YaHei", "PingFang SC", sans-serif;
+}
+
+/* =========================
+   首页
+========================= */
+
+.home {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.topbar {
+    height: 70px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 38px;
+    color: #666b75;
+    font-size: 12px;
+    letter-spacing: 1px;
+}
+
+.status {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.status-dot {
+    width: 6px;
+    height: 6px;
+    background: #7379ff;
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(115,121,255,.7);
+}
+
+.home-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 16vh;
+}
+
+/* LOGO */
+
+.logo {
+    margin-bottom: 10px;
+    font-size: 64px;
+    font-weight: 300;
+    letter-spacing: -4px;
+    user-select: none;
+}
+
+.logo strong {
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.logo span {
+    color: #7c83ff;
+}
+
+.logo-sub {
+    margin-bottom: 45px;
+    color: #50545d;
+    font-size: 11px;
+    letter-spacing: 6px;
+}
+
+/* 搜索框 */
+
+.search-wrap {
+    width: min(680px, 90%);
+}
+
+.search-box {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 9px 0 23px;
+
+    background: rgba(18,20,25,.92);
+    border: 1px solid #292c34;
+    border-radius: 14px;
+
+    box-shadow:
+        0 20px 60px rgba(0,0,0,.28),
+        inset 0 1px 0 rgba(255,255,255,.025);
+
+    transition: .25s;
+}
+
+.search-box:focus-within {
+    border-color: #4b4f68;
+
+    box-shadow:
+        0 20px 70px rgba(0,0,0,.45),
+        0 0 0 3px rgba(124,131,255,.05);
+}
+
+.search-symbol {
+    color: #5d626d;
+    margin-right: 14px;
+    font-size: 19px;
+}
+
+#searchInput {
+    flex: 1;
+    height: 100%;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: white;
+    font-size: 16px;
+}
+
+#searchInput::placeholder {
+    color: #555a64;
+}
+
+.search-button {
+    height: 42px;
+    padding: 0 22px;
+    border: 0;
+    border-radius: 9px;
+
+    background: #eeeeff;
+    color: #101116;
+
+    font-weight: 600;
+    cursor: pointer;
+
+    transition: .2s;
+}
+
+.search-button:hover {
+    background: white;
+    transform: translateY(-1px);
+}
+
+.tip {
+    width: min(680px, 90%);
+    margin-top: 15px;
+    color: #42464f;
+    font-size: 11px;
+}
+
+/* =========================
+   结果页
+========================= */
+
+.results-page {
+    display: none;
+    min-height: 100vh;
+}
+
+.results-header {
+    height: 82px;
+    border-bottom: 1px solid #1e2026;
+
+    display: flex;
+    align-items: center;
+    gap: 40px;
+
+    padding: 0 45px;
+
+    background: rgba(9,10,12,.92);
+    backdrop-filter: blur(15px);
+}
+
+.small-logo {
+    font-size: 24px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.small-logo span {
+    color: #7c83ff;
+}
+
+.result-search {
+    width: min(620px, 70%);
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+
+    border: 1px solid #292c34;
+    border-radius: 10px;
+
+    background: #121419;
+
+    padding-left: 17px;
+}
+
+#resultInput {
+    flex: 1;
+    height: 100%;
+
+    border: 0;
+    outline: 0;
+
+    color: white;
+    background: transparent;
+
+    font-size: 14px;
+}
+
+.result-search button {
+    height: 100%;
+    width: 52px;
+
+    border: 0;
+    background: transparent;
+
+    color: #8b90a0;
+    cursor: pointer;
+
+    font-size: 17px;
+}
+
+.results-content {
+    width: min(800px, 90%);
+    margin-left: max(8%, 90px);
+    padding: 45px 0 80px;
+}
+
+.search-info {
+    margin-bottom: 35px;
+    color: #555a65;
+    font-size: 12px;
+}
+
+/* 搜索结果 */
+
+.result-item {
+    max-width: 700px;
+    padding-bottom: 32px;
+}
+
+.result-source {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+
+    color: #828792;
+    font-size: 12px;
+
+    margin-bottom: 9px;
+}
+
+.source-icon {
+    width: 24px;
+    height: 24px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid #30333b;
+    border-radius: 6px;
+
+    background: #16181d;
+    color: #9ea3ad;
+
+    font-size: 10px;
+}
+
+.result-title {
+    display: inline-block;
+
+    color: #b6baff;
+    font-size: 22px;
+    font-weight: 500;
+
+    text-decoration: none;
+    line-height: 1.4;
+}
+
+.result-title:hover {
+    color: white;
+    text-decoration: underline;
+}
+
+.result-url {
+    margin-top: 6px;
+
+    color: #555c67;
+    font-size: 12px;
+
+    word-break: break-all;
+}
+
+.result-description {
+    margin-top: 12px;
+
+    color: #9a9ea8;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* =========================
+   搜索失败
+========================= */
+
+.no-result {
+    max-width: 700px;
+    padding: 35px 0 15px;
+}
+
+.no-result-code {
+    color: #454a54;
+    font-size: 11px;
+    letter-spacing: 3px;
+}
+
+.no-result h2 {
+    margin: 12px 0 10px;
+
+    font-size: 23px;
+    font-weight: 400;
+}
+
+.no-result p {
+    color: #666b75;
+    font-size: 14px;
+    line-height: 1.8;
+}
+
+/* =========================
+   APT 广告
+========================= */
+
+.ad {
+    display: none;
+
+    position: relative;
+    max-width: 700px;
+
+    margin-top: 45px;
+    padding: 25px 27px;
+
+    overflow: hidden;
+
+    border: 1px solid #292d3a;
+    border-radius: 14px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(27,29,39,.98),
+            rgba(15,17,22,.98)
+        );
+
+    box-shadow:
+        0 25px 70px rgba(0,0,0,.3);
+}
+
+.ad::after {
+    content: "";
+
+    position: absolute;
+
+    width: 220px;
+    height: 220px;
+
+    right: -90px;
+    top: -110px;
+
+    border-radius: 50%;
+
+    background: #7178ff;
+
+    filter: blur(90px);
+
+    opacity: .16;
+}
+
+.ad-label {
+    position: relative;
+    z-index: 1;
+
+    margin-bottom: 18px;
+
+    color: #555b67;
+    font-size: 10px;
+    letter-spacing: 3px;
+}
+
+.ad-content {
+    position: relative;
+    z-index: 1;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 25px;
+}
+
+.apt-brand {
+    margin-bottom: 7px;
+
+    font-size: 25px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+.apt-brand span {
+    color: #7d84ff;
+}
+
+.ad-title {
+    margin-bottom: 7px;
+
+    color: #d7d8de;
+    font-size: 15px;
+}
+
+.ad-description {
+    max-width: 440px;
+
+    color: #777d88;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.ad-button {
+    flex-shrink: 0;
+
+    padding: 11px 18px;
+
+    border: 1px solid #555b85;
+    border-radius: 8px;
+
+    color: #c7caff;
+    text-decoration: none;
+
+    font-size: 12px;
+
+    transition: .2s;
+}
+
+.ad-button:hover {
+    color: white;
+    border-color: #8187ff;
+    background: rgba(124,131,255,.08);
+}
+
+/* 底部 */
+
+.footer {
+    padding: 25px;
+    text-align: center;
+
+    color: #333740;
+    font-size: 10px;
+
+    letter-spacing: 2px;
+}
+
+/* 手机端 */
+
+@media(max-width:700px) {
+
+    .topbar {
+        padding: 0 20px;
+    }
+
+    .home-main {
+        padding-top: 13vh;
+    }
+
+    .logo {
+        font-size: 48px;
+    }
+
+    .results-header {
+        padding: 0 15px;
+        gap: 15px;
+    }
+
+    .small-logo {
+        font-size: 18px;
+    }
+
+    .result-search {
+        width: 100%;
+    }
+
+    .results-content {
+        width: 90%;
+        margin: auto;
+    }
+
+    .ad-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- =============================
+     首页
+============================= -->
+
+<div class="home" id="home">
+
+    <div class="topbar">
+
+        <div>
+            ASHE NETWORK
+        </div>
+
+        <div class="status">
+            <span class="status-dot"></span>
+            SEARCH NODE ONLINE
+        </div>
+
+    </div>
+
+
+    <main class="home-main">
+
+        <div class="logo">
+            <strong>ASHE</strong><span>Search</span>
+        </div>
+
+        <div class="logo-sub">
+            INDEX THE UNKNOWN
+        </div>
+
+
+        <div class="search-wrap">
+
+            <div class="search-box">
+
+                <span class="search-symbol">⌕</span>
+
+                <input
+                    id="searchInput"
+                    type="text"
+                    placeholder="输入关键词"
+                    autocomplete="off"
+                >
+
+                <button
+                    class="search-button"
+                    onclick="homeSearch()"
+                >
+                    SEARCH
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="tip">
+            ASHESearch / Web Index
+        </div>
+
+    </main>
+
+
+    <footer class="footer">
+        ASHE SEARCH SYSTEM · 2026
+    </footer>
+
+</div>
+
+
+
+<!-- =============================
+     搜索结果页面
+============================= -->
+
+<div class="results-page" id="resultsPage">
+
+    <header class="results-header">
+
+        <div
+            class="small-logo"
+            onclick="backHome()"
+        >
+            ASHE<span>Search</span>
+        </div>
+
+
+        <div class="result-search">
+
+            <input
+                id="resultInput"
+                type="text"
+                autocomplete="off"
+            >
+
+            <button onclick="resultSearch()">
+                ⌕
+            </button>
+
+        </div>
+
+    </header>
+
+
+    <main class="results-content">
+
+        <div id="resultArea"></div>
+
+
+        <!-- APT广告 -->
+
+        <div class="ad" id="aptAd">
+
+            <div class="ad-label">
+                SPONSORED · APT SYSTEM
+            </div>
+
+            <div class="ad-content">
+
+                <div>
+
+                    <div class="apt-brand">
+                        APT<span>_</span>
+                    </div>
+
+                    <div class="ad-title">
+                        想知道更多？尝试查询手机内容
+                    </div>
+
+                    <div class="ad-description">
+                        APhoneTrack 提供基于姓名的手机内容查询。
+                        输入目标姓名，尝试检索可访问的远程设备记录。
+                    </div>
+
+                </div>
+
+
+                <a
+                    class="ad-button"
+                    href="https://blackkeyjosana325-crypto.github.io/lovecheater/APT"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+                    OPEN APT →
+                </a>
+
+            </div>
+
+        </div>
+
+    </main>
+
+</div>
+
+
+<script>
+
+/* ==================================
+   搜索失败次数
+================================== */
+
+let failedSearchCount = 0;
+
+
+/* ==================================
+   搜索数据库
+================================== */
+
+const database = {
+
+    "dier": {
+
+        title:
+            "酒馆抽奖送惊喜，幸运顾客喜提Dier口红",
+
+        url:
+            "https://blackkeyjosana325-crypto.github.io/lovecheater/news",
+
+        description:
+            "2026年8月9日，红呈酒馆举行顾客幸运抽奖活动，一位男性顾客意外抽中特别奖品——Dier口红一支，中奖编号为0049。"
+
+    }
+
+};
+
+
+/* ==================================
+   首页搜索
+================================== */
+
+function homeSearch() {
+
+    const keyword =
+        document
+        .getElementById("searchInput")
+        .value
+        .trim();
+
+    if (!keyword) return;
+
+    showSearch(keyword);
+
+}
+
+
+/* ==================================
+   结果页搜索
+================================== */
+
+function resultSearch() {
+
+    const keyword =
+        document
+        .getElementById("resultInput")
+        .value
+        .trim();
+
+    if (!keyword) return;
+
+    showSearch(keyword);
+
+}
+
+
+/* ==================================
+   执行搜索
+================================== */
+
+function showSearch(keyword) {
+
+    document.getElementById("home").style.display =
+        "none";
+
+    document.getElementById("resultsPage").style.display =
+        "block";
+
+    document.getElementById("resultInput").value =
+        keyword;
+
+
+    const resultArea =
+        document.getElementById("resultArea");
+
+    const aptAd =
+        document.getElementById("aptAd");
+
+
+    /* 标准化关键词 */
+
+    const normalized =
+        keyword
+        .trim()
+        .toLowerCase();
+
+
+    /* ==============================
+       搜索成功：Dier
+    ============================== */
+
+    if (normalized === "dier") {
+
+        failedSearchCount = 0;
+
+        aptAd.style.display =
+            "none";
+
+        const item =
+            database["dier"];
+
+
+        resultArea.innerHTML = `
+
+            <div class="search-info">
+
+                ASHESearch 找到 1 条相关索引
+
+            </div>
+
+
+            <div class="result-item">
+
+                <div class="result-source">
+
+                    <div class="source-icon">
+                        CL
+                    </div>
+
+                    城市生活新闻
+
+                </div>
+
+
+                <a
+                    class="result-title"
+                    href="${item.url}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
+
+                    ${item.title}
+
+                </a>
+
+
+                <div class="result-url">
+
+                    ${item.url}
+
+                </div>
+
+
+                <div class="result-description">
+
+                    ${item.description}
+
+                </div>
+
+            </div>
+
+        `;
+
+        return;
+
+    }
+
+
+    /* ==============================
+       搜索失败
+    ============================== */
+
+    failedSearchCount++;
+
+
+    resultArea.innerHTML = `
+
+        <div class="search-info">
+
+            QUERY / ${escapeHTML(keyword)}
+
+        </div>
+
+
+        <div class="no-result">
+
+            <div class="no-result-code">
+
+                NO INDEX FOUND
+
+            </div>
+
+            <h2>
+
+                没有找到相关网页
+
+            </h2>
+
+            <p>
+
+                ASHESearch 暂未收录与
+                “${escapeHTML(keyword)}”
+                相关的页面。
+
+            </p>
+
+        </div>
+
+    `;
+
+
+    /* ==============================
+       连续搜索失败两次后显示APT广告
+    ============================== */
+
+    if (failedSearchCount >= 2) {
+
+        aptAd.style.display =
+            "block";
+
+    } else {
+
+        aptAd.style.display =
+            "none";
+
+    }
+
+}
+
+
+/* ==================================
+   返回首页
+================================== */
+
+function backHome() {
+
+    document.getElementById("resultsPage").style.display =
+        "none";
+
+    document.getElementById("home").style.display =
+        "flex";
+
+    document.getElementById("searchInput").focus();
+
+}
+
+
+/* ==================================
+   防止输入HTML
+================================== */
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement("div");
+
+    div.textContent =
+        text;
+
+    return div.innerHTML;
+
+}
+
+
+/* ==================================
+   回车搜索
+================================== */
+
+document
+.getElementById("searchInput")
+.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            homeSearch();
+
+        }
+
+    }
+);
+
+
+document
+.getElementById("resultInput")
+.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (event.key === "Enter") {
+
+            resultSearch();
+
+        }
+
+    }
+);
+
+</script>
+
+</body>
+</html>
