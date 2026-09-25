@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>酒馆抽奖送惊喜，幸运顾客喜提Dier口红</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        background: #f5f6f8;
+        color: #222;
+        font-family: Arial, "Microsoft YaHei", "PingFang SC", sans-serif;
+    }
+
+    /* 顶部 */
+    .header {
+        background: #ffffff;
+        border-bottom: 1px solid #e5e5e5;
+    }
+
+    .header-main {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 23px 24px 18px;
+    }
+
+    .logo {
+        font-size: 29px;
+        font-weight: bold;
+        color: #9b2637;
+        letter-spacing: 1px;
+    }
+
+    .logo-en {
+        margin-top: 4px;
+        font-size: 11px;
+        color: #999;
+        letter-spacing: 4px;
+    }
+
+    /* 导航栏 */
+    .nav {
+        background: #9b2637;
+        color: white;
+    }
+
+    .nav-inner {
+        max-width: 1100px;
+        height: 45px;
+        margin: 0 auto;
+        padding: 0 24px;
+        display: flex;
+        align-items: center;
+        gap: 35px;
+        font-size: 14px;
+    }
+
+    .nav-item {
+        opacity: .86;
+        cursor: default;
+    }
+
+    .nav-item.active {
+        opacity: 1;
+        font-weight: bold;
+    }
+
+    /* 页面主体 */
+    .page {
+        max-width: 980px;
+        margin: 30px auto 60px;
+        padding: 0 20px;
+    }
+
+    .breadcrumb {
+        margin-bottom: 15px;
+        font-size: 13px;
+        color: #999;
+    }
+
+    /* 新闻主体 */
+    .article {
+        background: #ffffff;
+        border: 1px solid #e7e7e7;
+        padding: 50px 68px 55px;
+    }
+
+    .category {
+        margin-bottom: 13px;
+        color: #9b2637;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    h1 {
+        margin: 0;
+        color: #181818;
+        font-family: "Songti SC", "SimSun", serif;
+        font-size: 36px;
+        line-height: 1.45;
+        font-weight: bold;
+    }
+
+    .meta {
+        margin-top: 19px;
+        padding-bottom: 23px;
+        border-bottom: 1px solid #eeeeee;
+        color: #999;
+        font-size: 13px;
+    }
+
+    /* 导语 */
+    .lead {
+        margin: 30px 0;
+        padding: 17px 21px;
+        border-left: 4px solid #9b2637;
+        background: #faf7f7;
+        color: #555;
+        font-size: 15px;
+        line-height: 1.9;
+    }
+
+    /* 正文 */
+    .article-content {
+        font-family: "Songti SC", "SimSun", serif;
+        font-size: 18px;
+        line-height: 2.05;
+        color: #292929;
+    }
+
+    .article-content p {
+        margin: 0 0 24px;
+        text-indent: 2em;
+        text-align: justify;
+    }
+
+    .article-content strong {
+        color: #9b2637;
+        font-weight: bold;
+    }
+
+    /* 引用 */
+    .quote {
+        position: relative;
+        margin: 30px 0;
+        padding: 25px 32px;
+        background: #f7f7f7;
+        border-top: 1px solid #e5e5e5;
+        border-bottom: 1px solid #e5e5e5;
+        color: #444;
+        font-size: 18px;
+        line-height: 1.9;
+        text-indent: 0 !important;
+    }
+
+    .quote::before {
+        content: "“";
+        position: absolute;
+        top: -7px;
+        left: 12px;
+        color: #d8c2c5;
+        font-size: 56px;
+        font-family: Georgia, serif;
+    }
+
+    /* 0049强调 */
+    .number {
+        display: inline-block;
+        padding: 1px 7px;
+        margin: 0 2px;
+        border-radius: 4px;
+        background: #f3e9eb;
+        color: #9b2637;
+        font-family: Arial, sans-serif;
+        font-weight: bold;
+        letter-spacing: 1px;
+    }
+
+    .ending {
+        margin-top: 32px !important;
+    }
+
+    /* 新闻底部 */
+    .article-footer {
+        margin-top: 45px;
+        padding-top: 18px;
+        border-top: 1px solid #eeeeee;
+        display: flex;
+        justify-content: space-between;
+        color: #aaa;
+        font-family: Arial, "Microsoft YaHei", sans-serif;
+        font-size: 12px;
+    }
+
+    /* 网站底部 */
+    .footer {
+        padding: 30px 20px;
+        background: #272727;
+        color: #888;
+        text-align: center;
+        font-size: 12px;
+        line-height: 2;
+    }
+
+    .footer-name {
+        margin-bottom: 3px;
+        color: #bbb;
+        font-size: 14px;
+    }
+
+    /* 手机端 */
+    @media (max-width: 700px) {
+
+        .header-main {
+            padding: 18px;
+        }
+
+        .logo {
+            font-size: 24px;
+        }
+
+        .nav-inner {
+            padding: 0 18px;
+            gap: 23px;
+            overflow: hidden;
+            white-space: nowrap;
+        }
+
+        .page {
+            margin-top: 18px;
+            padding: 0 10px;
+        }
+
+        .article {
+            padding: 30px 22px 38px;
+        }
+
+        h1 {
+            font-size: 28px;
+        }
+
+        .article-content {
+            font-size: 17px;
+            line-height: 2;
+        }
+
+        .quote {
+            padding: 23px 20px;
+        }
+
+        .article-footer {
+            flex-direction: column;
+            gap: 7px;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<!-- 网站顶部 -->
+<header class="header">
+
+    <div class="header-main">
+        <div class="logo">城市生活新闻</div>
+        <div class="logo-en">CITY LIFE NEWS</div>
+    </div>
+
+    <nav class="nav">
+        <div class="nav-inner">
+            <div class="nav-item">首页</div>
+            <div class="nav-item active">本地</div>
+            <div class="nav-item">生活</div>
+            <div class="nav-item">文化</div>
+            <div class="nav-item">消费</div>
+        </div>
+    </nav>
+
+</header>
+
+
+<!-- 页面主体 -->
+<main class="page">
+
+    <div class="breadcrumb">
+        首页 &gt; 本地新闻 &gt; 正文
+    </div>
+
+    <article class="article">
+
+        <div class="category">
+            本地 · 生活
+        </div>
+
+        <h1>
+            酒馆抽奖送惊喜，幸运顾客喜提Dier口红
+        </h1>
+
+        <div class="meta">
+            发布时间：2026年8月9日
+            &nbsp;&nbsp;|&nbsp;&nbsp;
+            城市生活新闻
+        </div>
+
+
+        <div class="lead">
+            红呈酒馆举行顾客幸运抽奖活动，一位男性顾客抽中特别奖品Dier口红，
+            编号“0049”也成为了当晚一个有趣的小插曲。
+        </div>
+
+
+        <div class="article-content">
+
+            <p>
+                2026年8月9日，红呈酒馆举行了一场顾客幸运抽奖活动。
+                活动现场，一位男性顾客意外抽中了本次活动准备的特别奖品——
+                <strong>Dier口红一支</strong>，中奖编号为
+                <span class="number">0049</span>。
+            </p>
+
+            <p>
+                据现场工作人员介绍，当编号“0049”被公布时，
+                这位幸运顾客自己也颇感意外。由于奖品恰好是一支口红，
+                这份略显“错位”的幸运也引得现场顾客一阵笑声。
+            </p>
+
+            <div class="quote">
+                无论抽到什么，幸运本身就是今晚最好的彩蛋。
+            </div>
+
+            <p>
+                酒馆工作人员随后为其送上奖品，并向中奖顾客表示祝贺。
+                这场原本简单的抽奖活动，也因为这份颇具反差感的奖品，
+                给现场增添了不少轻松气氛。
+            </p>
+
+            <p class="ending">
+                一场普通的酒馆之夜，也因为编号
+                <span class="number">0049</span>，
+                多了一段有趣的小插曲。
+            </p>
+
+        </div>
+
+
+        <div class="article-footer">
+
+            <span>编辑：城市生活新闻编辑部</span>
+
+            <span>发布日期：2026-08-09</span>
+
+        </div>
+
+    </article>
+
+</main>
+
+
+<footer class="footer">
+
+    <div class="footer-name">
+        城市生活新闻
+    </div>
+
+    <div>
+        关注城市生活 · 记录身边故事
+    </div>
+
+    <div>
+        © 2026 City Life News
+    </div>
+
+</footer>
+
+</body>
+</html>
