@@ -1,0 +1,2412 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0">
+
+<title>谢孟迪的手机</title>
+
+<style>
+
+/* =====================================================
+   基础
+===================================================== */
+
+*{
+    box-sizing:border-box;
+    margin:0;
+    padding:0;
+}
+
+html,
+body{
+    width:100%;
+    height:100%;
+}
+
+body{
+
+    background:#181c1e;
+
+    font-family:
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        "Microsoft YaHei",
+        sans-serif;
+
+    display:flex;
+
+    justify-content:center;
+    align-items:center;
+
+    overflow:hidden;
+}
+
+
+/* =====================================================
+   手机
+===================================================== */
+
+.phone{
+
+    width:390px;
+
+    height:800px;
+
+    padding:10px;
+
+    background:#050505;
+
+    border-radius:44px;
+
+    position:relative;
+
+    box-shadow:
+        0 0 0 2px #555,
+        0 30px 80px rgba(0,0,0,.75);
+}
+
+
+.screen{
+
+    width:100%;
+
+    height:100%;
+
+    position:relative;
+
+    overflow:hidden;
+
+    border-radius:35px;
+
+    background:#111;
+}
+
+
+/* =====================================================
+   刘海
+===================================================== */
+
+.notch{
+
+    position:absolute;
+
+    top:0;
+
+    left:50%;
+
+    transform:translateX(-50%);
+
+    width:125px;
+
+    height:28px;
+
+    background:#000;
+
+    border-radius:
+        0 0 18px 18px;
+
+    z-index:5000;
+}
+
+
+/* =====================================================
+   桌面
+===================================================== */
+
+.home-screen{
+
+    position:absolute;
+
+    inset:0;
+
+    color:white;
+
+    background:
+
+        radial-gradient(
+            circle at 75% 20%,
+            rgba(148,194,209,.18),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 20% 75%,
+            rgba(255,255,255,.06),
+            transparent 30%
+        ),
+
+        linear-gradient(
+            145deg,
+            #455a62,
+            #29383e 52%,
+            #12191c
+        );
+}
+
+
+/* =====================================================
+   状态栏
+===================================================== */
+
+.status-bar{
+
+    height:43px;
+
+    padding:
+        0 20px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:space-between;
+
+    font-size:13px;
+}
+
+
+.status-right{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+}
+
+
+.battery{
+
+    width:23px;
+
+    height:11px;
+
+    border:
+        1px solid white;
+
+    border-radius:3px;
+
+    position:relative;
+}
+
+
+.battery::after{
+
+    content:"";
+
+    position:absolute;
+
+    right:-4px;
+
+    top:2px;
+
+    width:2px;
+
+    height:5px;
+
+    background:white;
+}
+
+
+.battery-fill{
+
+    position:absolute;
+
+    left:1px;
+
+    top:1px;
+
+    width:17px;
+
+    height:7px;
+
+    background:white;
+}
+
+
+/* =====================================================
+   桌面 APP
+===================================================== */
+
+.apps{
+
+    padding:
+        40px 28px;
+}
+
+
+.app{
+
+    width:68px;
+
+    text-align:center;
+
+    cursor:pointer;
+
+    user-select:none;
+}
+
+
+.app-icon{
+
+    width:60px;
+
+    height:60px;
+
+    margin:auto;
+
+    border-radius:17px;
+
+    background:
+        linear-gradient(
+            145deg,
+            #ffffff,
+            #dfe9ec
+        );
+
+    color:#17252b;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-family:
+        Georgia,
+        serif;
+
+    font-size:29px;
+
+    font-style:italic;
+
+    font-weight:bold;
+
+    box-shadow:
+        0 6px 15px rgba(0,0,0,.35);
+
+    transition:
+        transform .12s;
+}
+
+
+.app:active .app-icon{
+
+    transform:
+        scale(.9);
+}
+
+
+.app-name{
+
+    margin-top:6px;
+
+    color:white;
+
+    font-size:12px;
+
+    text-shadow:
+        0 1px 3px black;
+}
+
+
+/* =====================================================
+   锁屏
+===================================================== */
+
+.lock-screen{
+
+    position:absolute;
+
+    inset:0;
+
+    z-index:3000;
+
+    color:white;
+
+    background:
+
+        radial-gradient(
+            circle at 30% 25%,
+            rgba(139,190,207,.16),
+            transparent 28%
+        ),
+
+        radial-gradient(
+            circle at 75% 70%,
+            rgba(255,255,255,.07),
+            transparent 30%
+        ),
+
+        linear-gradient(
+            145deg,
+            #40545c,
+            #223137 50%,
+            #0e1518
+        );
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    transition:
+        transform .45s ease,
+        opacity .45s ease;
+}
+
+
+.lock-screen.unlocked{
+
+    transform:
+        translateY(-100%);
+
+    opacity:0;
+
+    pointer-events:none;
+}
+
+
+.lock-top{
+
+    margin-top:75px;
+
+    text-align:center;
+}
+
+
+.lock-time{
+
+    font-size:72px;
+
+    font-weight:200;
+
+    letter-spacing:-3px;
+}
+
+
+.lock-date{
+
+    margin-top:4px;
+
+    font-size:15px;
+
+    opacity:.8;
+}
+
+
+/* =====================================================
+   密码区域
+===================================================== */
+
+.password-area{
+
+    margin-top:65px;
+
+    width:100%;
+
+    text-align:center;
+}
+
+
+.password-title{
+
+    margin-bottom:22px;
+
+    font-size:15px;
+}
+
+
+.password-dots{
+
+    height:15px;
+
+    margin-bottom:30px;
+
+    display:flex;
+
+    justify-content:center;
+
+    gap:13px;
+}
+
+
+.password-dot{
+
+    width:11px;
+
+    height:11px;
+
+    border:
+        1px solid white;
+
+    border-radius:50%;
+}
+
+
+.password-dot.fill{
+
+    background:white;
+}
+
+
+/* =====================================================
+   键盘
+===================================================== */
+
+.keypad{
+
+    width:270px;
+
+    margin:auto;
+
+    display:grid;
+
+    grid-template-columns:
+        repeat(3,1fr);
+
+    gap:
+        14px 20px;
+}
+
+
+.key{
+
+    width:64px;
+
+    height:64px;
+
+    margin:auto;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,255,255,.16);
+
+    display:flex;
+
+    flex-direction:column;
+
+    align-items:center;
+
+    justify-content:center;
+
+    cursor:pointer;
+
+    user-select:none;
+
+    backdrop-filter:
+        blur(10px);
+
+    transition:.1s;
+}
+
+
+.key:active{
+
+    background:
+        rgba(255,255,255,.35);
+
+    transform:
+        scale(.92);
+}
+
+
+.key-number{
+
+    font-size:25px;
+
+    font-weight:300;
+}
+
+
+.key-letters{
+
+    font-size:7px;
+
+    letter-spacing:1px;
+
+    opacity:.75;
+}
+
+
+.delete-key{
+
+    background:transparent;
+
+    font-size:13px;
+}
+
+
+.password-error{
+
+    margin-top:16px;
+
+    height:20px;
+
+    color:#ffc0c0;
+
+    font-size:12px;
+}
+
+
+/* =====================================================
+   Ans
+===================================================== */
+
+.ans-app{
+
+    position:absolute;
+
+    inset:0;
+
+    background:#f8f8f8;
+
+    color:#111;
+
+    z-index:500;
+
+    opacity:0;
+
+    pointer-events:none;
+
+    transform:
+        scale(.96);
+
+    transition:
+        opacity .22s,
+        transform .22s;
+}
+
+
+.ans-app.open{
+
+    opacity:1;
+
+    pointer-events:auto;
+
+    transform:
+        scale(1);
+}
+
+
+/* =====================================================
+   Ans Header
+===================================================== */
+
+.ans-header{
+
+    height:58px;
+
+    background:#fff;
+
+    border-bottom:
+        1px solid #ddd;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    position:relative;
+}
+
+
+.ans-logo{
+
+    font-family:
+        Georgia,
+        serif;
+
+    font-style:italic;
+
+    font-weight:bold;
+
+    font-size:24px;
+}
+
+
+.back{
+
+    position:absolute;
+
+    left:10px;
+
+    width:45px;
+
+    height:45px;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:30px;
+
+    cursor:pointer;
+}
+
+
+/* =====================================================
+   Feed
+===================================================== */
+
+.feed{
+
+    position:absolute;
+
+    top:58px;
+
+    bottom:25px;
+
+    left:0;
+
+    right:0;
+
+    overflow-y:auto;
+
+    background:#eee;
+}
+
+
+/* =====================================================
+   个人资料
+===================================================== */
+
+.profile{
+
+    background:white;
+
+    padding:
+        18px 16px;
+
+    display:flex;
+
+    align-items:center;
+
+    border-bottom:
+        7px solid #eee;
+}
+
+
+.profile-avatar{
+
+    width:60px;
+
+    height:60px;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #55717d,
+            #17272d
+        );
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:24px;
+
+    font-weight:600;
+
+    margin-right:14px;
+}
+
+
+.profile-info{
+
+    flex:1;
+}
+
+
+.profile-name{
+
+    font-size:17px;
+
+    font-weight:600;
+}
+
+
+.profile-id{
+
+    margin-top:2px;
+
+    color:#aaa;
+
+    font-size:10px;
+}
+
+
+.profile-bio{
+
+    margin-top:6px;
+
+    color:#777;
+
+    font-size:11px;
+}
+
+
+/* =====================================================
+   动态
+===================================================== */
+
+.post{
+
+    background:white;
+
+    margin-bottom:7px;
+}
+
+
+.post-header{
+
+    padding:
+        12px 14px;
+
+    display:flex;
+
+    align-items:center;
+}
+
+
+.post-avatar{
+
+    width:37px;
+
+    height:37px;
+
+    border-radius:50%;
+
+    background:
+        linear-gradient(
+            145deg,
+            #55717d,
+            #17272d
+        );
+
+    color:white;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    margin-right:10px;
+}
+
+
+.post-user{
+
+    flex:1;
+}
+
+
+.username{
+
+    font-size:13px;
+
+    font-weight:600;
+}
+
+
+.post-location{
+
+    margin-top:2px;
+
+    color:#888;
+
+    font-size:10px;
+}
+
+
+.more{
+
+    color:#666;
+
+    font-size:20px;
+}
+
+
+/* =====================================================
+   钓鱼视觉卡片
+===================================================== */
+
+.fishing-visual{
+
+    height:235px;
+
+    position:relative;
+
+    overflow:hidden;
+
+    background:
+
+        linear-gradient(
+            to bottom,
+            #a7c4ce 0%,
+            #7fa3af 45%,
+            #496c78 46%,
+            #284955 100%
+        );
+}
+
+
+/* 天空 */
+
+.sun{
+
+    position:absolute;
+
+    width:42px;
+
+    height:42px;
+
+    border-radius:50%;
+
+    background:
+        rgba(255,244,199,.75);
+
+    top:28px;
+
+    right:42px;
+
+    box-shadow:
+        0 0 30px rgba(255,244,199,.4);
+}
+
+
+/* 水波 */
+
+.water-line{
+
+    position:absolute;
+
+    left:0;
+
+    right:0;
+
+    height:1px;
+
+    background:
+        rgba(255,255,255,.13);
+}
+
+
+.water-line.one{
+    top:130px;
+}
+
+
+.water-line.two{
+    top:160px;
+}
+
+
+.water-line.three{
+    top:190px;
+}
+
+
+/* 岸 */
+
+.shore{
+
+    position:absolute;
+
+    left:-20px;
+
+    bottom:-25px;
+
+    width:210px;
+
+    height:85px;
+
+    border-radius:
+        50% 50% 0 0;
+
+    background:
+        #283a35;
+
+    transform:
+        rotate(-5deg);
+}
+
+
+/* 钓鱼人 */
+
+.fisher{
+
+    position:absolute;
+
+    left:82px;
+
+    bottom:54px;
+
+    width:12px;
+
+    height:48px;
+
+    background:#15191a;
+
+    border-radius:5px;
+}
+
+
+.fisher::before{
+
+    content:"";
+
+    position:absolute;
+
+    width:18px;
+
+    height:18px;
+
+    border-radius:50%;
+
+    background:#15191a;
+
+    top:-16px;
+
+    left:-3px;
+}
+
+
+/* 鱼竿 */
+
+.rod{
+
+    position:absolute;
+
+    width:150px;
+
+    height:2px;
+
+    background:#15191a;
+
+    left:89px;
+
+    bottom:95px;
+
+    transform:
+        rotate(-21deg);
+
+    transform-origin:left;
+}
+
+
+.line{
+
+    position:absolute;
+
+    width:1px;
+
+    height:88px;
+
+    background:
+        rgba(230,230,230,.7);
+
+    left:229px;
+
+    bottom:91px;
+}
+
+
+/* 浮漂 */
+
+.float{
+
+    position:absolute;
+
+    width:5px;
+
+    height:16px;
+
+    border-radius:3px;
+
+    background:#d7dedf;
+
+    left:227px;
+
+    bottom:78px;
+}
+
+
+/* 标签 */
+
+.visual-label{
+
+    position:absolute;
+
+    left:15px;
+
+    top:15px;
+
+    color:
+        rgba(255,255,255,.75);
+
+    font-size:10px;
+
+    letter-spacing:2px;
+}
+
+
+/* =====================================================
+   第二种视觉：清晨
+===================================================== */
+
+.morning{
+
+    background:
+
+        linear-gradient(
+            to bottom,
+            #d4c6a7 0%,
+            #aeb8ae 45%,
+            #607c78 46%,
+            #334e4d 100%
+        );
+}
+
+
+/* =====================================================
+   第三种视觉：阴天
+===================================================== */
+
+.cloudy{
+
+    background:
+
+        linear-gradient(
+            to bottom,
+            #858f93 0%,
+            #68777c 45%,
+            #49646a 46%,
+            #293f45 100%
+        );
+}
+
+
+/* =====================================================
+   第四种视觉：夏日下午
+===================================================== */
+
+.summer{
+
+    background:
+
+        linear-gradient(
+            to bottom,
+            #98bfce 0%,
+            #76a5b5 45%,
+            #4d7c89 46%,
+            #284f59 100%
+        );
+}
+
+
+/* =====================================================
+   正文
+===================================================== */
+
+.post-body{
+
+    padding:
+        12px 14px 16px;
+}
+
+
+.actions{
+
+    margin-bottom:9px;
+
+    font-size:20px;
+
+    letter-spacing:7px;
+}
+
+
+.caption{
+
+    font-size:14px;
+
+    line-height:1.6;
+}
+
+
+.caption strong{
+
+    margin-right:5px;
+}
+
+
+.post-date{
+
+    margin-top:8px;
+
+    color:#999;
+
+    font-size:10px;
+}
+
+
+/* =====================================================
+   Home
+===================================================== */
+
+.home-button{
+
+    position:absolute;
+
+    width:140px;
+
+    height:25px;
+
+    left:50%;
+
+    bottom:0;
+
+    transform:
+        translateX(-50%);
+
+    z-index:4500;
+
+    cursor:pointer;
+}
+
+
+.home-button::after{
+
+    content:"";
+
+    position:absolute;
+
+    width:120px;
+
+    height:4px;
+
+    left:10px;
+
+    bottom:7px;
+
+    background:#111;
+
+    border-radius:5px;
+}
+
+
+/* =====================================================
+   小屏幕
+===================================================== */
+
+@media(max-height:850px){
+
+    .phone{
+
+        transform:
+            scale(.9);
+
+    }
+
+}
+
+
+@media(max-height:720px){
+
+    .phone{
+
+        transform:
+            scale(.78);
+
+    }
+
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="phone">
+
+<div class="screen">
+
+
+<div class="notch"></div>
+
+
+<!-- =====================================================
+     桌面
+===================================================== -->
+
+<div class="home-screen">
+
+
+    <div class="status-bar">
+
+
+        <div id="homeTime">
+            20:53
+        </div>
+
+
+        <div class="status-right">
+
+            <span>▮▮▮</span>
+
+            <span>⌁</span>
+
+
+            <div class="battery">
+
+                <div class="battery-fill"></div>
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+    <div class="apps">
+
+
+        <div
+            class="app"
+            onclick="openAns()"
+        >
+
+
+            <div class="app-icon">
+                A
+            </div>
+
+
+            <div class="app-name">
+                Ans
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     Ans
+===================================================== -->
+
+<div
+    class="ans-app"
+    id="ansApp"
+>
+
+
+    <div class="ans-header">
+
+
+        <div
+            class="back"
+            onclick="closeAns()"
+        >
+            ‹
+        </div>
+
+
+        <div class="ans-logo">
+            Ans
+        </div>
+
+
+    </div>
+
+
+    <div class="feed">
+
+
+        <!-- =================================================
+             个人资料
+        ================================================== -->
+
+        <div class="profile">
+
+
+            <div class="profile-avatar">
+                谢
+            </div>
+
+
+            <div class="profile-info">
+
+
+                <div class="profile-name">
+                    谢孟迪
+                </div>
+
+
+                <div class="profile-id">
+                    @xiemengdi
+                </div>
+
+
+                <div class="profile-bio">
+                    FISHING · WEEKEND · LIFE
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             动态 1
+             7月24日下午
+        ================================================== -->
+
+        <div class="post">
+
+
+            <div class="post-header">
+
+
+                <div class="post-avatar">
+                    谢
+                </div>
+
+
+                <div class="post-user">
+
+
+                    <div class="username">
+                        谢孟迪
+                    </div>
+
+
+                    <div class="post-location">
+                        湖边
+                    </div>
+
+
+                </div>
+
+
+                <div class="more">
+                    ···
+                </div>
+
+
+            </div>
+
+
+            <div class="fishing-visual summer">
+
+
+                <div class="sun"></div>
+
+
+                <div class="water-line one"></div>
+
+                <div class="water-line two"></div>
+
+                <div class="water-line three"></div>
+
+
+                <div class="shore"></div>
+
+
+                <div class="fisher"></div>
+
+                <div class="rod"></div>
+
+                <div class="line"></div>
+
+                <div class="float"></div>
+
+
+                <div class="visual-label">
+                    SUMMER FISHING
+                </div>
+
+
+            </div>
+
+
+            <div class="post-body">
+
+
+                <div class="actions">
+                    ♡　○
+                </div>
+
+
+                <div class="caption">
+
+                    <strong>
+                        谢孟迪
+                    </strong>
+
+                    天气热归热，鱼口倒是比想象中好。今天没白来。
+
+                </div>
+
+
+                <div class="post-date">
+                    2026年7月24日 · 下午
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             动态 2
+             7月5日上午
+        ================================================== -->
+
+        <div class="post">
+
+
+            <div class="post-header">
+
+
+                <div class="post-avatar">
+                    谢
+                </div>
+
+
+                <div class="post-user">
+
+
+                    <div class="username">
+                        谢孟迪
+                    </div>
+
+
+                    <div class="post-location">
+                        水库
+                    </div>
+
+
+                </div>
+
+
+                <div class="more">
+                    ···
+                </div>
+
+
+            </div>
+
+
+            <div class="fishing-visual morning">
+
+
+                <div class="sun"></div>
+
+
+                <div class="water-line one"></div>
+
+                <div class="water-line two"></div>
+
+                <div class="water-line three"></div>
+
+
+                <div class="shore"></div>
+
+
+                <div class="fisher"></div>
+
+                <div class="rod"></div>
+
+                <div class="line"></div>
+
+                <div class="float"></div>
+
+
+                <div class="visual-label">
+                    EARLY MORNING
+                </div>
+
+
+            </div>
+
+
+            <div class="post-body">
+
+
+                <div class="actions">
+                    ♡　○
+                </div>
+
+
+                <div class="caption">
+
+                    <strong>
+                        谢孟迪
+                    </strong>
+
+                    早起唯一心甘情愿的理由，大概就是这一竿了。
+
+                </div>
+
+
+                <div class="post-date">
+                    2026年7月5日 · 上午
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             动态 3
+             6月13日下午
+        ================================================== -->
+
+        <div class="post">
+
+
+            <div class="post-header">
+
+
+                <div class="post-avatar">
+                    谢
+                </div>
+
+
+                <div class="post-user">
+
+
+                    <div class="username">
+                        谢孟迪
+                    </div>
+
+
+                    <div class="post-location">
+                        河边
+                    </div>
+
+
+                </div>
+
+
+                <div class="more">
+                    ···
+                </div>
+
+
+            </div>
+
+
+            <div class="fishing-visual cloudy">
+
+
+                <div class="water-line one"></div>
+
+                <div class="water-line two"></div>
+
+                <div class="water-line three"></div>
+
+
+                <div class="shore"></div>
+
+
+                <div class="fisher"></div>
+
+                <div class="rod"></div>
+
+                <div class="line"></div>
+
+                <div class="float"></div>
+
+
+                <div class="visual-label">
+                    CLOUDY DAY
+                </div>
+
+
+            </div>
+
+
+            <div class="post-body">
+
+
+                <div class="actions">
+                    ♡　○
+                </div>
+
+
+                <div class="caption">
+
+                    <strong>
+                        谢孟迪
+                    </strong>
+
+                    阴天其实挺舒服。坐了一下午，收获一般，心情不错。
+
+                </div>
+
+
+                <div class="post-date">
+                    2026年6月13日 · 下午
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+        <!-- =================================================
+             动态 4
+             5月18日上午
+        ================================================== -->
+
+        <div class="post">
+
+
+            <div class="post-header">
+
+
+                <div class="post-avatar">
+                    谢
+                </div>
+
+
+                <div class="post-user">
+
+
+                    <div class="username">
+                        谢孟迪
+                    </div>
+
+
+                    <div class="post-location">
+                        湖边
+                    </div>
+
+
+                </div>
+
+
+                <div class="more">
+                    ···
+                </div>
+
+
+            </div>
+
+
+            <div class="fishing-visual">
+
+
+                <div class="sun"></div>
+
+
+                <div class="water-line one"></div>
+
+                <div class="water-line two"></div>
+
+                <div class="water-line three"></div>
+
+
+                <div class="shore"></div>
+
+
+                <div class="fisher"></div>
+
+                <div class="rod"></div>
+
+                <div class="line"></div>
+
+                <div class="float"></div>
+
+
+                <div class="visual-label">
+                    WEEKEND
+                </div>
+
+
+            </div>
+
+
+            <div class="post-body">
+
+
+                <div class="actions">
+                    ♡　○
+                </div>
+
+
+                <div class="caption">
+
+                    <strong>
+                        谢孟迪
+                    </strong>
+
+                    周末的正确打开方式。安安静静坐着等鱼，比什么都舒服。
+
+                </div>
+
+
+                <div class="post-date">
+                    2026年5月18日 · 上午
+                </div>
+
+
+            </div>
+
+
+        </div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     锁屏
+===================================================== -->
+
+<div
+    class="lock-screen"
+    id="lockScreen"
+>
+
+
+    <div class="lock-top">
+
+
+        <div
+            class="lock-time"
+            id="lockTime"
+        >
+            20:53
+        </div>
+
+
+        <div
+            class="lock-date"
+            id="lockDate"
+        >
+            9月27日 星期日
+        </div>
+
+
+    </div>
+
+
+    <div class="password-area">
+
+
+        <div class="password-title">
+            输入密码
+        </div>
+
+
+        <div class="password-dots">
+
+
+            <div class="password-dot"></div>
+
+            <div class="password-dot"></div>
+
+            <div class="password-dot"></div>
+
+            <div class="password-dot"></div>
+
+            <div class="password-dot"></div>
+
+            <div class="password-dot"></div>
+
+
+        </div>
+
+
+        <div class="keypad">
+
+
+            <div
+                class="key"
+                onclick="pressKey('1')"
+            >
+
+                <div class="key-number">
+                    1
+                </div>
+
+            </div>
+
+
+            <div
+                class="key"
+                onclick="pressKey('2')"
+            >
+
+                <div class="key-number">
+                    2
+                </div>
+
+                <div class="key-letters">
+                    ABC
+                </div>
+
+            </div>
+
+
+            <div
+                class="key"
+                onclick="pressKey('3')"
+            >
+
+                <div class="key-number">
+                    3
+                </div>
+
+                <div class="key-letters">
+                    DEF
+                </div>
+
+            </div>
+
+
+            <div
+                class="key"
+                onclick="pressKey('4')"
+            >
+
+                <div class="key-number">
+                    4
+                </div>
+
+                <div class="key-letters">
+                    GHI
+                </div>
+
+            </div>
+
+
+            <div
+                class="key"
+                onclick="pressKey('5')"
+            >
+
+                <div class="key-number">
+                    5
+                </div>
+
+                <div class="key-letters">
+                    JKL
+                </div>
+
+            </div>
+
+
+            <div
+                class="key"
+                onclick="pressKey('6')"
+            >
+
+                <div class="key-number">
+                    6
+                </div>
+
+                <div class="key-letters">
+                    MNO
+                </div>
+
+            </div>
+
+
+            <div
+                class="key"
+                onclick="pressKey('7')"
+            >
+
+                <div class="key-number">
+                    7
+                </div>
+
+                <div class="key-letters">
+                    PQRS
+                </div>
+
+            </div>
+
+
+            <div
+                class="key"
+                onclick="pressKey('8')"
+            >
+
+                <div class="key-number">
+                    8
+                </div>
+
+                <div class="key-letters">
+                    TUV
+                </div>
+
+            </div>
+
+
+            <div
+                class="key"
+                onclick="pressKey('9')"
+            >
+
+                <div class="key-number">
+                    9
+                </div>
+
+                <div class="key-letters">
+                    WXYZ
+                </div>
+
+            </div>
+
+
+            <div></div>
+
+
+            <div
+                class="key"
+                onclick="pressKey('0')"
+            >
+
+                <div class="key-number">
+                    0
+                </div>
+
+            </div>
+
+
+            <div
+                class="key delete-key"
+                onclick="deleteKey()"
+            >
+                删除
+            </div>
+
+
+        </div>
+
+
+        <div
+            class="password-error"
+            id="passwordError"
+        ></div>
+
+
+    </div>
+
+
+</div>
+
+
+<!-- =====================================================
+     Home Bar
+===================================================== -->
+
+<div
+    class="home-button"
+    onclick="goHome()"
+></div>
+
+
+</div>
+
+</div>
+
+
+<script>
+
+/* =====================================================
+   密码
+===================================================== */
+
+let passwordInput = "";
+
+const correctPassword =
+    "000913";
+
+
+function pressKey(number){
+
+    if(
+        passwordInput.length >= 6
+    ){
+
+        return;
+
+    }
+
+
+    passwordInput +=
+        number;
+
+
+    updateDots();
+
+
+    if(
+        passwordInput.length === 6
+    ){
+
+        setTimeout(
+            checkPassword,
+            150
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   删除
+===================================================== */
+
+function deleteKey(){
+
+    passwordInput =
+        passwordInput.slice(
+            0,
+            -1
+        );
+
+
+    updateDots();
+
+
+    document
+        .getElementById(
+            "passwordError"
+        )
+        .textContent =
+        "";
+
+}
+
+
+/* =====================================================
+   密码圆点
+===================================================== */
+
+function updateDots(){
+
+    const dots =
+        document.querySelectorAll(
+            ".password-dot"
+        );
+
+
+    dots.forEach(
+        function(dot,index){
+
+            if(
+                index <
+                passwordInput.length
+            ){
+
+                dot.classList.add(
+                    "fill"
+                );
+
+            }else{
+
+                dot.classList.remove(
+                    "fill"
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+/* =====================================================
+   验证密码
+===================================================== */
+
+function checkPassword(){
+
+    if(
+        passwordInput ===
+        correctPassword
+    ){
+
+        document
+            .getElementById(
+                "passwordError"
+            )
+            .textContent =
+            "";
+
+
+        document
+            .getElementById(
+                "lockScreen"
+            )
+            .classList.add(
+                "unlocked"
+            );
+
+    }else{
+
+        document
+            .getElementById(
+                "passwordError"
+            )
+            .textContent =
+            "密码错误";
+
+
+        const dots =
+            document.querySelector(
+                ".password-dots"
+            );
+
+
+        dots.animate(
+
+            [
+
+                {
+                    transform:
+                        "translateX(0)"
+                },
+
+                {
+                    transform:
+                        "translateX(-10px)"
+                },
+
+                {
+                    transform:
+                        "translateX(10px)"
+                },
+
+                {
+                    transform:
+                        "translateX(-7px)"
+                },
+
+                {
+                    transform:
+                        "translateX(7px)"
+                },
+
+                {
+                    transform:
+                        "translateX(0)"
+                }
+
+            ],
+
+            {
+                duration:350
+            }
+
+        );
+
+
+        passwordInput =
+            "";
+
+
+        setTimeout(
+            updateDots,
+            250
+        );
+
+    }
+
+}
+
+
+/* =====================================================
+   Ans
+===================================================== */
+
+function openAns(){
+
+    document
+        .getElementById(
+            "ansApp"
+        )
+        .classList.add(
+            "open"
+        );
+
+}
+
+
+function closeAns(){
+
+    document
+        .getElementById(
+            "ansApp"
+        )
+        .classList.remove(
+            "open"
+        );
+
+}
+
+
+/* =====================================================
+   Home
+===================================================== */
+
+function goHome(){
+
+    closeAns();
+
+}
+
+
+/* =====================================================
+   时间
+===================================================== */
+
+function updateTime(){
+
+    const now =
+        new Date();
+
+
+    const hour =
+        String(
+            now.getHours()
+        )
+        .padStart(
+            2,
+            "0"
+        );
+
+
+    const minute =
+        String(
+            now.getMinutes()
+        )
+        .padStart(
+            2,
+            "0"
+        );
+
+
+    const time =
+        hour +
+        ":" +
+        minute;
+
+
+    document
+        .getElementById(
+            "homeTime"
+        )
+        .textContent =
+        time;
+
+
+    document
+        .getElementById(
+            "lockTime"
+        )
+        .textContent =
+        time;
+
+
+    const week = [
+
+        "星期日",
+        "星期一",
+        "星期二",
+        "星期三",
+        "星期四",
+        "星期五",
+        "星期六"
+
+    ];
+
+
+    document
+        .getElementById(
+            "lockDate"
+        )
+        .textContent =
+
+        (now.getMonth()+1)
+        +
+        "月"
+        +
+        now.getDate()
+        +
+        "日 "
+        +
+        week[
+            now.getDay()
+        ];
+
+}
+
+
+updateTime();
+
+
+setInterval(
+    updateTime,
+    1000
+);
+
+</script>
+
+
+</body>
+
+</html>
